@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Дом
@@ -36,7 +36,7 @@ public class House {
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "house", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Person> persons;
+    private Set<Person> persons;
 
     public Long getId() {
         return id;
@@ -50,11 +50,11 @@ public class House {
         this.address = address;
     }
 
-    public List<Person> getPersons() {
+    public Set<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
+    public void setPersons(Set<Person> persons) {
         this.persons = persons;
     }
 }

@@ -11,9 +11,9 @@ public interface DummyService {
 
     /**
      *
-     * @param persion
+     * @param person
      */
-    void add(PersonView persion);
+    void add(PersonView person);
 
     /**
      * Dummy service method

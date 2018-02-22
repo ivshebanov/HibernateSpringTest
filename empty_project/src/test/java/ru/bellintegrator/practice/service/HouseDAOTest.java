@@ -14,8 +14,9 @@ import ru.bellintegrator.practice.dao.HouseDAO;
 import ru.bellintegrator.practice.model.House;
 import ru.bellintegrator.practice.model.Person;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @RunWith(SpringRunner.class)
@@ -31,7 +32,7 @@ public class HouseDAOTest {
     @Test
     public void test() {
         House house = new House();
-        List<Person> list = new ArrayList<>();
+        Set<Person> list = new HashSet<>();
         house.setAddress("Address");
         Person person = new Person("One", 1);
         person.setHouse(house);
@@ -46,7 +47,7 @@ public class HouseDAOTest {
 
         Assert.assertFalse(houses.isEmpty());
 
-        List<Person> persons = houses.get(1).getPersons();
+        Set<Person> persons = houses.get(1).getPersons();
 
         Assert.assertNotNull(persons);
         Assert.assertEquals(1, persons.size());
