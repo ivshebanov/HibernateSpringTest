@@ -63,14 +63,14 @@ CREATE TABLE IF NOT EXISTS Documentation (
 
 CREATE TABLE IF NOT EXISTS Docs (
     code      INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    doc_name  VARCHAR(50) NOT NULL,
+    doc_name  VARCHAR(60) NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS Countries (
     code              INTEGER  PRIMARY KEY AUTO_INCREMENT,
     citizenship_name  VARCHAR(50) NOT NULL,
 );
-b
+
 ALTER TABLE Organization ADD FOREIGN KEY (name) REFERENCES Register(name);
 ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
 ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
