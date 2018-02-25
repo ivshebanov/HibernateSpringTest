@@ -17,12 +17,14 @@
 
 CREATE TABLE IF NOT EXISTS Register (
     name       VARCHAR(50) PRIMARY KEY,
+    version    INTEGER NOT NULL,
     login      VARCHAR(50) NOT NULL,
     password   VARCHAR(50) NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version    INTEGER NOT NULL,
     name       VARCHAR(50),
     full_name  VARCHAR(50) NOT NULL,
     inn        INTEGER NOT NULL,
@@ -34,6 +36,7 @@ CREATE TABLE IF NOT EXISTS Organization (
 
 CREATE TABLE IF NOT EXISTS Office (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version    INTEGER NOT NULL,
     name       VARCHAR(50) NOT NULL,
     address    VARCHAR(50) NOT NULL,
     phone      INTEGER NOT NULL,
@@ -43,6 +46,7 @@ CREATE TABLE IF NOT EXISTS Office (
 
 CREATE TABLE IF NOT EXISTS User (
     id          INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version     INTEGER NOT NULL,
     first_name  VARCHAR(50) NOT NULL,
     second_name VARCHAR(50) NOT NULL,
     middle_name VARCHAR(50) NOT NULL,
@@ -53,6 +57,7 @@ CREATE TABLE IF NOT EXISTS User (
 
 CREATE TABLE IF NOT EXISTS Documentation (
     id                INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version           INTEGER NOT NULL,
     user_id           INTEGER,
     doc_code          INTEGER,
     doc_number        INTEGER NOT NULL,
@@ -63,11 +68,13 @@ CREATE TABLE IF NOT EXISTS Documentation (
 
 CREATE TABLE IF NOT EXISTS Docs (
     code      INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version   INTEGER NOT NULL,
     doc_name  VARCHAR(60) NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS Countries (
     code              INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    version           INTEGER NOT NULL,
     citizenship_name  VARCHAR(50) NOT NULL,
 );
 
