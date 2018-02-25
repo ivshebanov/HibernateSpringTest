@@ -30,3 +30,28 @@ INSERT INTO Countries (citizenship_name) VALUES ('Чехия');
 INSERT INTO Countries (citizenship_name) VALUES ('Швейцария');
 INSERT INTO Countries (citizenship_name) VALUES ('Швеция');
 INSERT INTO Countries (citizenship_name) VALUES ('Эстония');
+
+INSERT INTO Register (name, login, password)
+VALUES ('bell', 'Shebanov', '12345');
+INSERT INTO Register (name, login, password)
+VALUES ('Сбертех', 'сбер', '112233');
+
+INSERT INTO Organization (name, full_name, inn, kpp, address, phone, is_active)
+VALUES ('bell', 'bellintegrator', 1234567890, 0987654321, 'Москва, ул. Арбат, д.1', 567898, 1);
+INSERT INTO Organization (name, full_name, inn, kpp, address, phone, is_active)
+VALUES ('Сбертех', 'СбербанкТехнологии', 11223344, 66778899, 'Москва, ул. Остоженка, д.2', 876678, 1);
+
+INSERT INTO Office (name, address, phone, is_active, org_id)
+VALUES ('belloffice', 'Москва, ул. Арбат, д.1', 567898, 1, 1);
+INSERT INTO Office (name, address, phone, is_active, org_id)
+VALUES ('Сбертехофис', 'Москва, ул. Остоженка, д.2', 876678, 1, 2);
+
+INSERT INTO User (first_name, second_name, middle_name, position, phone, office_id)
+VALUES ('Иван', 'Сидоров', 'Викторович', 'Руководитель отдела', 556677, 1);
+INSERT INTO User (first_name, second_name, middle_name, position, phone, office_id)
+VALUES ('Иван', 'Инванов', 'Иванович', 'Руководитель отдела кадров', 998877, 2);
+
+INSERT INTO Documentation (user_id, doc_code, doc_number, doc_date, citizenship_code, is_identified)
+VALUES (1, 1, 151, '2004-10-21', 1, 1);
+INSERT INTO Documentation (user_id, doc_code, doc_number, doc_date, citizenship_code, is_identified)
+VALUES (2, 2, 678, '2018-11-11', 5, 1);
