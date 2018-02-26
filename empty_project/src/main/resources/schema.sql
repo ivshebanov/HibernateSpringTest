@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Register (
     name       VARCHAR(50) PRIMARY KEY,
     version    INTEGER NOT NULL,
     login      VARCHAR(50) NOT NULL,
-    password   VARCHAR(50) NOT NULL,
+    password   VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
@@ -69,13 +69,13 @@ CREATE TABLE IF NOT EXISTS Documentation (
 CREATE TABLE IF NOT EXISTS Docs (
     code      INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version   INTEGER NOT NULL,
-    doc_name  VARCHAR(60) NOT NULL,
+    doc_name  VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Countries (
     code              INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version           INTEGER NOT NULL,
-    citizenship_name  VARCHAR(50) NOT NULL,
+    citizenship_name  VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Organization ADD FOREIGN KEY (name) REFERENCES Register(name);

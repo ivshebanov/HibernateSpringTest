@@ -49,6 +49,15 @@ public class Organization {
     public Organization() {
     }
 
+    public Organization(String fullName, int inn, int kpp, String address, int phone, boolean isActive) {
+        this.fullName = fullName;
+        this.inn = inn;
+        this.kpp = kpp;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+    }
+
     public Long getId() {
         return id;
     }

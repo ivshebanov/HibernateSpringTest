@@ -24,6 +24,12 @@ public class Register {
     public Register() {
     }
 
+    public Register(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }

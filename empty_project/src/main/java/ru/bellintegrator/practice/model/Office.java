@@ -41,6 +41,13 @@ public class Office {
     public Office() {
     }
 
+    public Office(String name, String address, int phone, boolean isActive) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+    }
+
     public Long getId() {
         return id;
     }

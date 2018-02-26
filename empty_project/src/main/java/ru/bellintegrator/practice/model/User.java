@@ -45,6 +45,14 @@ public class User {
     public User() {
     }
 
+    public User(int firstName, int secondName, int middleName, int position, int phone) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.middleName = middleName;
+        this.position = position;
+        this.phone = phone;
+    }
+
     public Long getId() {
         return id;
     }
