@@ -59,21 +59,23 @@ CREATE TABLE IF NOT EXISTS Documentation (
     id                INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version           INTEGER NOT NULL,
     user_id           INTEGER,
-    doc_code          INTEGER,
+    doc_id            INTEGER,
     doc_number        INTEGER NOT NULL,
     doc_date          DATE NOT NULL,
-    citizenship_code  INTEGER,
+    country_id        INTEGER,
     is_identified     BIT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Docs (
-    code      INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    id        INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    code      INTEGER NOT NULL,
     version   INTEGER NOT NULL,
     doc_name  VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Countries (
-    code              INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    id        INTEGER  PRIMARY KEY AUTO_INCREMENT,
+    code      INTEGER NOT NULL,
     version           INTEGER NOT NULL,
     citizenship_name  VARCHAR(50) NOT NULL
 );
@@ -82,10 +84,10 @@ ALTER TABLE Organization ADD FOREIGN KEY (name) REFERENCES Register(name);
 ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
 ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
 ALTER TABLE Documentation ADD FOREIGN KEY (user_id) REFERENCES User(id);
-ALTER TABLE Documentation ADD FOREIGN KEY (doc_code) REFERENCES Docs(code);
-ALTER TABLE Documentation ADD FOREIGN KEY (citizenship_code) REFERENCES Countries(code);
+ALTER TABLE Documentation ADD FOREIGN KEY (doc_id) REFERENCES Docs(id);
+ALTER TABLE Documentation ADD FOREIGN KEY (country_id) REFERENCES Countries(id);
 
 CREATE INDEX IX_Organization_name ON Organization (name);
 CREATE INDEX IX_Office_org_id ON Office (org_id);
 CREATE INDEX IX_User_office_id ON User (office_id);
-CREATE INDEX IX_Documentation_user_id_doc_code_citizenship_code ON Documentation (user_id, doc_code, citizenship_code);
+CREATE INDEX IX_Documentation_user_id_doc_id_country_id ON Documentation (user_id, doc_id, country_id);
