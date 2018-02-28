@@ -16,78 +16,89 @@
 -- ALTER TABLE Person ADD FOREIGN KEY (house_id) REFERENCES House(id);
 
 CREATE TABLE IF NOT EXISTS Register (
-    name       VARCHAR(50) PRIMARY KEY,
-    version    INTEGER NOT NULL,
-    login      VARCHAR(50) NOT NULL,
-    password   VARCHAR(50) NOT NULL
+  id       INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name     VARCHAR(50) NOT NULL,
+  version  INTEGER     NOT NULL,
+  login    VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
-    id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
-    name       VARCHAR(50),
-    full_name  VARCHAR(50) NOT NULL,
-    inn        INTEGER NOT NULL,
-    kpp        INTEGER NOT NULL,
-    address    VARCHAR(50) NOT NULL,
-    phone      INTEGER NOT NULL,
-    is_active  BIT NOT NULL
+  id        INTEGER PRIMARY KEY AUTO_INCREMENT,
+  version   INTEGER     NOT NULL,
+  name      VARCHAR(50),
+  full_name VARCHAR(50) NOT NULL,
+  inn       INTEGER     NOT NULL,
+  kpp       INTEGER     NOT NULL,
+  address   VARCHAR(50) NOT NULL,
+  phone     INTEGER     NOT NULL,
+  is_active BIT         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Office (
-    id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
-    name       VARCHAR(50) NOT NULL,
-    address    VARCHAR(50) NOT NULL,
-    phone      INTEGER NOT NULL,
-    is_active  BIT NOT NULL,
-    org_id     INTEGER
+  id        INTEGER PRIMARY KEY AUTO_INCREMENT,
+  version   INTEGER     NOT NULL,
+  name      VARCHAR(50) NOT NULL,
+  address   VARCHAR(50) NOT NULL,
+  phone     INTEGER     NOT NULL,
+  is_active BIT         NOT NULL,
+  org_id    INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS User (
-    id          INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version     INTEGER NOT NULL,
-    first_name  VARCHAR(50) NOT NULL,
-    second_name VARCHAR(50) NOT NULL,
-    middle_name VARCHAR(50) NOT NULL,
-    position    VARCHAR(50) NOT NULL,
-    phone       INTEGER NOT NULL,
-    office_id   INTEGER
+  id          INTEGER PRIMARY KEY AUTO_INCREMENT,
+  version     INTEGER     NOT NULL,
+  first_name  VARCHAR(50) NOT NULL,
+  second_name VARCHAR(50) NOT NULL,
+  middle_name VARCHAR(50) NOT NULL,
+  position    VARCHAR(50) NOT NULL,
+  phone       INTEGER     NOT NULL,
+  office_id   INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Documentation (
-    id                INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version           INTEGER NOT NULL,
-    user_id           INTEGER,
-    doc_id            INTEGER,
-    doc_number        INTEGER NOT NULL,
-    doc_date          DATE NOT NULL,
-    country_id        INTEGER,
-    is_identified     BIT NOT NULL
+  id            INTEGER PRIMARY KEY AUTO_INCREMENT,
+  version       INTEGER NOT NULL,
+  user_id       INTEGER,
+  doc_id        INTEGER,
+  doc_number    INTEGER NOT NULL,
+  doc_date      DATE    NOT NULL,
+  country_id    INTEGER,
+  is_identified BIT     NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Docs (
-    id        INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    code      INTEGER NOT NULL,
-    version   INTEGER NOT NULL,
-    doc_name  VARCHAR(60) NOT NULL
+  id       INTEGER PRIMARY KEY AUTO_INCREMENT,
+  code     INTEGER     NOT NULL,
+  version  INTEGER     NOT NULL,
+  doc_name VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Countries (
-    id        INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    code      INTEGER NOT NULL,
-    version           INTEGER NOT NULL,
-    citizenship_name  VARCHAR(50) NOT NULL
+  id               INTEGER PRIMARY KEY AUTO_INCREMENT,
+  code             INTEGER     NOT NULL,
+  version          INTEGER     NOT NULL,
+  citizenship_name VARCHAR(50) NOT NULL
 );
 
-ALTER TABLE Organization ADD FOREIGN KEY (name) REFERENCES Register(name);
-ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
-ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
-ALTER TABLE Documentation ADD FOREIGN KEY (user_id) REFERENCES User(id);
-ALTER TABLE Documentation ADD FOREIGN KEY (doc_id) REFERENCES Docs(id);
-ALTER TABLE Documentation ADD FOREIGN KEY (country_id) REFERENCES Countries(id);
+ALTER TABLE Organization
+  ADD FOREIGN KEY (name) REFERENCES Register (name);
+ALTER TABLE Office
+  ADD FOREIGN KEY (org_id) REFERENCES Organization (id);
+ALTER TABLE User
+  ADD FOREIGN KEY (office_id) REFERENCES Office (id);
+ALTER TABLE Documentation
+  ADD FOREIGN KEY (user_id) REFERENCES User (id);
+ALTER TABLE Documentation
+  ADD FOREIGN KEY (doc_id) REFERENCES Docs (id);
+ALTER TABLE Documentation
+  ADD FOREIGN KEY (country_id) REFERENCES Countries (id);
 
-CREATE INDEX IX_Organization_name ON Organization (name);
-CREATE INDEX IX_Office_org_id ON Office (org_id);
-CREATE INDEX IX_User_office_id ON User (office_id);
-CREATE INDEX IX_Documentation_user_id_doc_id_country_id ON Documentation (user_id, doc_id, country_id);
+CREATE INDEX IX_Organization_name
+  ON Organization (name);
+CREATE INDEX IX_Office_org_id
+  ON Office (org_id);
+CREATE INDEX IX_User_office_id
+  ON User (office_id);
+CREATE INDEX IX_Documentation_user_id_doc_id_country_id
+  ON Documentation (user_id, doc_id, country_id);

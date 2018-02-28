@@ -1,15 +1,14 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
-//@Entity
-//@Table(name = "Office")
+@Entity
+@Table(name = "Office")
 public class Office {
 
     @Id
-    @GeneratedValue
     @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
     @Basic(optional = false)
@@ -30,10 +29,7 @@ public class Office {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
-    private int orgId;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "officeId", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private ArrayList<User> users;
+    private Organization orgId;
 
     @Version
     private int version;
@@ -41,19 +37,8 @@ public class Office {
     public Office() {
     }
 
-    public Office(String name, String address, int phone, boolean isActive) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.isActive = isActive;
-    }
-
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -88,27 +73,11 @@ public class Office {
         isActive = active;
     }
 
-    public int getOrgId() {
+    public Organization getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(int orgId) {
+    public void setOrgId(Organization orgId) {
         this.orgId = orgId;
-    }
-
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

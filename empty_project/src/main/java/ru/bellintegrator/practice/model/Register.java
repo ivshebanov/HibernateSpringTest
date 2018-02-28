@@ -2,13 +2,18 @@ package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "Register")
+@Entity
+@Table(name = "Register")
 public class Register {
+
     @Id
-    @Column(name = "name")
+    @Column(name = "id")
+    @GeneratedValue
+    private Long id;
+
     @OneToOne(optional = false, mappedBy = "name")
-    private String name;
+    @JoinColumn(name = "name")
+    private Organization name;
 
     @Basic(optional = false)
     @Column(name = "login")
@@ -24,17 +29,15 @@ public class Register {
     public Register() {
     }
 
-    public Register(String name, String login, String password) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
+    public Long getId() {
+        return id;
     }
 
-    public String getName() {
+    public Organization getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Organization name) {
         this.name = name;
     }
 
@@ -52,13 +55,5 @@ public class Register {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

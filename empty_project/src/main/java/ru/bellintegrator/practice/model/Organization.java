@@ -1,20 +1,19 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
-//@Entity
-//@Table(name = "Organization")
+@Entity
+@Table(name = "Organization")
 public class Organization {
 
     @Id
-    @GeneratedValue
     @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "name")
-    private String name;
+    private Register name;
 
     @Basic(optional = false)
     @Column(name = "full_name")
@@ -40,37 +39,21 @@ public class Organization {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orgId", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private ArrayList<Office> offices;
-
     @Version
     private int version;
 
     public Organization() {
     }
 
-    public Organization(String fullName, int inn, int kpp, String address, int phone, boolean isActive) {
-        this.fullName = fullName;
-        this.inn = inn;
-        this.kpp = kpp;
-        this.address = address;
-        this.phone = phone;
-        this.isActive = isActive;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    public Register getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Register name) {
         this.name = name;
     }
 
@@ -120,21 +103,5 @@ public class Organization {
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public ArrayList<Office> getOffices() {
-        return offices;
-    }
-
-    public void setOffices(ArrayList<Office> offices) {
-        this.offices = offices;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

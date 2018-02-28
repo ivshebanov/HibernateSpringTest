@@ -3,34 +3,34 @@ package ru.bellintegrator.practice.model;
 import javax.persistence.*;
 import java.util.Date;
 
-//@Entity
-//@Table(name = "Documentation")
+@Entity
+@Table(name = "Documentation")
 public class Documentation {
 
     @Id
-    @GeneratedValue
     @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private int userId;
+    private User userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc_code")
-    private int docCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc_id")
+    private Docs docId;
 
     @Basic(optional = false)
     @Column(name = "doc_number")
     private int docNumber;
 
     @Basic(optional = false)
-    @JoinColumn(name = "doc_date")
+    @Column(name = "doc_date")
     private Date docDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "citizenship_code")
-    private int citizenshipCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Countries countryId;
 
     @Basic(optional = false)
     @Column(name = "is_identified")
@@ -46,24 +46,20 @@ public class Documentation {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
-    public int getDocCode() {
-        return docCode;
+    public Docs getDocId() {
+        return docId;
     }
 
-    public void setDocCode(int docCode) {
-        this.docCode = docCode;
+    public void setDocId(Docs docId) {
+        this.docId = docId;
     }
 
     public int getDocNumber() {
@@ -82,12 +78,12 @@ public class Documentation {
         this.docDate = docDate;
     }
 
-    public int getCitizenshipCode() {
-        return citizenshipCode;
+    public Countries getCountryId() {
+        return countryId;
     }
 
-    public void setCitizenshipCode(int citizenshipCode) {
-        this.citizenshipCode = citizenshipCode;
+    public void setCountryId(Countries countryId) {
+        this.countryId = countryId;
     }
 
     public boolean isIdentified() {
@@ -96,13 +92,5 @@ public class Documentation {
 
     public void setIdentified(boolean identified) {
         isIdentified = identified;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }

@@ -2,15 +2,18 @@ package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "Docs")
+@Entity
+@Table(name = "Docs")
 public class Docs {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
+    private Long id;
+
+    @Basic(optional = false)
     @Column(name = "code")
-    @OneToOne(optional = false, mappedBy = "docCode")
-    private Long code;
+    private int code;
 
     @Basic(optional = false)
     @Column(name = "doc_name")
@@ -22,11 +25,15 @@ public class Docs {
     public Docs() {
     }
 
-    public Long getCode() {
+    public Long getId() {
+        return id;
+    }
+
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -36,13 +43,5 @@ public class Docs {
 
     public void setDocName(int docName) {
         this.docName = docName;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 }
