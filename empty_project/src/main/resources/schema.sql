@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS Documentation (
   id            INTEGER PRIMARY KEY AUTO_INCREMENT,
   version       INTEGER NOT NULL,
   user_id       INTEGER,
-  doc_id        INTEGER,
+  doc_code      INTEGER,
   doc_number    INTEGER NOT NULL,
   doc_date      DATE    NOT NULL,
-  country_id    INTEGER,
+  country_code  INTEGER,
   is_identified BIT     NOT NULL
 );
 
@@ -90,9 +90,9 @@ ALTER TABLE User
 ALTER TABLE Documentation
   ADD FOREIGN KEY (user_id) REFERENCES User (id);
 ALTER TABLE Documentation
-  ADD FOREIGN KEY (doc_id) REFERENCES Docs (id);
+  ADD FOREIGN KEY (doc_code) REFERENCES Docs (id);
 ALTER TABLE Documentation
-  ADD FOREIGN KEY (country_id) REFERENCES Countries (id);
+  ADD FOREIGN KEY (country_code) REFERENCES Countries (id);
 
 CREATE INDEX IX_Organization_name
   ON Organization (name);
@@ -101,4 +101,4 @@ CREATE INDEX IX_Office_org_id
 CREATE INDEX IX_User_office_id
   ON User (office_id);
 CREATE INDEX IX_Documentation_user_id_doc_id_country_id
-  ON Documentation (user_id, doc_id, country_id);
+  ON Documentation (user_id, doc_code, country_code);
