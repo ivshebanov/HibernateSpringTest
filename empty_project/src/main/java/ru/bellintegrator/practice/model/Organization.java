@@ -1,17 +1,18 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Organization")
 public class Organization {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "name")
     private Register name;
 
@@ -42,7 +43,28 @@ public class Organization {
     @Version
     private int version;
 
+    @OneToMany(mappedBy = "orgId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Office> offices;
+
     public Organization() {
+    }
+
+    public void addOffice(Office office) {
+        getOffices().add(office);
+        office.setOrgId(this);
+    }
+
+    public void removeOffice(Office office) {
+        getOffices().remove(office);
+        office.setOrgId(null);
+    }
+
+    public List<Office> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(List<Office> offices) {
+        this.offices = offices;
     }
 
     public Long getId() {

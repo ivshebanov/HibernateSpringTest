@@ -7,12 +7,11 @@ import javax.persistence.*;
 public class Register {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
 
-    @OneToOne(optional = false, mappedBy = "name")
-    @JoinColumn(name = "name")
+    @OneToOne(mappedBy = "name", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private Organization name;
 
     @Basic(optional = false)

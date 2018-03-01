@@ -7,13 +7,13 @@ import javax.persistence.*;
 public class Docs {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
 
-    @Basic(optional = false)
-    @Column(name = "code")
-    private int code;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code")
+    private Documentation code;
 
     @Basic(optional = false)
     @Column(name = "doc_name")
@@ -29,11 +29,11 @@ public class Docs {
         return id;
     }
 
-    public int getCode() {
+    public Documentation getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Documentation code) {
         this.code = code;
     }
 

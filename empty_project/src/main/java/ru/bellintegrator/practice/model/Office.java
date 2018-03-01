@@ -1,6 +1,7 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Office")
@@ -34,7 +35,28 @@ public class Office {
     @Version
     private int version;
 
+    @OneToMany(mappedBy = "officeId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users;
+
     public Office() {
+    }
+
+    public void addUser(User user) {
+        getUsers().add(user);
+        user.setOfficeId(this);
+    }
+
+    public void removeUser(User user) {
+        getUsers().remove(user);
+        user.setOfficeId(null);
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public Long getId() {

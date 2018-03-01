@@ -8,17 +8,16 @@ import java.util.Date;
 public class Documentation {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc_id")
-    private Docs docId;
+    @OneToOne(mappedBy = "code", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    private Docs docCode;
 
     @Basic(optional = false)
     @Column(name = "doc_number")
@@ -28,9 +27,8 @@ public class Documentation {
     @Column(name = "doc_date")
     private Date docDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    private Countries countryId;
+    @OneToOne(mappedBy = "code", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    private Countries countryCode;
 
     @Basic(optional = false)
     @Column(name = "is_identified")
@@ -54,12 +52,12 @@ public class Documentation {
         this.userId = userId;
     }
 
-    public Docs getDocId() {
-        return docId;
+    public Docs getDocCode() {
+        return docCode;
     }
 
-    public void setDocId(Docs docId) {
-        this.docId = docId;
+    public void setDocCode(Docs docCode) {
+        this.docCode = docCode;
     }
 
     public int getDocNumber() {
@@ -78,12 +76,12 @@ public class Documentation {
         this.docDate = docDate;
     }
 
-    public Countries getCountryId() {
-        return countryId;
+    public Countries getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountryId(Countries countryId) {
-        this.countryId = countryId;
+    public void setCountryCode(Countries countryCode) {
+        this.countryCode = countryCode;
     }
 
     public boolean isIdentified() {
