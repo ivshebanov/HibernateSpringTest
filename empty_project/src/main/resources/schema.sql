@@ -90,9 +90,9 @@ ALTER TABLE User
 ALTER TABLE Documentation
   ADD FOREIGN KEY (user_id) REFERENCES User (id);
 ALTER TABLE Documentation
-  ADD FOREIGN KEY (doc_code) REFERENCES Docs (id);
+  ADD FOREIGN KEY (doc_code) REFERENCES Docs (code);
 ALTER TABLE Documentation
-  ADD FOREIGN KEY (country_code) REFERENCES Countries (id);
+  ADD FOREIGN KEY (country_code) REFERENCES Countries (code);
 
 CREATE INDEX IX_Organization_name
   ON Organization (name);
@@ -100,5 +100,5 @@ CREATE INDEX IX_Office_org_id
   ON Office (org_id);
 CREATE INDEX IX_User_office_id
   ON User (office_id);
-CREATE INDEX IX_Documentation_user_id_doc_id_country_id
+CREATE INDEX IX_Documentation_user_id_doc_code_country_code
   ON Documentation (user_id, doc_code, country_code);
