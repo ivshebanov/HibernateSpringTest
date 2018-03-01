@@ -7,12 +7,12 @@ import javax.persistence.*;
 public class Countries {
 
     @Id
-    @GeneratedValue
     @Column(name = "id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
+    @MapsId
     private Documentation code;
 
     @Basic(optional = false)
