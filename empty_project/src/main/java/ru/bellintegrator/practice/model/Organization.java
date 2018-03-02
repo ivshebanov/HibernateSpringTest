@@ -147,7 +147,6 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(),
-                getAddress(), getPhone(), isActive(), version, getOffices());
+        return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(), getAddress(), getPhone(), isActive(), version, getOffices());
     }
 }
