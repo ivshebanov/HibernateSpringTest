@@ -20,7 +20,7 @@ public interface UserDAO {
      * @param id
      * @return User
      */
-    User loadUserById(Long id);
+    User load(Long id);
 
     /**
      * Обновиить User
@@ -29,7 +29,7 @@ public interface UserDAO {
      * @param user новый объект пользователя
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean updateUserById(long id, User user);
+    boolean update(long id, User user);
 
     /**
      * Удалить User по идентификатору
@@ -37,7 +37,7 @@ public interface UserDAO {
      * @param id идентификатор пользователя, которого надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean deleteUserById(Long id);
+    boolean delete(Long id);
 
     /**
      * Добавить User

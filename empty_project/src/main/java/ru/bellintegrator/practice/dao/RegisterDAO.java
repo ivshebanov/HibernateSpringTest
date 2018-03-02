@@ -22,7 +22,7 @@ public interface RegisterDAO {
     boolean login(String login, String password);
 
     /**
-     * Вход
+     * Проверика пользователя
      *
      * @param code код который был отправлен пользователю
      * @return boolean если коды совпадают вернет true

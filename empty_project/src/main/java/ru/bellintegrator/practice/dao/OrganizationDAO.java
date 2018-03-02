@@ -19,16 +19,16 @@ public interface OrganizationDAO {
      * @param id
      * @return Organization
      */
-    Organization loadOrganizationById(Long id);
+    Organization load(Long id);
 
     /**
      * Обновиить Organization
      *
-     * @param id идентификатор Organization, которую надо обновить
+     * @param id           идентификатор Organization, которую надо обновить
      * @param organization новый объект Organization
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean updateOrganizationById(long id, Organization organization);
+    boolean update(long id, Organization organization);
 
     /**
      * Удалить Organization по идентификатору
@@ -36,7 +36,7 @@ public interface OrganizationDAO {
      * @param id идентификатор Organization, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean deleteOrganizationById(Long id);
+    boolean delete(Long id);
 
     /**
      * Добавить Organization

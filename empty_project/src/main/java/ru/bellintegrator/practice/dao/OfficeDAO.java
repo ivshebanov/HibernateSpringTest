@@ -7,7 +7,7 @@ import java.util.List;
 public interface OfficeDAO {
 
     /**
-     * Получить все объекты Office из организации orgId
+     * Получить все объекты Office из Organization
      *
      * @param orgId идентификатор нужной организации
      * @return List<Office> список офисов
@@ -20,7 +20,7 @@ public interface OfficeDAO {
      * @param id
      * @return Office
      */
-    Office loadOfficeById(Long id);
+    Office load(Long id);
 
     /**
      * Обновиить User
@@ -29,7 +29,7 @@ public interface OfficeDAO {
      * @param office новый объект Office
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean updateOfficeById(long id, Office office);
+    boolean update(long id, Office office);
 
     /**
      * Удалить Office по идентификатору
@@ -37,7 +37,7 @@ public interface OfficeDAO {
      * @param id идентификатор Office, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean deleteOfficeById(Long id);
+    boolean delete(Long id);
 
     /**
      * Добавить Office
