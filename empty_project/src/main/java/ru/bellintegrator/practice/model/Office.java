@@ -2,6 +2,7 @@ package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Office")
@@ -101,5 +102,26 @@ public class Office {
 
     public void setOrgId(Organization orgId) {
         this.orgId = orgId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Office)) return false;
+        Office office = (Office) o;
+        return getPhone() == office.getPhone() &&
+                isActive() == office.isActive() &&
+                version == office.version &&
+                Objects.equals(getId(), office.getId()) &&
+                Objects.equals(getName(), office.getName()) &&
+                Objects.equals(getAddress(), office.getAddress()) &&
+                Objects.equals(getOrgId(), office.getOrgId()) &&
+                Objects.equals(getUsers(), office.getUsers());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getAddress(), getPhone(),
+                isActive(), getOrgId(), version, getUsers());
     }
 }

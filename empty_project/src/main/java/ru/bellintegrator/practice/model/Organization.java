@@ -2,6 +2,7 @@ package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Organization")
@@ -125,5 +126,28 @@ public class Organization {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Organization)) return false;
+        Organization that = (Organization) o;
+        return getInn() == that.getInn() &&
+                getKpp() == that.getKpp() &&
+                getPhone() == that.getPhone() &&
+                isActive() == that.isActive() &&
+                version == that.version &&
+                Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getFullName(), that.getFullName()) &&
+                Objects.equals(getAddress(), that.getAddress()) &&
+                Objects.equals(getOffices(), that.getOffices());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(),
+                getAddress(), getPhone(), isActive(), version, getOffices());
     }
 }

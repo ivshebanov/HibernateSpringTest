@@ -1,6 +1,7 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Docs")
@@ -43,5 +44,21 @@ public class Docs {
 
     public void setDocName(int docName) {
         this.docName = docName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Docs)) return false;
+        Docs docs = (Docs) o;
+        return getDocName() == docs.getDocName() &&
+                version == docs.version &&
+                Objects.equals(getId(), docs.getId()) &&
+                Objects.equals(getCode(), docs.getCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCode(), getDocName(), version);
     }
 }

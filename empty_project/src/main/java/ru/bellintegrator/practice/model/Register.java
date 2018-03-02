@@ -1,6 +1,7 @@
 package ru.bellintegrator.practice.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Register")
@@ -54,5 +55,22 @@ public class Register {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Register)) return false;
+        Register register = (Register) o;
+        return version == register.version &&
+                Objects.equals(getId(), register.getId()) &&
+                Objects.equals(getName(), register.getName()) &&
+                Objects.equals(getLogin(), register.getLogin()) &&
+                Objects.equals(getPassword(), register.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getLogin(), getPassword(), version);
     }
 }
