@@ -2,6 +2,7 @@ package ru.bellintegrator.practice.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.practice.dao.OrganizationDAO;
 import ru.bellintegrator.practice.model.Organization;
 
@@ -19,6 +20,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         this.em = em;
     }
 
+    @Transactional
     @Override
     public List<Organization> all() {
         TypedQuery<Organization> query =
@@ -26,8 +28,12 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public Organization load(Long id) {
+        if (id < 1){
+            return null;
+        }
         Organization organization = em.find(Organization.class, id);
         if (organization.isActive()) {
             return organization;
@@ -35,11 +41,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return null;
     }
 
+    @Transactional
     @Override
     public boolean update(long id, Organization organization) {
         try {
             Organization oldOrganization = load(id);
-            em.getTransaction().begin();
             oldOrganization.setName(organization.getName());
             oldOrganization.setFullName(organization.getFullName());
             oldOrganization.setInn(organization.getInn());
@@ -48,39 +54,33 @@ public class OrganizationDAOImpl implements OrganizationDAO {
             oldOrganization.setPhone(organization.getPhone());
             oldOrganization.setActive(organization.isActive());
             oldOrganization.setOffices(organization.getOffices());
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
             return false;
         }
         return true;
     }
 
+    @Transactional
     @Override
     public boolean delete(Long id) {
         try {
-            em.getTransaction().begin();
             em.remove(load(id));
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
             return false;
         }
         return true;
     }
 
+    @Transactional
     @Override
     public boolean save(Organization organization) {
         try {
-            em.getTransaction().begin();
             if (organization.getId() == null) {
                 em.persist(organization);
             } else {
                 update(organization.getId(), organization);
             }
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
             return false;
         }
         return true;

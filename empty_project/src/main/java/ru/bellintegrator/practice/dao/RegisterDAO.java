@@ -24,8 +24,8 @@ public interface RegisterDAO {
     /**
      * Проверика пользователя
      *
-     * @param code код который был отправлен пользователю
+     * @param hashCode код который был получен от пользователя
      * @return boolean если коды совпадают вернет true
      */
-    boolean activation(byte code);
+    boolean activation(String hashCode);
 }

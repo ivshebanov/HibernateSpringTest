@@ -12,8 +12,9 @@ public class Register {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(mappedBy = "name", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    private Organization name;
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
 
     @Basic(optional = false)
     @Column(name = "login")
@@ -22,6 +23,10 @@ public class Register {
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
+
+    @Basic(optional = false)
+    @Column(name = "hashActive")
+    private String hashActive;
 
     @Version
     private int version;
@@ -33,11 +38,11 @@ public class Register {
         return id;
     }
 
-    public Organization getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Organization name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -57,6 +62,14 @@ public class Register {
         this.password = password;
     }
 
+    public String getHashActive() {
+        return hashActive;
+    }
+
+    public void setHashActive(String hashActive) {
+        this.hashActive = hashActive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,6 +84,7 @@ public class Register {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getId(), getName(), getLogin(), getPassword(), version);
     }
 }

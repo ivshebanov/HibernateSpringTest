@@ -13,9 +13,11 @@ public class Organization {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "name")
-    private Register name;
+    //    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "name")
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
 
     @Basic(optional = false)
     @Column(name = "full_name")
@@ -72,11 +74,11 @@ public class Organization {
         return id;
     }
 
-    public Register getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Register name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -147,6 +149,7 @@ public class Organization {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(), getAddress(), getPhone(), isActive(), version, getOffices());
     }
 }

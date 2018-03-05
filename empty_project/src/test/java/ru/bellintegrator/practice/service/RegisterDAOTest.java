@@ -24,10 +24,19 @@ public class RegisterDAOTest {
     @Test
     public void test() {
         String login = "Ilya";
-        String password = "12345";
-        String name = "СПП";
+        String login2 = "Shebanov1";
+        String password = "123h";
+        String password2 = "12345";
+        String name = "CPP";
+        String hash = "qeqwe12sqwwedw32we3";
 
         Assert.assertTrue(registerDAO.register(login, password, name));
+
         Assert.assertTrue(registerDAO.login(login, password));
+        Assert.assertFalse(registerDAO.login(login2, password2)); //неправильный логин
+
+        Assert.assertTrue(registerDAO.activation(hash));
+        Assert.assertTrue(registerDAO.activation("1212s1edwef3dwrf34d"));
+
     }
 }

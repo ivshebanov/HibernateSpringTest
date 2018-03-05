@@ -31,10 +31,10 @@ INSERT INTO Countries (code, version, citizenship_name) VALUES (12, 0, 'Швей
 INSERT INTO Countries (code, version, citizenship_name) VALUES (13, 0, 'Швеция');
 INSERT INTO Countries (code, version, citizenship_name) VALUES (14, 0, 'Эстония');
 
-INSERT INTO Register (name, version, login, password)
-VALUES ('bell', 0, 'Shebanov', '12345');
-INSERT INTO Register (name, version, login, password)
-VALUES ('Сбертех', 0, 'сбер', '112233');
+INSERT INTO Register (name, version, login, password, hash_active)
+VALUES ('bell', 0, 'Shebanov', '12345', 'qeqwe12sqwwedw32we3');
+INSERT INTO Register (name, version, login, password, hash_active)
+VALUES ('Сбертех', 0, 'сбер', '112233', '1212s1edwef3dwrf34d');
 
 INSERT INTO Organization (version, name, full_name, inn, kpp, address, phone, is_active)
 VALUES (0, 'bell', 'bellintegrator', 1234567890, 0987654321, 'Москва, ул. Арбат, д.1', 567898, 1);

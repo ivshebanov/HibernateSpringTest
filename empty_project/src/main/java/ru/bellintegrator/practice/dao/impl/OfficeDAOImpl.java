@@ -7,6 +7,9 @@ import ru.bellintegrator.practice.model.Office;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -21,10 +24,24 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Override
     public List<Office> all(int orgId) {
-        String queryString = "SELECT o FROM Office o WHERE o.orgId = :orgId";
-        TypedQuery<Office> query = em.createQuery(queryString, Office.class);
-        query.setParameter("orgId", orgId);
-        return query.getResultList();
+        if (orgId < 0) {
+            return null;
+        }
+        try {
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Office> criteria = builder.createQuery(Office.class);
+            Root<Office> officeRoot = criteria.from(Office.class);
+            criteria.where(builder.equal(officeRoot.get("orgId"), orgId));
+            TypedQuery<Office> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        String queryString = "SELECT o FROM Office o WHERE o.orgId = :orgId";
+//        TypedQuery<Office> query = em.createQuery(queryString, Office.class);
+//        query.setParameter("orgId", orgId);
+        return null;
     }
 
     @Override

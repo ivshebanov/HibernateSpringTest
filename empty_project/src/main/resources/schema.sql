@@ -16,17 +16,18 @@ CREATE INDEX IX_Person_House_Id ON Person (house_id);
 ALTER TABLE Person ADD FOREIGN KEY (house_id) REFERENCES House(id);
 
 CREATE TABLE IF NOT EXISTS Register (
-  id       INTEGER PRIMARY KEY AUTO_INCREMENT,
-  name     VARCHAR(50) NOT NULL,
-  version  INTEGER     NOT NULL,
-  login    VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL
+  id          INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name        VARCHAR(50) NOT NULL,
+  version     INTEGER     NOT NULL,
+  login       VARCHAR(100) NOT NULL,
+  password    VARCHAR(100) NOT NULL,
+  hash_active VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
   id        INTEGER PRIMARY KEY AUTO_INCREMENT,
   version   INTEGER     NOT NULL,
-  name      VARCHAR(50),
+  name      VARCHAR(50) NOT NULL,
   full_name VARCHAR(50) NOT NULL,
   inn       INTEGER     NOT NULL,
   kpp       INTEGER     NOT NULL,
@@ -81,8 +82,8 @@ CREATE TABLE IF NOT EXISTS Countries (
   citizenship_name VARCHAR(50) NOT NULL
 );
 
-ALTER TABLE Organization
-  ADD FOREIGN KEY (name) REFERENCES Register (name);
+-- ALTER TABLE Organization
+--   ADD FOREIGN KEY (name) REFERENCES Register (name);
 ALTER TABLE Office
   ADD FOREIGN KEY (org_id) REFERENCES Organization (id);
 ALTER TABLE User
