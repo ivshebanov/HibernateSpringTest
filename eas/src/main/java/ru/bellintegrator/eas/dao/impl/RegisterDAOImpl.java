@@ -8,6 +8,8 @@ import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.model.Register;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -58,10 +60,10 @@ public class RegisterDAOImpl implements RegisterDAO {
 
             em.persist(register);
             em.persist(organization);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     @Transactional
@@ -96,20 +98,28 @@ public class RegisterDAOImpl implements RegisterDAO {
             criteria.where(builder.equal(register.get("hashActive"), hashCode));
             TypedQuery<Register> query = em.createQuery(criteria);
             Register reg = query.getSingleResult();
+            System.out.println(reg.getName());
             if (reg.getHashActive().equals(hashCode)) {
-                TypedQuery<Organization> queryOrg =
-                        em.createQuery("SELECT o.name, o.isActive FROM Register r LEFT JOIN Organization o ON r.name=o.name " +
-                                "WHERE o.name = :name", Organization.class);//не работает запрос
-                query.setParameter("name", reg.getName());
 
-                Organization organization = queryOrg.getSingleResult();
-                organization.setActive(true);
-                return true;
+                //переделпть
+                EntityManagerFactory emf = Persistence.createEntityManagerFactory("Organization");
+                EntityManager em1 = emf.createEntityManager();
+
+                CriteriaBuilder builderOrg = em1.getCriteriaBuilder();
+                CriteriaQuery<Organization> criteriaOrg = builderOrg.createQuery(Organization.class);
+                Root<Organization> registerOrg = criteriaOrg.from(Organization.class);
+                criteria.where(builder.equal(registerOrg.get("name"), reg.getName()));
+                TypedQuery<Organization> queryOrg = em1.createQuery(criteriaOrg);
+                List<Organization> org = queryOrg.getResultList();
+                for (Organization o : org){
+                    System.out.println(o.getName());
+                }
+//                org.setActive(true);
             }
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return false;
     }
 
     private String getHashSHA2forPassword(String password) {

@@ -1,9 +1,3 @@
-INSERT INTO House (id, version, address) VALUES (1, 0, 'ул.Цюрупы, 16');
-
-INSERT INTO Person (version, first_name, age, house_id) VALUES (0, 'Пётр', 20, 1);
-
-INSERT INTO Person (version, first_name, age, house_id) VALUES (0, 'John', 25, 1);
-
 INSERT INTO Docs (code, version, doc_name) VALUES (1, 0, 'Свидетельство о рождении');
 INSERT INTO Docs (code, version, doc_name) VALUES (2, 0, 'Военный билет');
 INSERT INTO Docs (code, version, doc_name) VALUES (3, 0, 'Временное удостоверение, выданное взамен военного билета');

@@ -2,11 +2,15 @@ package ru.bellintegrator.eas.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -20,24 +24,42 @@ public class UserDAOImpl implements UserDAO {
     }
 
 
+    @Transactional
     @Override
     public List<User> all(int officeId) {
-        String queryString = "SELECT u FROM User u WHERE u.officeId = :officeId";
-        TypedQuery<User> query = em.createQuery(queryString, User.class);
-        query.setParameter("officeId", officeId);
-        return query.getResultList();
+        if (officeId <= 0) {
+            return null;
+        }
+        try {
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<User> criteria = builder.createQuery(User.class);
+            Root<User> officeRoot = criteria.from(User.class);
+            criteria.where(builder.equal(officeRoot.get("officeId"), officeId));
+            TypedQuery<User> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
+    @Transactional
     @Override
     public User load(Long id) {
+        if (id <= 0) {
+            return null;
+        }
         return em.find(User.class, id);
     }
 
+    @Transactional
     @Override
     public boolean update(long id, User user) {
+        if (id <= 0 || user == null) {
+            return false;
+        }
         try {
             User oldUser = load(id);
-            em.getTransaction().begin();
             oldUser.setFirstName(user.getFirstName());
             oldUser.setSecondName(user.getSecondName());
             oldUser.setMiddleName(user.getMiddleName());
@@ -45,41 +67,46 @@ public class UserDAOImpl implements UserDAO {
             oldUser.setPhone(user.getPhone());
             oldUser.setDocumentations(user.getDocumentations());
             oldUser.setOfficeId(user.getOfficeId());
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
+    @Transactional
     @Override
     public boolean delete(Long id) {
+        if (id <= 0) {
+            return false;
+        }
         try {
-            em.getTransaction().begin();
             em.remove(load(id));
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
+    @Transactional
     @Override
     public boolean save(User user) {
-        try {
-            em.getTransaction().begin();
-            if (user.getId() == null) {
-                em.persist(user);
-            } else {
-                update(user.getId(), user);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
+        if (user == null) {
             return false;
         }
-        return true;
+        try {
+            if (user.getId() == null) {
+                em.persist(user);
+                return true;
+            } else {
+                update(user.getId(), user);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

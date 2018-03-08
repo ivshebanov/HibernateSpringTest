@@ -23,20 +23,30 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public List<Organization> all() {
-        TypedQuery<Organization> query =
-                em.createQuery("SELECT o FROM Organization o", Organization.class);
-        return query.getResultList();
+        try {
+            String sqlQuery = "SELECT o FROM Organization o";
+            TypedQuery<Organization> query =
+                    em.createQuery(sqlQuery, Organization.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Organization load(Long id) {
-        if (id < 1){
+        if (id <= 0) {
             return null;
         }
-        Organization organization = em.find(Organization.class, id);
-        if (organization.isActive()) {
-            return organization;
+        try {
+            Organization organization = em.find(Organization.class, id);
+            if (organization.isActive()) {
+                return organization;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -44,6 +54,9 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public boolean update(long id, Organization organization) {
+        if (id <= 0 || organization == null) {
+            return false;
+        }
         try {
             Organization oldOrganization = load(id);
             oldOrganization.setName(organization.getName());
@@ -55,6 +68,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
             oldOrganization.setActive(organization.isActive());
             oldOrganization.setOffices(organization.getOffices());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -63,9 +77,13 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public boolean delete(Long id) {
+        if (id <= 0) {
+            return false;
+        }
         try {
             em.remove(load(id));
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -74,6 +92,9 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public boolean save(Organization organization) {
+        if (organization == null) {
+            return false;
+        }
         try {
             if (organization.getId() == null) {
                 em.persist(organization);
@@ -81,6 +102,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                 update(organization.getId(), organization);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

@@ -2,6 +2,7 @@ package ru.bellintegrator.eas.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
 
@@ -22,9 +23,10 @@ public class OfficeDAOImpl implements OfficeDAO {
         this.em = em;
     }
 
+    @Transactional
     @Override
     public List<Office> all(int orgId) {
-        if (orgId < 0) {
+        if (orgId <= 0) {
             return null;
         }
         try {
@@ -36,65 +38,71 @@ public class OfficeDAOImpl implements OfficeDAO {
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-//        String queryString = "SELECT o FROM Office o WHERE o.orgId = :orgId";
-//        TypedQuery<Office> query = em.createQuery(queryString, Office.class);
-//        query.setParameter("orgId", orgId);
-        return null;
     }
 
+    @Transactional
     @Override
     public Office load(Long id) {
+        if (id <= 0) {
+            return null;
+        }
         return em.find(Office.class, id);
     }
 
+    @Transactional
     @Override
     public boolean update(long id, Office office) {
+        if (id <= 0 || office == null) {
+            return false;
+        }
         try {
             Office oldOffice = load(id);
-            em.getTransaction().begin();
             oldOffice.setName(office.getName());
             oldOffice.setPhone(office.getPhone());
             oldOffice.setAddress(office.getAddress());
             oldOffice.setActive(office.isActive());
             oldOffice.setUsers(office.getUsers());
             oldOffice.setOrgId(office.getOrgId());
-            em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            e.printStackTrace();
             return false;
         }
-        return true;
     }
 
+    @Transactional
     @Override
     public boolean delete(Long id) {
-        try {
-            em.getTransaction().begin();
-            em.remove(load(id));
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
+        if (id <= 0) {
             return false;
         }
-        return true;
+        try {
+            em.remove(load(id));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    @Transactional
     @Override
     public boolean save(Office office) {
+        if (office == null) {
+            return false;
+        }
         try {
-            em.getTransaction().begin();
             if (office.getId() == null) {
                 em.persist(office);
             } else {
                 update(office.getId(), office);
             }
-            em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            e.printStackTrace();
             return false;
         }
-        return true;
     }
 }

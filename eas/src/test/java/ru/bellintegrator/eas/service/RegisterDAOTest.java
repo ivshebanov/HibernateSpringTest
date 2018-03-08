@@ -36,7 +36,7 @@ public class RegisterDAOTest {
         Assert.assertFalse(registerDAO.login(login2, password2)); //неправильный логин
 
         Assert.assertTrue(registerDAO.activation(hash));
-        Assert.assertTrue(registerDAO.activation("1212s1edwef3dwrf34d"));
+//        Assert.assertTrue(registerDAO.activation("1212s1edwef3dwrf34d"));
 
     }
 }
