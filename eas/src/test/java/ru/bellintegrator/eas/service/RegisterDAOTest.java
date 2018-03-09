@@ -22,21 +22,26 @@ public class RegisterDAOTest {
     private RegisterDAO registerDAO;
 
     @Test
-    public void test() {
+    public void registerTest() {
         String login = "Ilya";
-        String login2 = "Shebanov1";
         String password = "123h";
-        String password2 = "12345";
         String name = "CPP";
-        String hash = "qeqwe12sqwwedw32we3";
-
         Assert.assertTrue(registerDAO.register(login, password, name));
+    }
 
+    @Test
+    public void loginTest() {
+        String login = "Shebanov";
+        String password = "12345";
         Assert.assertTrue(registerDAO.login(login, password));
-        Assert.assertFalse(registerDAO.login(login2, password2)); //неправильный логин
+        String login2 = "сбер";
+        String password2 = "112233";
+        Assert.assertTrue(registerDAO.login(login2, password2));
+    }
 
-        Assert.assertTrue(registerDAO.activation(hash));
-//        Assert.assertTrue(registerDAO.activation("1212s1edwef3dwrf34d"));
-
+    @Test
+    public void activationTest() {
+        Assert.assertTrue(registerDAO.activation("12345hashcode"));
+        Assert.assertTrue(registerDAO.activation("112233hashcode"));
     }
 }
