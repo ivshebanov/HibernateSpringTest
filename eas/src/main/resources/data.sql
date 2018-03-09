@@ -26,14 +26,14 @@ INSERT INTO Countries (code, version, citizenship_name) VALUES (13, 0, 'Швец
 INSERT INTO Countries (code, version, citizenship_name) VALUES (14, 0, 'Эстония');
 
 INSERT INTO Register (name, version, login, password, hash_active)
-VALUES ('bell', 0, 'Shebanov', '12345', 'qeqwe12sqwwedw32we3');
+VALUES ('bell', 0, 'Shebanov', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '12345hashcode');
 INSERT INTO Register (name, version, login, password, hash_active)
-VALUES ('Сбертех', 0, 'сбер', '112233', '1212s1edwef3dwrf34d');
+VALUES ('Сбертех', 0, 'сбер', 'e0bc60c82713f64ef8a57c0c40d02ce24fd0141d5cc3086259c19b1e62a62bea', '112233hashcode');
 
 INSERT INTO Organization (version, name, full_name, inn, kpp, address, phone, is_active)
 VALUES (0, 'bell', 'bellintegrator', 1234567890, 0987654321, 'Москва, ул. Арбат, д.1', 567898, 1);
 INSERT INTO Organization (version, name, full_name, inn, kpp, address, phone, is_active)
-VALUES (0, 'Сбертех', 'СбербанкТехнологии', 11223344, 66778899, 'Москва, ул. Остоженка, д.2', 876678, 1);
+VALUES (0, 'Сбертех', 'СбербанкТехнологии', 11223344, 66778899, 'Москва, ул. Остоженка, д.2', 876678, 0);
 
 INSERT INTO Office (version, name, address, phone, is_active, org_id)
 VALUES (0, 'belloffice', 'Москва, ул. Арбат, д.1', 567898, 1, 1);
@@ -41,7 +41,7 @@ INSERT INTO Office (version, name, address, phone, is_active, org_id)
 VALUES (0, 'Сбертехофис', 'Москва, ул. Остоженка, д.2', 876678, 1, 2);
 
 INSERT INTO User (version, first_name, second_name, middle_name, position, phone, office_id)
-VALUES (0, 'Иван', 'Сидоров', 'Викторович', 'Руководитель отдела', 556677, 1);
+VALUES (0, 'Сергей', 'Сидоров', 'Викторович', 'Руководитель отдела', 556677, 1);
 INSERT INTO User (version, first_name, second_name, middle_name, position, phone, office_id)
 VALUES (0, 'Иван', 'Инванов', 'Иванович', 'Руководитель отдела кадров', 998877, 2);
 
