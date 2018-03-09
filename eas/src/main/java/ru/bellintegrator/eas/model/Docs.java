@@ -18,7 +18,7 @@ public class Docs {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
@@ -35,8 +35,12 @@ public class Docs {
     public Docs() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Documentation getCode() {

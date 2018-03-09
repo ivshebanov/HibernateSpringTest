@@ -19,7 +19,7 @@ public class Organization {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @Basic(optional = false)
     @Column(name = "name")
@@ -76,8 +76,12 @@ public class Organization {
         this.offices = offices;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -157,5 +161,21 @@ public class Organization {
     public int hashCode() {
 
         return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(), getAddress(), getPhone(), isActive(), version, getOffices());
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", inn=" + inn +
+                ", kpp=" + kpp +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", isActive=" + isActive +
+                ", version=" + version +
+                ", offices=" + offices +
+                '}';
     }
 }

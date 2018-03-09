@@ -22,7 +22,7 @@ public class Office {
     @Id
     @Column(name = "id")
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @Basic(optional = false)
     @Column(name = "name")
@@ -71,8 +71,12 @@ public class Office {
         this.users = users;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

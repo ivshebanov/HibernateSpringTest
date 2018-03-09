@@ -16,7 +16,7 @@ public class Register {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @Basic(optional = false)
     @Column(name = "name")
@@ -40,8 +40,12 @@ public class Register {
     public Register() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

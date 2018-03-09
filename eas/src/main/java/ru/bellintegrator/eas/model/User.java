@@ -22,7 +22,7 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @Basic(optional = false)
     @Column(name = "first_name")
@@ -75,8 +75,12 @@ public class User {
         this.documentations = documentations;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getFirstName() {

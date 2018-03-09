@@ -18,7 +18,7 @@ public class Countries {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code")
@@ -35,8 +35,12 @@ public class Countries {
     public Countries() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Documentation getCode() {

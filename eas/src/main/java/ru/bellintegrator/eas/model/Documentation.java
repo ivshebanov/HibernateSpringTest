@@ -22,7 +22,7 @@ public class Documentation {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -52,8 +52,12 @@ public class Documentation {
     public Documentation() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public User getUserId() {
