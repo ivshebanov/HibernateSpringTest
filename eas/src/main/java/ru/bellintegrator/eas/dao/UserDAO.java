@@ -12,7 +12,7 @@ public interface UserDAO {
      * @param officeId идентификатор нужного офиса
      * @return List<User> список users
      */
-    List<User> all(int officeId);
+    List<User> all(long officeId);
 
     /**
      * Получить User по идентификатору
@@ -20,7 +20,7 @@ public interface UserDAO {
      * @param id
      * @return User
      */
-    User load(Long id);
+    User load(long id);
 
     /**
      * Обновиить User
@@ -37,7 +37,7 @@ public interface UserDAO {
      * @param id идентификатор пользователя, которого надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(Long id);
+    boolean delete(long id);
 
     /**
      * Добавить User

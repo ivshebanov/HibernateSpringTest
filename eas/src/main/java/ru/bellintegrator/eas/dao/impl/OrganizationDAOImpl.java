@@ -36,8 +36,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public Organization load(Long id) {
-        if (id <= 0) {
+    public Organization load(long id) {
+        if (id <= 0L) {
             return null;
         }
         try {
@@ -54,19 +54,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public boolean update(long id, Organization organization) {
-        if (id <= 0 || organization == null) {
+        if (id <= 0L || organization == null) {
             return false;
         }
         try {
-            Organization oldOrganization = load(id);
-            oldOrganization.setName(organization.getName());
-            oldOrganization.setFullName(organization.getFullName());
-            oldOrganization.setInn(organization.getInn());
-            oldOrganization.setKpp(organization.getKpp());
-            oldOrganization.setAddress(organization.getAddress());
-            oldOrganization.setPhone(organization.getPhone());
-            oldOrganization.setActive(organization.isActive());
-            oldOrganization.setOffices(organization.getOffices());
+            em.merge(organization);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -76,12 +68,17 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public boolean delete(Long id) {
-        if (id <= 0) {
+    public boolean delete(long id) {
+        if (id <= 0L) {
             return false;
         }
         try {
-            em.remove(load(id));
+            Organization organization = em.find(Organization.class, id);
+            System.out.println(organization);
+            if (organization != null){
+                em.remove(organization); //не работает
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -96,7 +93,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
             return false;
         }
         try {
-            if (organization.getId() == null) {
+            if (organization.getId() == 0) {
                 em.persist(organization);
             } else {
                 update(organization.getId(), organization);

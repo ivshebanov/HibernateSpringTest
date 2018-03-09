@@ -25,8 +25,8 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public List<Office> all(int orgId) {
-        if (orgId <= 0) {
+    public List<Office> all(long orgId) {
+        if (orgId <= 0L) {
             return null;
         }
         try {
@@ -44,8 +44,8 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public Office load(Long id) {
-        if (id <= 0) {
+    public Office load(long id) {
+        if (id <= 0L) {
             return null;
         }
         return em.find(Office.class, id);
@@ -54,7 +54,7 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Transactional
     @Override
     public boolean update(long id, Office office) {
-        if (id <= 0 || office == null) {
+        if (id <= 0L || office == null) {
             return false;
         }
         try {
@@ -74,8 +74,8 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public boolean delete(Long id) {
-        if (id <= 0) {
+    public boolean delete(long id) {
+        if (id <= 0L) {
             return false;
         }
         try {
@@ -94,7 +94,7 @@ public class OfficeDAOImpl implements OfficeDAO {
             return false;
         }
         try {
-            if (office.getId() == null) {
+            if (office.getId() == 0) {
                 em.persist(office);
             } else {
                 update(office.getId(), office);

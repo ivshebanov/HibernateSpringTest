@@ -26,8 +26,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public List<User> all(int officeId) {
-        if (officeId <= 0) {
+    public List<User> all(long officeId) {
+        if (officeId <= 0L) {
             return null;
         }
         try {
@@ -45,8 +45,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public User load(Long id) {
-        if (id <= 0) {
+    public User load(long id) {
+        if (id <= 0L) {
             return null;
         }
         return em.find(User.class, id);
@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
     @Transactional
     @Override
     public boolean update(long id, User user) {
-        if (id <= 0 || user == null) {
+        if (id <= 0L || user == null) {
             return false;
         }
         try {
@@ -76,8 +76,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public boolean delete(Long id) {
-        if (id <= 0) {
+    public boolean delete(long id) {
+        if (id <= 0L) {
             return false;
         }
         try {
@@ -96,7 +96,7 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
         try {
-            if (user.getId() == null) {
+            if (user.getId() == 0) {
                 em.persist(user);
                 return true;
             } else {

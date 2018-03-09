@@ -72,6 +72,8 @@ public class RegisterDAOImpl implements RegisterDAO {
         if (login.isEmpty() || password.isEmpty()) {
             return false;
         }
+        System.out.println(password);
+        System.out.println(getHashSHA2forPassword(password));
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<Register> criteria = builder.createQuery(Register.class);

@@ -12,7 +12,7 @@ public interface OfficeDAO {
      * @param orgId идентификатор нужной организации
      * @return List<Office> список офисов
      */
-    List<Office> all(int orgId);
+    List<Office> all(long orgId);
 
     /**
      * Получить Office по идентификатору
@@ -20,7 +20,7 @@ public interface OfficeDAO {
      * @param id
      * @return Office
      */
-    Office load(Long id);
+    Office load(long id);
 
     /**
      * Обновиить User
@@ -37,7 +37,7 @@ public interface OfficeDAO {
      * @param id идентификатор Office, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(Long id);
+    boolean delete(long id);
 
     /**
      * Добавить Office
