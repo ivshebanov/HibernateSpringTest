@@ -31,11 +31,20 @@ public class UserDAOImpl implements UserDAO {
             return null;
         }
         try {
+//            String queryString = "SELECT h FROM " + User.class.getSimpleName() +
+//                    " h WHERE h.officeId = :officeId";
+//            System.out.println(queryString);
+//            TypedQuery<User> query = em.createQuery(queryString, User.class);
+//            query.setParameter("officeId", officeId);
+//            List<User> allUsers = query.getResultList();
+//            return allUsers;
+
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<User> criteria = builder.createQuery(User.class);
-            Root<User> officeRoot = criteria.from(User.class);
-            criteria.where(builder.equal(officeRoot.get("officeId"), officeId));
+            Root<User> userRoot = criteria.from(User.class);
+            criteria.where(builder.equal(userRoot.get("officeId"), officeId));
             TypedQuery<User> query = em.createQuery(criteria);
+            System.out.println(query.getResultList());
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,14 +68,8 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
         try {
-            User oldUser = load(id);
-            oldUser.setFirstName(user.getFirstName());
-            oldUser.setSecondName(user.getSecondName());
-            oldUser.setMiddleName(user.getMiddleName());
-            oldUser.setPosition(user.getPosition());
-            oldUser.setPhone(user.getPhone());
-            oldUser.setDocumentations(user.getDocumentations());
-            oldUser.setOfficeId(user.getOfficeId());
+            user.setId(id);
+            em.merge(user);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -81,7 +84,10 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
         try {
-            em.remove(load(id));
+            User user = em.find(User.class, id);
+            if (user != null) {
+                em.remove(user);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;

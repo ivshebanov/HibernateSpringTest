@@ -40,11 +40,11 @@ public class Register {
     public Register() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -96,5 +96,17 @@ public class Register {
     public int hashCode() {
 
         return Objects.hash(getId(), getName(), getLogin(), getPassword(), version);
+    }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", hashActive='" + hashActive + '\'' +
+                ", version=" + version +
+                '}';
     }
 }

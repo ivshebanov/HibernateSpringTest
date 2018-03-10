@@ -8,11 +8,11 @@ import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.model.Register;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -101,21 +101,28 @@ public class RegisterDAOImpl implements RegisterDAO {
             TypedQuery<Register> query = em.createQuery(criteria);
             Register reg = query.getSingleResult();
             System.out.println(reg.getName());
+
             if (reg.getHashActive().equals(hashCode)) {
+                CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+                CriteriaQuery<Register> criteriaQuery = criteriaBuilder.createQuery(Register.class);
+                Root<Register> registerRoot = criteriaQuery.from(Register.class);
+                System.out.println("1");
+                Join<Register, Organization> company = registerRoot.join("name");
+                System.out.println("2");
+                criteriaQuery.select(registerRoot);
+                criteriaQuery.where(criteriaBuilder.equal(company.get("name"), reg.getName()));
+                em.createQuery(criteriaQuery).getResultList().forEach(System.out::println);
+//
+//                Join<Register, Organization> join = registerRoot.join("name", JoinType.LEFT);
+//
+//                criteriaQuery.multiselect(registerRoot, join.get("name"));
 
-                //переделпть
-                EntityManagerFactory emf = Persistence.createEntityManagerFactory("Organization");
-                EntityManager em1 = emf.createEntityManager();
 
-                CriteriaBuilder builderOrg = em1.getCriteriaBuilder();
-                CriteriaQuery<Organization> criteriaOrg = builderOrg.createQuery(Organization.class);
-                Root<Organization> registerOrg = criteriaOrg.from(Organization.class);
-                criteria.where(builder.equal(registerOrg.get("name"), reg.getName()));
-                TypedQuery<Organization> queryOrg = em1.createQuery(criteriaOrg);
-                List<Organization> org = queryOrg.getResultList();
-                for (Organization o : org){
-                    System.out.println(o.getName());
-                }
+
+//                List<Organization> org = queryOrg.getResultList();
+//                for (Organization o : org){
+//                    System.out.println(o.getName());
+//                }
 //                org.setActive(true);
             }
             return true;

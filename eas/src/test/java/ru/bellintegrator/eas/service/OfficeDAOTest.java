@@ -29,8 +29,8 @@ public class OfficeDAOTest {
 
     @Test
     public void allTest() {
-        List<Office> offices1 = officeDAO.all(1);
-        List<Office> offices2 = officeDAO.all(2);
+        List<Office> offices1 = officeDAO.all(1L);
+        List<Office> offices2 = officeDAO.all(2L);
 
         Assert.assertTrue(offices1.size() == 1);
         Assert.assertTrue(offices2.size() == 1);

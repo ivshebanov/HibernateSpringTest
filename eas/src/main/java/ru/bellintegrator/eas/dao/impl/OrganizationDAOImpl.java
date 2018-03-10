@@ -58,12 +58,13 @@ public class OrganizationDAOImpl implements OrganizationDAO {
             return false;
         }
         try {
+            organization.setId(id);
             em.merge(organization);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     @Transactional
@@ -74,8 +75,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         }
         try {
             Organization organization = em.find(Organization.class, id);
-            System.out.println(organization);
             if (organization != null){
+                organization.setOffices(null);
                 em.remove(organization); //не работает
             }
 

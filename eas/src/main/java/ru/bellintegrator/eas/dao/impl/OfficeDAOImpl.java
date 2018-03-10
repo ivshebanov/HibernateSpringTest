@@ -58,13 +58,8 @@ public class OfficeDAOImpl implements OfficeDAO {
             return false;
         }
         try {
-            Office oldOffice = load(id);
-            oldOffice.setName(office.getName());
-            oldOffice.setPhone(office.getPhone());
-            oldOffice.setAddress(office.getAddress());
-            oldOffice.setActive(office.isActive());
-            oldOffice.setUsers(office.getUsers());
-            oldOffice.setOrgId(office.getOrgId());
+            office.setId(id);
+            em.merge(office);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
