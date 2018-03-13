@@ -35,6 +35,10 @@ public class OfficeDAOImpl implements OfficeDAO {
             Root<Office> officeRoot = criteria.from(Office.class);
             criteria.where(builder.equal(officeRoot.get("orgId"), orgId));
             TypedQuery<Office> query = em.createQuery(criteria);
+            List<Office> offices = query.getResultList();
+            if (offices.isEmpty()) {
+                return null;
+            }
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,7 +78,10 @@ public class OfficeDAOImpl implements OfficeDAO {
             return false;
         }
         try {
-            em.remove(load(id));
+            Office office = em.find(Office.class, id);
+            if (office != null) {
+                em.remove(office); //не работает
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();

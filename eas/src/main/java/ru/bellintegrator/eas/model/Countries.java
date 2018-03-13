@@ -27,7 +27,7 @@ public class Countries {
 
     @Basic(optional = false)
     @Column(name = "citizenship_name")
-    private int citizenshipName;
+    private String citizenshipName;
 
     @Version
     private int version;
@@ -51,11 +51,11 @@ public class Countries {
         this.code = code;
     }
 
-    public int getCitizenshipName() {
+    public String getCitizenshipName() {
         return citizenshipName;
     }
 
-    public void setCitizenshipName(int citizenshipName) {
+    public void setCitizenshipName(String citizenshipName) {
         this.citizenshipName = citizenshipName;
     }
 
@@ -73,5 +73,15 @@ public class Countries {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getCode(), getCitizenshipName(), version);
+    }
+
+    @Override
+    public String toString() {
+        return "Countries{" +
+                "id=" + id +
+                ", code=" + code +
+                ", citizenshipName='" + citizenshipName + '\'' +
+                ", version=" + version +
+                '}';
     }
 }

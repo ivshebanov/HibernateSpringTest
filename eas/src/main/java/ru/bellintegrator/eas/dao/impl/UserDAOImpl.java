@@ -31,21 +31,16 @@ public class UserDAOImpl implements UserDAO {
             return null;
         }
         try {
-//            String queryString = "SELECT h FROM " + User.class.getSimpleName() +
-//                    " h WHERE h.officeId = :officeId";
-//            System.out.println(queryString);
-//            TypedQuery<User> query = em.createQuery(queryString, User.class);
-//            query.setParameter("officeId", officeId);
-//            List<User> allUsers = query.getResultList();
-//            return allUsers;
-
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<User> criteria = builder.createQuery(User.class);
             Root<User> userRoot = criteria.from(User.class);
             criteria.where(builder.equal(userRoot.get("officeId"), officeId));
             TypedQuery<User> query = em.createQuery(criteria);
-            System.out.println(query.getResultList());
-            return query.getResultList();
+            List<User> users = query.getResultList();
+            if (users.isEmpty()) {
+                return null;
+            }
+            return users;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
+import ru.bellintegrator.eas.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -27,7 +28,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
             String sqlQuery = "SELECT o FROM Organization o";
             TypedQuery<Organization> query =
                     em.createQuery(sqlQuery, Organization.class);
-            return query.getResultList();
+            List<Organization> organizations = query.getResultList();
+            if (organizations.isEmpty()) {
+                return null;
+            }
+            return organizations;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -75,8 +80,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         }
         try {
             Organization organization = em.find(Organization.class, id);
-            if (organization != null){
-                organization.setOffices(null);
+            if (organization != null) {
                 em.remove(organization); //не работает
             }
 

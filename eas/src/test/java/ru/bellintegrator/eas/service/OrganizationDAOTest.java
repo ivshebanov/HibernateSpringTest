@@ -71,12 +71,10 @@ public class OrganizationDAOTest {
     public void deleteTest() {
         List<Organization> listOrganization = organizationDAO.all();
         Assert.assertTrue(listOrganization.size() == 2);
-        System.out.println(listOrganization);
 
         Assert.assertTrue(organizationDAO.delete(1L));
 
         List<Organization> listOrganization1 = organizationDAO.all();
-        System.out.println(listOrganization);
         Assert.assertTrue(listOrganization1.size() == 1);
         Assert.assertTrue(listOrganization1.get(0).getName().equals("Сбертех"));
     }

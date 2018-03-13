@@ -26,19 +26,19 @@ public class User {
 
     @Basic(optional = false)
     @Column(name = "first_name")
-    private int firstName;
+    private String firstName;
 
     @Basic(optional = false)
     @Column(name = "second_name")
-    private int secondName;
+    private String secondName;
 
     @Basic(optional = false)
     @Column(name = "middle_name")
-    private int middleName;
+    private String middleName;
 
     @Basic(optional = false)
     @Column(name = "position")
-    private int position;
+    private String position;
 
     @Basic(optional = false)
     @Column(name = "phone")
@@ -83,35 +83,35 @@ public class User {
         this.id = id;
     }
 
-    public int getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(int firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public int getSecondName() {
+    public String getSecondName() {
         return secondName;
     }
 
-    public void setSecondName(int secondName) {
+    public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 
-    public int getMiddleName() {
+    public String getMiddleName() {
         return middleName;
     }
 
-    public void setMiddleName(int middleName) {
+    public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
-    public int getPosition() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 
@@ -151,5 +151,17 @@ public class User {
     public int hashCode() {
         return Objects.hash(getId(), getFirstName(), getSecondName(), getMiddleName(),
                 getPosition(), getPhone(), getOfficeId(), version, getDocumentations());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", position='" + position + '\'' +
+                ", phone=" + phone +
+                '}';
     }
 }

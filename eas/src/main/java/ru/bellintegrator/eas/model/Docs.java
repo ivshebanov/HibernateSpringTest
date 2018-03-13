@@ -27,7 +27,7 @@ public class Docs {
 
     @Basic(optional = false)
     @Column(name = "doc_name")
-    private int docName;
+    private String docName;
 
     @Version
     private int version;
@@ -51,11 +51,11 @@ public class Docs {
         this.code = code;
     }
 
-    public int getDocName() {
+    public String getDocName() {
         return docName;
     }
 
-    public void setDocName(int docName) {
+    public void setDocName(String docName) {
         this.docName = docName;
     }
 
@@ -73,5 +73,15 @@ public class Docs {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getCode(), getDocName(), version);
+    }
+
+    @Override
+    public String toString() {
+        return "Docs{" +
+                "id=" + id +
+                ", code=" + code +
+                ", docName='" + docName + '\'' +
+                ", version=" + version +
+                '}';
     }
 }

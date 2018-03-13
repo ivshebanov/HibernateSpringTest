@@ -128,4 +128,18 @@ public class Documentation {
         return Objects.hash(getId(), getUserId(), getDocCode(), getDocNumber(),
                 getDocDate(), getCountryCode(), isIdentified(), version);
     }
+
+    @Override
+    public String toString() {
+        return "Documentation{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", docCode=" + docCode +
+                ", docNumber=" + docNumber +
+                ", docDate=" + docDate +
+                ", countryCode=" + countryCode +
+                ", isIdentified=" + isIdentified +
+                ", version=" + version +
+                '}';
+    }
 }
