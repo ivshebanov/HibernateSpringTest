@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.model.Organization;
@@ -28,7 +29,7 @@ public class OfficeDAOTest {
     private OfficeDAO officeDAO;
 
     @Test
-    public void allTest() {
+    public void allTest() throws MyException {
         List<Office> offices1 = officeDAO.all(1L);
         List<Office> offices2 = officeDAO.all(2L);
 
@@ -40,7 +41,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void saveTest() {
+    public void saveTest() throws MyException {
         String name = "Перекресток офис";
         String address = "Малая Семеновская";
         int phone = 819231277;
@@ -60,7 +61,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void loadTest() {
+    public void loadTest() throws MyException {
         Office office = officeDAO.load(1L);
         Assert.assertTrue(office != null);
         Assert.assertTrue(office.getName().equals("belloffice"));
@@ -71,7 +72,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void deleteTest() throws MyException {
         List<Office> offices = officeDAO.all(1L);
         Assert.assertTrue(offices.size() == 1);
         Assert.assertTrue(officeDAO.delete(1L));
@@ -81,7 +82,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateTest() throws MyException {
         long id = 1L;
         String oldName = "belloffice";
         String name = "offbe";

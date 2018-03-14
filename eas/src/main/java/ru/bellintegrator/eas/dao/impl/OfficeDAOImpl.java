@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
 
@@ -25,9 +26,9 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public List<Office> all(long orgId) {
+    public List<Office> all(long orgId) throws MyException {
         if (orgId <= 0L) {
-            return null;
+            throw new MyException("Invalid id = " + orgId);
         }
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -48,18 +49,18 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public Office load(long id) {
+    public Office load(long id) throws MyException {
         if (id <= 0L) {
-            return null;
+            throw new MyException("Invalid id = " + id);
         }
         return em.find(Office.class, id);
     }
 
     @Transactional
     @Override
-    public boolean update(long id, Office office) {
+    public boolean update(long id, Office office) throws MyException {
         if (id <= 0L || office == null) {
-            return false;
+            throw new MyException("Invalid id = " + id + " or office is null");
         }
         try {
             office.setId(id);
@@ -73,9 +74,9 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public boolean delete(long id) {
+    public boolean delete(long id) throws MyException {
         if (id <= 0L) {
-            return false;
+            throw new MyException("Invalid id = " + id);
         }
         try {
             Office office = em.find(Office.class, id);
@@ -91,9 +92,9 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public boolean save(Office office) {
+    public boolean save(Office office) throws MyException {
         if (office == null) {
-            return false;
+            throw new MyException("Invalid office is null");
         }
         try {
             if (office.getId() == 0) {

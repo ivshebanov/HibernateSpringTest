@@ -1,5 +1,6 @@
 package ru.bellintegrator.eas.dao;
 
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.Office;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface OfficeDAO {
      * @param orgId идентификатор нужной организации
      * @return List<Office> список офисов
      */
-    List<Office> all(long orgId);
+    List<Office> all(long orgId) throws MyException;
 
     /**
      * Получить Office по идентификатору
@@ -20,7 +21,7 @@ public interface OfficeDAO {
      * @param id
      * @return Office
      */
-    Office load(long id);
+    Office load(long id) throws MyException;
 
     /**
      * Обновиить User
@@ -29,7 +30,7 @@ public interface OfficeDAO {
      * @param office новый объект Office
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(long id, Office office);
+    boolean update(long id, Office office) throws MyException;
 
     /**
      * Удалить Office по идентификатору
@@ -37,7 +38,7 @@ public interface OfficeDAO {
      * @param id идентификатор Office, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(long id);
+    boolean delete(long id) throws MyException;
 
     /**
      * Добавить Office
@@ -45,5 +46,5 @@ public interface OfficeDAO {
      * @param office
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(Office office);
+    boolean save(Office office) throws MyException;
 }
