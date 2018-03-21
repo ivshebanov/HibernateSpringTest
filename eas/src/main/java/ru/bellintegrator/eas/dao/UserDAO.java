@@ -8,12 +8,12 @@ import java.util.List;
 public interface UserDAO {
 
     /**
-     * Получить все объекты User из офиса officeId
+     * Получить все объекты User из офиса Office
      *
      * @param officeId идентификатор нужного офиса
      * @return List<User> список users
      */
-    List<User> all(long officeId) throws MyException;
+    List<User> all(Long officeId) throws MyException;
 
     /**
      * Получить User по идентификатору
@@ -21,7 +21,7 @@ public interface UserDAO {
      * @param id
      * @return User
      */
-    User load(long id) throws MyException;
+    User load(Long id) throws MyException;
 
     /**
      * Обновиить User
@@ -30,7 +30,7 @@ public interface UserDAO {
      * @param user новый объект пользователя
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(long id, User user) throws MyException;
+    boolean update(Long id, User user) throws MyException;
 
     /**
      * Удалить User по идентификатору
@@ -38,7 +38,7 @@ public interface UserDAO {
      * @param id идентификатор пользователя, которого надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(long id) throws MyException;
+    boolean delete(Long id) throws MyException;
 
     /**
      * Добавить User

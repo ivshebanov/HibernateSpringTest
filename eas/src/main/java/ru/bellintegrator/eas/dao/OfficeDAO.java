@@ -13,7 +13,7 @@ public interface OfficeDAO {
      * @param orgId идентификатор нужной организации
      * @return List<Office> список офисов
      */
-    List<Office> all(long orgId) throws MyException;
+    List<Office> all(Long orgId) throws MyException;
 
     /**
      * Получить Office по идентификатору
@@ -21,16 +21,16 @@ public interface OfficeDAO {
      * @param id
      * @return Office
      */
-    Office load(long id) throws MyException;
+    Office load(Long id) throws MyException;
 
     /**
-     * Обновиить User
+     * Обновиить Office
      *
      * @param id     идентификатор Office, которую надо удалить
      * @param office новый объект Office
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(long id, Office office) throws MyException;
+    boolean update(Long id, Office office) throws MyException;
 
     /**
      * Удалить Office по идентификатору
@@ -38,7 +38,7 @@ public interface OfficeDAO {
      * @param id идентификатор Office, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(long id) throws MyException;
+    boolean delete(Long id) throws MyException;
 
     /**
      * Добавить Office
