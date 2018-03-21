@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.model.Organization;
@@ -23,11 +24,12 @@ import java.util.List;
 @Transactional
 @DirtiesContext
 public class UserDAOTest {
+
     @Autowired
     private UserDAO userDAO;
 
     @Test
-    public void allTest() {
+    public void allTest() throws MyException {
         List<User> users = userDAO.all(1L);
         Assert.assertTrue(users.size() == 1);
         List<User> users2 = userDAO.all(2L);
@@ -35,7 +37,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void saveTest() {
+    public void saveTest() throws MyException {
         String name = "Перекресток офис";
         String address = "Малая Семеновская";
         int phone1 = 819231277;
@@ -66,7 +68,6 @@ public class UserDAOTest {
         user.setPosition(position);
         user.setPhone(phone);
         user.setOfficeId(officeId);
-        user.setDocumentations(null);
 
         Assert.assertTrue(userDAO.save(user));
         List<User> users1 = userDAO.all(1L);
@@ -75,7 +76,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void loadTest() {
+    public void loadTest() throws MyException {
         User user = userDAO.load(1L);
         Assert.assertTrue(user != null);
         Assert.assertTrue(user.getFirstName().equals("Сергей"));
@@ -88,7 +89,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void deleteTest() throws MyException {
         List<User> users = userDAO.all(1L);
         Assert.assertTrue(users.size() == 1);
 
@@ -99,7 +100,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateTest() throws MyException {
         String firstName = "Юзер";
         String secondName = "user";
         String middleName = "us";
@@ -115,7 +116,6 @@ public class UserDAOTest {
         user.setPosition(position);
         user.setPhone(phone);
         user.setOfficeId(null);
-        user.setDocumentations(null);
 
         Assert.assertTrue(userDAO.load(id).getFirstName().equals("Сергей"));
         Assert.assertTrue(userDAO.load(id).getMiddleName().equals("Викторович"));
