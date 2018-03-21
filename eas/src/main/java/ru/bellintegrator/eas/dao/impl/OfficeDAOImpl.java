@@ -26,8 +26,8 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public List<Office> all(long orgId) throws MyException {
-        if (orgId <= 0L) {
+    public List<Office> all(Long orgId) throws MyException {
+        if (orgId == null || orgId <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid orgId : ").
                     append("orgId = ").append(orgId);
             throw new MyException(sb.toString());
@@ -44,15 +44,14 @@ public class OfficeDAOImpl implements OfficeDAO {
             }
             return query.getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new MyException(e.getMessage());
         }
     }
 
     @Transactional
     @Override
-    public Office load(long id) throws MyException {
-        if (id <= 0L) {
+    public Office load(Long id) throws MyException {
+        if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
             throw new MyException(sb.toString());
@@ -62,8 +61,8 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public boolean update(long id, Office office) throws MyException {
-        if (id <= 0L || office == null) {
+    public boolean update(Long id, Office office) throws MyException {
+        if (id == null || id <= 0L || office == null) {
             StringBuilder sb = new StringBuilder("Invalid id or office: ").
                     append("id = ").append(id).
                     append(", office = ").append(office);
@@ -74,15 +73,14 @@ public class OfficeDAOImpl implements OfficeDAO {
             em.merge(office);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
     }
 
     @Transactional
     @Override
-    public boolean delete(long id) throws MyException {
-        if (id <= 0L) {
+    public boolean delete(Long id) throws MyException {
+        if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
             throw new MyException(sb.toString());
@@ -90,12 +88,11 @@ public class OfficeDAOImpl implements OfficeDAO {
         try {
             Office office = em.find(Office.class, id);
             if (office != null) {
-                em.remove(office); //не работает
+                em.remove(office);
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
     }
 
@@ -115,8 +112,7 @@ public class OfficeDAOImpl implements OfficeDAO {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
     }
 }

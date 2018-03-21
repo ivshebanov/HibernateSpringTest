@@ -27,8 +27,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public List<User> all(long officeId) throws MyException {
-        if (officeId <= 0L) {
+    public List<User> all(Long officeId) throws MyException {
+        if (officeId == null || officeId <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid officeId : ").
                     append("officeId = ").append(officeId);
             throw new MyException(sb.toString());
@@ -45,15 +45,14 @@ public class UserDAOImpl implements UserDAO {
             }
             return users;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new MyException(e.getMessage());
         }
     }
 
     @Transactional
     @Override
-    public User load(long id) throws MyException {
-        if (id <= 0L) {
+    public User load(Long id) throws MyException {
+        if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
             throw new MyException(sb.toString());
@@ -63,8 +62,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public boolean update(long id, User user) throws MyException {
-        if (id <= 0L || user == null) {
+    public boolean update(Long id, User user) throws MyException {
+        if (id == null || id <= 0L || user == null) {
             StringBuilder sb = new StringBuilder("Invalid id or user: ").
                     append("id = ").append(id).
                     append(", user = ").append(user);
@@ -73,17 +72,16 @@ public class UserDAOImpl implements UserDAO {
         try {
             user.setId(id);
             em.merge(user);
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
-        return true;
     }
 
     @Transactional
     @Override
-    public boolean delete(long id) throws MyException {
-        if (id <= 0L) {
+    public boolean delete(Long id) throws MyException {
+        if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
             throw new MyException(sb.toString());
@@ -93,11 +91,10 @@ public class UserDAOImpl implements UserDAO {
             if (user != null) {
                 em.remove(user);
             }
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
-        return true;
     }
 
     @Transactional
@@ -117,8 +114,7 @@ public class UserDAOImpl implements UserDAO {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new MyException(e.getMessage());
         }
 
     }
