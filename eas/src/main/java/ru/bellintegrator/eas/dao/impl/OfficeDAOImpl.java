@@ -28,7 +28,9 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Override
     public List<Office> all(long orgId) throws MyException {
         if (orgId <= 0L) {
-            throw new MyException("Invalid id = " + orgId);
+            StringBuilder sb = new StringBuilder("Invalid orgId : ").
+                    append("orgId = ").append(orgId);
+            throw new MyException(sb.toString());
         }
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -51,7 +53,9 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Override
     public Office load(long id) throws MyException {
         if (id <= 0L) {
-            throw new MyException("Invalid id = " + id);
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         return em.find(Office.class, id);
     }
@@ -60,7 +64,10 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Override
     public boolean update(long id, Office office) throws MyException {
         if (id <= 0L || office == null) {
-            throw new MyException("Invalid id = " + id + " or office is null");
+            StringBuilder sb = new StringBuilder("Invalid id or office: ").
+                    append("id = ").append(id).
+                    append(", office = ").append(office);
+            throw new MyException(sb.toString());
         }
         try {
             office.setId(id);
@@ -76,7 +83,9 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Override
     public boolean delete(long id) throws MyException {
         if (id <= 0L) {
-            throw new MyException("Invalid id = " + id);
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         try {
             Office office = em.find(Office.class, id);
@@ -94,7 +103,9 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Override
     public boolean save(Office office) throws MyException {
         if (office == null) {
-            throw new MyException("Invalid office is null");
+            StringBuilder sb = new StringBuilder("Invalid office : ").
+                    append("office = ").append(office);
+            throw new MyException(sb.toString());
         }
         try {
             if (office.getId() == 0) {

@@ -1,5 +1,6 @@
 package ru.bellintegrator.eas.dao;
 
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.Organization;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface OrganizationDAO {
      * @param id
      * @return Organization
      */
-    Organization load(long id);
+    Organization load(long id) throws MyException;
 
     /**
      * Обновиить Organization
@@ -28,7 +29,7 @@ public interface OrganizationDAO {
      * @param organization новый объект Organization
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(long id, Organization organization);
+    boolean update(long id, Organization organization) throws MyException;
 
     /**
      * Удалить Organization по идентификатору
@@ -36,7 +37,7 @@ public interface OrganizationDAO {
      * @param id идентификатор Organization, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(long id);
+    boolean delete(long id) throws MyException;
 
     /**
      * Добавить Organization
@@ -44,5 +45,5 @@ public interface OrganizationDAO {
      * @param organization
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(Organization organization);
+    boolean save(Organization organization) throws MyException;
 }

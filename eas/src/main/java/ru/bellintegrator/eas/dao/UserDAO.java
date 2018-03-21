@@ -1,5 +1,6 @@
 package ru.bellintegrator.eas.dao;
 
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.User;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface UserDAO {
      * @param officeId идентификатор нужного офиса
      * @return List<User> список users
      */
-    List<User> all(long officeId);
+    List<User> all(long officeId) throws MyException;
 
     /**
      * Получить User по идентификатору
@@ -20,7 +21,7 @@ public interface UserDAO {
      * @param id
      * @return User
      */
-    User load(long id);
+    User load(long id) throws MyException;
 
     /**
      * Обновиить User
@@ -29,7 +30,7 @@ public interface UserDAO {
      * @param user новый объект пользователя
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(long id, User user);
+    boolean update(long id, User user) throws MyException;
 
     /**
      * Удалить User по идентификатору
@@ -37,7 +38,7 @@ public interface UserDAO {
      * @param id идентификатор пользователя, которого надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(long id);
+    boolean delete(long id) throws MyException;
 
     /**
      * Добавить User
@@ -45,5 +46,5 @@ public interface UserDAO {
      * @param user
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(User user);
+    boolean save(User user) throws MyException;
 }

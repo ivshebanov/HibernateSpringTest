@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.User;
 
@@ -26,9 +27,11 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public List<User> all(long officeId) {
+    public List<User> all(long officeId) throws MyException {
         if (officeId <= 0L) {
-            return null;
+            StringBuilder sb = new StringBuilder("Invalid officeId : ").
+                    append("officeId = ").append(officeId);
+            throw new MyException(sb.toString());
         }
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -49,18 +52,23 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public User load(long id) {
+    public User load(long id) throws MyException {
         if (id <= 0L) {
-            return null;
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         return em.find(User.class, id);
     }
 
     @Transactional
     @Override
-    public boolean update(long id, User user) {
+    public boolean update(long id, User user) throws MyException {
         if (id <= 0L || user == null) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid id or user: ").
+                    append("id = ").append(id).
+                    append(", user = ").append(user);
+            throw new MyException(sb.toString());
         }
         try {
             user.setId(id);
@@ -74,9 +82,11 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public boolean delete(long id) {
+    public boolean delete(long id) throws MyException {
         if (id <= 0L) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         try {
             User user = em.find(User.class, id);
@@ -92,9 +102,11 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public boolean save(User user) {
+    public boolean save(User user) throws MyException {
         if (user == null) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid user : ").
+                    append("user = ").append(user);
+            throw new MyException(sb.toString());
         }
         try {
             if (user.getId() == 0) {

@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.RegisterDAO;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.model.Register;
@@ -30,9 +31,13 @@ public class RegisterDAOImpl implements RegisterDAO {
 
     @Transactional
     @Override
-    public boolean register(String login, String password, String name) {
+    public boolean register(String login, String password, String name) throws MyException {
         if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid login, password or name : ").
+                    append("login = ").append(login).
+                    append(", password = ").append(password).
+                    append(", name = ").append(name);
+            throw new MyException(sb.toString());
         }
         try {
             TypedQuery<Register> query = em.createQuery("SELECT r FROM Register r", Register.class);
@@ -68,9 +73,12 @@ public class RegisterDAOImpl implements RegisterDAO {
 
     @Transactional
     @Override
-    public boolean login(String login, String password) {
+    public boolean login(String login, String password) throws MyException {
         if (login.isEmpty() || password.isEmpty()) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid login or password : ").
+                    append("login = ").append(login).
+                    append(", password = ").append(password);
+            throw new MyException(sb.toString());
         }
         System.out.println(password);
         System.out.println(getHashSHA2forPassword(password));
@@ -89,9 +97,11 @@ public class RegisterDAOImpl implements RegisterDAO {
 
     @Transactional
     @Override
-    public boolean activation(String hashCode) {
+    public boolean activation(String hashCode) throws MyException {
         if (hashCode.isEmpty()) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid hashCode : ").
+                    append("hashCode = ").append(hashCode);
+            throw new MyException(sb.toString());
         }
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -118,7 +128,6 @@ public class RegisterDAOImpl implements RegisterDAO {
 //                criteriaQuery.multiselect(registerRoot, join.get("name"));
 
 
-
 //                List<Organization> org = queryOrg.getResultList();
 //                for (Organization o : org){
 //                    System.out.println(o.getName());
@@ -131,9 +140,11 @@ public class RegisterDAOImpl implements RegisterDAO {
         }
     }
 
-    private String getHashSHA2forPassword(String password) {
+    private String getHashSHA2forPassword(String password) throws MyException {
         if (password.isEmpty()) {
-            return null;
+            StringBuilder sb = new StringBuilder("Invalid password : ").
+                    append("password = ").append(password);
+            throw new MyException(sb.toString());
         }
         try {
             MessageDigest sha = MessageDigest.getInstance("SHA-256");

@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.model.User;
@@ -41,9 +42,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public Organization load(long id) {
+    public Organization load(long id) throws MyException {
         if (id <= 0L) {
-            return null;
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         try {
             Organization organization = em.find(Organization.class, id);
@@ -58,9 +61,12 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public boolean update(long id, Organization organization) {
+    public boolean update(long id, Organization organization) throws MyException {
         if (id <= 0L || organization == null) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid id or organization: ").
+                    append("id = ").append(id).
+                    append(", organization = ").append(organization);
+            throw new MyException(sb.toString());
         }
         try {
             organization.setId(id);
@@ -74,9 +80,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public boolean delete(long id) {
+    public boolean delete(long id) throws MyException {
         if (id <= 0L) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid id : ").
+                    append("id = ").append(id);
+            throw new MyException(sb.toString());
         }
         try {
             Organization organization = em.find(Organization.class, id);
@@ -93,9 +101,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 
     @Transactional
     @Override
-    public boolean save(Organization organization) {
+    public boolean save(Organization organization) throws MyException {
         if (organization == null) {
-            return false;
+            StringBuilder sb = new StringBuilder("Invalid organization : ").
+                    append("organization = ").append(organization);
+            throw new MyException(sb.toString());
         }
         try {
             if (organization.getId() == 0) {
