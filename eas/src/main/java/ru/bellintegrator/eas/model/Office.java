@@ -22,7 +22,10 @@ public class Office {
     @Id
     @Column(name = "id")
     @GeneratedValue
-    private long id;
+    private Long id;
+
+    @Version
+    private int version;
 
     @Basic(optional = false)
     @Column(name = "name")
@@ -44,9 +47,6 @@ public class Office {
     @JoinColumn(name = "org_id")
     private Organization orgId;
 
-    @Version
-    private int version;
-
     @OneToMany(mappedBy = "officeId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
 
@@ -63,19 +63,11 @@ public class Office {
         user.setOfficeId(null);
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -119,14 +111,22 @@ public class Office {
         this.orgId = orgId;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Office)) return false;
         Office office = (Office) o;
-        return getPhone() == office.getPhone() &&
+        return version == office.version &&
+                getPhone() == office.getPhone() &&
                 isActive() == office.isActive() &&
-                version == office.version &&
                 Objects.equals(getId(), office.getId()) &&
                 Objects.equals(getName(), office.getName()) &&
                 Objects.equals(getAddress(), office.getAddress()) &&
@@ -136,7 +136,20 @@ public class Office {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getAddress(), getPhone(),
-                isActive(), getOrgId(), version, getUsers());
+        return Objects.hash(getId(), version, getName(), getAddress(), getPhone(), isActive(), getOrgId(), getUsers());
+    }
+
+    @Override
+    public String toString() {
+        return "Office{" +
+                "id=" + id +
+                ", version=" + version +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", isActive=" + isActive +
+                ", orgId=" + orgId +
+                ", users=" + users +
+                '}';
     }
 }

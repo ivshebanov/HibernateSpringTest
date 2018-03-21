@@ -19,7 +19,10 @@ public class Organization {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private long id;
+    private Long id;
+
+    @Version
+    private int version;
 
     @Basic(optional = false)
     @Column(name = "name")
@@ -28,6 +31,14 @@ public class Organization {
     @Basic(optional = false)
     @Column(name = "full_name")
     private String fullName;
+
+    @Basic(optional = false)
+    @Column(name = "login")
+    private String login;
+
+    @Basic(optional = false)
+    @Column(name = "password")
+    private String password;
 
     @Basic(optional = false)
     @Column(name = "inn")
@@ -49,8 +60,9 @@ public class Organization {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @Version
-    private int version;
+    @Basic(optional = false)
+    @Column(name = "hash_active")
+    private String hashActive;
 
     @OneToMany(mappedBy = "orgId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Office> offices;
@@ -68,19 +80,11 @@ public class Organization {
         office.setOrgId(null);
     }
 
-    public List<Office> getOffices() {
-        return offices;
-    }
-
-    public void setOffices(List<Office> offices) {
-        this.offices = offices;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,6 +102,22 @@ public class Organization {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getInn() {
@@ -140,41 +160,62 @@ public class Organization {
         isActive = active;
     }
 
+    public String getHashActive() {
+        return hashActive;
+    }
+
+    public void setHashActive(String hashActive) {
+        this.hashActive = hashActive;
+    }
+
+    public List<Office> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(List<Office> offices) {
+        this.offices = offices;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Organization)) return false;
         Organization that = (Organization) o;
-        return getInn() == that.getInn() &&
+        return version == that.version &&
+                getInn() == that.getInn() &&
                 getKpp() == that.getKpp() &&
                 getPhone() == that.getPhone() &&
                 isActive() == that.isActive() &&
-                version == that.version &&
                 Objects.equals(getId(), that.getId()) &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getFullName(), that.getFullName()) &&
+                Objects.equals(getLogin(), that.getLogin()) &&
+                Objects.equals(getPassword(), that.getPassword()) &&
                 Objects.equals(getAddress(), that.getAddress()) &&
+                Objects.equals(getHashActive(), that.getHashActive()) &&
                 Objects.equals(getOffices(), that.getOffices());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getId(), getName(), getFullName(), getInn(), getKpp(), getAddress(), getPhone(), isActive(), version, getOffices());
+        return Objects.hash(getId(), version, getName(), getFullName(), getLogin(), getPassword(), getInn(), getKpp(), getAddress(), getPhone(), isActive(), getHashActive(), getOffices());
     }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "id=" + id +
+                ", version=" + version +
                 ", name='" + name + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", inn=" + inn +
                 ", kpp=" + kpp +
                 ", address='" + address + '\'' +
                 ", phone=" + phone +
                 ", isActive=" + isActive +
-                ", version=" + version +
+                ", hashActive='" + hashActive + '\'' +
                 ", offices=" + offices +
                 '}';
     }
