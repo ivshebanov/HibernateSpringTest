@@ -114,8 +114,9 @@ public class UserDAOImpl implements UserDAO {
                 return true;
             }
         } catch (Exception e) {
-            throw new MyException(e.getMessage());
+//            throw new MyException(e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-
     }
 }

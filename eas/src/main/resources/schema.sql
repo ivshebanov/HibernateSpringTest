@@ -24,21 +24,19 @@ CREATE TABLE IF NOT EXISTS Office (
 );
 
 CREATE TABLE IF NOT EXISTS User (
-  id               INTEGER PRIMARY KEY AUTO_INCREMENT,
-  version          INTEGER     NOT NULL,
-  first_name       VARCHAR(50) NOT NULL,
-  second_name      VARCHAR(50) NOT NULL,
-  middle_name      VARCHAR(50) NOT NULL,
-  position         VARCHAR(50) NOT NULL,
-  phone            INTEGER     NOT NULL,
-  doc_code         INTEGER     NOT NULL,
-  doc_name         VARCHAR(60) NOT NULL,
-  doc_number       INTEGER     NOT NULL,
-  doc_date         DATE        NOT NULL,
-  citizenship_code INTEGER     NOT NULL,
-  citizenship_name VARCHAR(50) NOT NULL,
-  is_identified    BIT         NOT NULL,
-  office_id        INTEGER
+  id            INTEGER PRIMARY KEY AUTO_INCREMENT,
+  version       INTEGER     NOT NULL,
+  first_name    VARCHAR(50) NOT NULL,
+  second_name   VARCHAR(50) NOT NULL,
+  middle_name   VARCHAR(50) NOT NULL,
+  position      VARCHAR(50) NOT NULL,
+  phone         INTEGER     NOT NULL,
+  doc_number    INTEGER     NOT NULL,
+  doc_date      DATE        NOT NULL,
+  is_identified BIT         NOT NULL,
+  doc_type_id   INTEGER,
+  country_id    INTEGER,
+  office_id     INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Doc_type (
@@ -59,8 +57,16 @@ ALTER TABLE Office
   ADD FOREIGN KEY (org_id) REFERENCES Organization (id);
 ALTER TABLE User
   ADD FOREIGN KEY (office_id) REFERENCES Office (id);
+ALTER TABLE User
+  ADD FOREIGN KEY (country_id) REFERENCES Country (id);
+ALTER TABLE User
+  ADD FOREIGN KEY (doc_type_id) REFERENCES Doc_type (id);
 
 CREATE INDEX IX_Office_org_id
   ON Office (org_id);
 CREATE INDEX IX_User_office_id
   ON User (office_id);
+CREATE INDEX IX_User_country_id
+  ON User (country_id);
+CREATE INDEX IX_User_doc_type_id
+  ON User (doc_type_id);

@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.util.Objects;
@@ -28,6 +29,9 @@ public class Country {
     @Basic(optional = false)
     @Column(name = "citizenship_name")
     private String citizenshipName;
+
+    @OneToOne(optional = false, mappedBy = "country")
+    private User user;
 
     public Country() {
     }
@@ -56,6 +60,14 @@ public class Country {
         this.citizenshipName = citizenshipName;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,13 +76,13 @@ public class Country {
         return getCode() == country.getCode() &&
                 version == country.version &&
                 Objects.equals(getId(), country.getId()) &&
-                Objects.equals(getCitizenshipName(), country.getCitizenshipName());
+                Objects.equals(getCitizenshipName(), country.getCitizenshipName()) &&
+                Objects.equals(getUser(), country.getUser());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getId(), getCode(), version, getCitizenshipName());
+        return Objects.hash(getId(), getCode(), version, getCitizenshipName(), getUser());
     }
 
     @Override
@@ -80,6 +92,7 @@ public class Country {
                 ", code=" + code +
                 ", version=" + version +
                 ", citizenshipName='" + citizenshipName + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

@@ -41,10 +41,7 @@ VALUES (0, 'belloffice', 'Москва, ул. Арбат, д.1', 567898, 1, 1);
 INSERT INTO Office (version, name, address, phone, is_active, org_id)
 VALUES (0, 'Сбертехофис', 'Москва, ул. Остоженка, д.2', 876678, 1, 2);
 
-INSERT INTO User (version, first_name, second_name, middle_name, position, phone, doc_code, doc_name, doc_number, doc_date, citizenship_code, citizenship_name, is_identified, office_id)
-VALUES
-  (0, 'Сергей', 'Сидоров', 'Викторович', 'Руководитель отдела', 556677, 5, 'Вид на жительство в Российской Федерации',
-      151, '2004-10-21', 1, 'Австрия', 1, 1);
-INSERT INTO User (version, first_name, second_name, middle_name, position, phone, doc_code, doc_name, doc_number, doc_date, citizenship_code, citizenship_name, is_identified, office_id)
-VALUES (0, 'Иван', 'Инванов', 'Иванович', 'Руководитель отдела кадров', 998877, 1, 'Свидетельство о рождении', 678,
-           '2018-11-11', 8, 'Ватикан', 1, 2);
+INSERT INTO User (version, first_name, second_name, middle_name, position, phone, doc_type_id, doc_number, doc_date, country_id, is_identified, office_id)
+VALUES (0, 'Сергей', 'Сидоров', 'Викторович', 'Руководитель отдела', 556677, 5, 151, '2004-10-21', 1, 1, 1);
+INSERT INTO User (version, first_name, second_name, middle_name, position, phone, doc_type_id, doc_number, doc_date, country_id, is_identified, office_id)
+VALUES (0, 'Иван', 'Инванов', 'Иванович', 'Руководитель отдела кадров', 998877, 1, 678, '2018-11-11', 8, 1, 2);

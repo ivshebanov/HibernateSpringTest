@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.dao;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.Organization;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface OrganizationDAO {
@@ -15,7 +16,7 @@ public interface OrganizationDAO {
      * @param name     краткое имя организации
      * @return boolean если регистрация проходит удачно возвращает true
      */
-    boolean register(String login, String password, String name) throws MyException;
+    boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException;
 
     /**
      * Вход
@@ -24,7 +25,7 @@ public interface OrganizationDAO {
      * @param password пароль организации
      * @return boolean если организация есть в базе вернет true
      */
-    boolean login(String login, String password) throws MyException;
+    boolean login(String login, String password) throws MyException, NoSuchAlgorithmException;
 
     /**
      * Проверика подлинности организации
@@ -35,11 +36,21 @@ public interface OrganizationDAO {
     boolean activation(String hashCode) throws MyException;
 
     /**
-     * Получить все объекты Organization
+     * Получить Organization
      *
      * @return List<Organization>
      */
     List<Organization> all() throws MyException;
+
+    /**
+     * Получить Organization по параметрам
+     *
+     * @param name     имя организации
+     * @param inn      ИНН огранизации
+     * @param isActive активирована или нет
+     * @return List<Organization>
+     */
+    List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException;
 
     /**
      * Получить Organization по идентификатору
@@ -47,7 +58,7 @@ public interface OrganizationDAO {
      * @param id
      * @return Organization
      */
-    Organization load(Long id) throws MyException;
+    Organization loadById(Long id) throws MyException;
 
     /**
      * Обновиить Organization

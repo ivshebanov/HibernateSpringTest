@@ -1,6 +1,7 @@
 package ru.bellintegrator.eas.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.CountryDAO;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Repository
 public class CountryDAOImpl implements CountryDAO {
 
     private final EntityManager em;

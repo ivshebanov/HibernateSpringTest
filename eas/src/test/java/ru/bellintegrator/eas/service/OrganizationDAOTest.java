@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
-import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.model.Organization;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -33,40 +33,41 @@ public class OrganizationDAOTest {
     }
 
     @Test
-    public void saveTest() throws MyException {
-        String name = "Перекресток";
-        String fullName = "OAO Прекресток";
-        int inn = 1273749495;
-        int kpp = 1848853923;
-        String address = "Большая Семеновская, 47";
-        int phone = 819221312;
-        boolean isActive = false;
-        List<Office> office = null;
-
-        Assert.assertTrue(organizationDAO.all().size() == 2);
-
-        Organization organization = new Organization();
-        organization.setName(name);
-        organization.setFullName(fullName);
-        organization.setInn(inn);
-        organization.setKpp(kpp);
-        organization.setAddress(address);
-        organization.setPhone(phone);
-        organization.setActive(isActive);
-        organization.setOffices(office);
-
-        Assert.assertTrue(organizationDAO.save(organization));
-        Assert.assertTrue(organizationDAO.all().size() == 3);
+    public void loadOrganization() throws MyException {
+        List<Organization> organizations = organizationDAO.loadOrganization("bell", 1234567890, true);
     }
 
     @Test
-    public void loadTest() throws MyException {
-        Organization organization = organizationDAO.load(1L);
+    public void loadByIdTest() throws MyException {
+        Organization organization = organizationDAO.loadById(1L);
         Assert.assertTrue(organization != null);
         Assert.assertTrue(organization.getName().equals("bell"));
+    }
 
-        Organization organization2 = organizationDAO.load(2L);
-        Assert.assertFalse(organization2 != null);
+    @Test
+    public void updateTest() throws MyException {
+        Long id = 1L;
+        int oldInn = 1234567890;
+        int inn = 223749495;
+
+        Assert.assertTrue(organizationDAO.loadById(id).getFullName().equals("bellintegrator"));
+        Assert.assertTrue(organizationDAO.loadById(id).getInn() == oldInn);
+
+        Organization organization = new Organization();
+        organization.setId(id);
+        organization.setName("bell");
+        organization.setFullName("OAO bell");
+        organization.setInn(inn);
+        organization.setKpp(1848853923);
+        organization.setAddress("Большая Семеновская, 47");
+        organization.setPhone(819221312);
+        organization.setActive(true);
+        organization.setOffices(null);
+
+        Assert.assertTrue(organizationDAO.update(organization.getId(), organization));
+
+        Assert.assertTrue(organizationDAO.loadById(id).getFullName().equals("OAO bell"));
+        Assert.assertTrue(organizationDAO.loadById(id).getInn() == inn);
     }
 
     @Test
@@ -82,59 +83,40 @@ public class OrganizationDAOTest {
     }
 
     @Test
-    public void updateTest() throws MyException {
-        long id = 1L;
-        String name = "bell";
-        String fullName = "OAO bell";
-        int inn = 1273749495;
-        int oldInn = 1234567890;
-        int kpp = 1848853923;
-        String address = "Большая Семеновская, 47";
-        int phone = 819221312;
-        boolean isActive = true;
-        List<Office> office = null;
-
-        Assert.assertTrue(organizationDAO.load(id).getFullName().equals("bellintegrator"));
-        Assert.assertTrue(organizationDAO.load(id).getInn() == oldInn);
+    public void saveTest() throws MyException {
+        Assert.assertTrue(organizationDAO.all().size() == 2);
 
         Organization organization = new Organization();
-        organization.setId(id);
-        organization.setName(name);
-        organization.setFullName(fullName);
-        organization.setInn(inn);
-        organization.setKpp(kpp);
-        organization.setAddress(address);
-        organization.setPhone(phone);
-        organization.setActive(isActive);
-        organization.setOffices(office);
+        organization.setName("Перекресток");
+        organization.setFullName("OAO Прекресток");
+        organization.setLogin("Перекресток");
+        organization.setPassword("wed23he23dhj98dh273h23dh283d2d32");
+        organization.setInn(1273749495);
+        organization.setKpp(1848853923);
+        organization.setAddress("Большая Семеновская, 47");
+        organization.setPhone(819221312);
+        organization.setActive(false);
+        organization.setHashActive("hrtyeduhj287dh293d8j29038edyuq9dfhj34");
+        organization.setOffices(null);
 
-        Assert.assertTrue(organizationDAO.update(id, organization));
-
-        Assert.assertTrue(organizationDAO.load(id).getFullName().equals("OAO bell"));
-        Assert.assertTrue(organizationDAO.load(id).getInn() == inn);
+        Assert.assertTrue(organizationDAO.save(organization));
+        Assert.assertTrue(organizationDAO.all().size() == 3);
     }
 
     @Test
-    public void registerTest() throws MyException {
-        String login = "Ilya";
-        String password = "123h";
-        String name = "CPP";
-        Assert.assertTrue(organizationDAO.register(login, password, name));
+    public void registerTest() throws MyException, NoSuchAlgorithmException {
+        Assert.assertTrue(organizationDAO.register("Ilya", "123h", "CPP"));
+        Assert.assertTrue(organizationDAO.login("Ilya", "123h"));
     }
 
     @Test
-    public void loginTest() throws MyException {
-        String login = "Shebanov";
-        String password = "12345";
-        Assert.assertTrue(organizationDAO.login(login, password));
-        String login2 = "сбер";
-        String password2 = "112233";
-        Assert.assertTrue(organizationDAO.login(login2, password2));
+    public void loginTest() throws MyException, NoSuchAlgorithmException {
+        Assert.assertTrue(organizationDAO.login("Shebanov", "12345"));
+        Assert.assertTrue(organizationDAO.login("сбер", "112233"));
     }
 
     @Test
     public void activationTest() throws MyException {
-        Assert.assertTrue(organizationDAO.activation("12345hashcode"));
         Assert.assertTrue(organizationDAO.activation("112233hashcode"));
     }
 }

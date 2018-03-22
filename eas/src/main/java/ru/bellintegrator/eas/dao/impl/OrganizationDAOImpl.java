@@ -8,8 +8,11 @@ import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -27,37 +30,59 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public List<Organization> all() throws MyException {
-        try {
-            String sqlQuery = "SELECT o FROM Organization o";
-            TypedQuery<Organization> query =
-                    em.createQuery(sqlQuery, Organization.class);
-            List<Organization> organizations = query.getResultList();
-            if (organizations.isEmpty()) {
-                return null;
-            }
-            return organizations;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+        String sqlQuery = "SELECT o FROM Organization o";
+        TypedQuery<Organization> query =
+                em.createQuery(sqlQuery, Organization.class);
+        List<Organization> organizations = query.getResultList();
+        if (organizations.isEmpty()) {
+            throw new MyException("List of organizations is empty");
         }
+        return organizations;
     }
 
     @Transactional
     @Override
-    public Organization load(Long id) throws MyException {
+    public List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException {
+        if (name == null) {
+            StringBuilder sb = new StringBuilder("Invalid name : ").
+                    append("name = ").append(name);
+            throw new MyException(sb.toString());
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
+        Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
+
+        criteriaQuery.where(cb.like(organizationRoot.get("name"), cb.parameter(String.class, "name1")),
+                cb.like(organizationRoot.get("inn"), cb.parameter(String.class, "inn1")),//запрос падает, не верный тип
+                cb.equal(organizationRoot.<Boolean>get("isActive"), "isActive1"));
+
+        TypedQuery<Organization> tq = em.createQuery(criteriaQuery);
+        tq.setParameter("name1", "%" + name + "%");
+        tq.setParameter("inn1", "%" + inn + "%");
+        tq.setParameter("isActive1", isActive);
+
+        List<Organization> organizationsResult = tq.getResultList();
+
+        for (Organization organization : organizationsResult) {
+            System.out.println(organization);
+        }
+
+        return organizationsResult;
+    }
+
+    @Transactional
+    @Override
+    public Organization loadById(Long id) throws MyException {
         if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
             throw new MyException(sb.toString());
         }
-        try {
-            Organization organization = em.find(Organization.class, id);
-            if (organization.isActive()) {
-                return organization;
-            }
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+        Organization organization = em.find(Organization.class, id);
+        if (!organization.isActive()) {
+            throw new MyException("Organization is not activated");
         }
-        return null;
+        return organization;
     }
 
     @Transactional
@@ -69,13 +94,9 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                     append(", organization = ").append(organization);
             throw new MyException(sb.toString());
         }
-        try {
-            organization.setId(id);
-            em.merge(organization);
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
-        }
+        organization.setId(id);
+        em.merge(organization);
+        return true;
     }
 
     @Transactional
@@ -86,15 +107,13 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                     append("id = ").append(id);
             throw new MyException(sb.toString());
         }
-        try {
-            Organization organization = em.find(Organization.class, id);
-            if (organization != null) {
-                em.remove(organization);
-            }
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+
+        Organization organization = em.find(Organization.class, id);
+        if (organization != null) {
+            em.remove(organization);
         }
+        return true;
+
     }
 
     @Transactional
@@ -105,85 +124,64 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                     append("organization = ").append(organization);
             throw new MyException(sb.toString());
         }
-        try {
-            if (organization.getId() == 0) {
-                em.persist(organization);
-            } else {
-                update(organization.getId(), organization);
-            }
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+        if (organization.getId() == null) {
+            em.persist(organization);
+        } else {
+            update(organization.getId(), organization);
         }
-
+        return true;
     }
 
     @Transactional
     @Override
-    public boolean register(String login, String password, String name) throws MyException {
+    public boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException {
         if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
             StringBuilder sb = new StringBuilder("Invalid login, password or name : ").
                     append("login = ").append(login).
-                    append(", password = ").append(password).
+                    append(", password = ").append(getHashSHA2forPassword(password)).
                     append(", name = ").append(name);
             throw new MyException(sb.toString());
         }
-//        try {
-//            TypedQuery<Register> query = em.createQuery("SELECT r FROM Register r", Register.class);
-//            List<Register> list = query.getResultList();
-//            for (Register us : list) {
-//                if (us.getName().equals(name)) {
-//                    return false;
-//                }
-//            }
-//            Register register = new Register();
-//            register.setName(name);
-//            register.setLogin(login);
-//            register.setPassword(getHashSHA2forPassword(password));
-//            register.setHashActive(getHashForActive());
-//
-//            Organization organization = new Organization();
-//            organization.setName(name);
-//            organization.setActive(false);
-//            organization.setAddress("");
-//            organization.setFullName("");
-//            organization.setInn(0);
-//            organization.setKpp(0);
-//            organization.setPhone(0);
-//            organization.setOffices(null);
-//
-//            em.persist(register);
-//            em.persist(organization);
-//            return true;
-//        } catch (Exception e) {
-//            throw new MyException(e.getMessage());
-//        }
-        return false;
+        TypedQuery<Organization> query = em.createQuery("SELECT o FROM Organization o", Organization.class);
+        List<Organization> list = query.getResultList();
+        for (Organization org : list) {
+            if (org.getName().equals(name)) {
+                throw new MyException("This organization is already registered");
+            }
+        }
+        Organization organization = new Organization();
+        organization.setName(name);
+        organization.setFullName("");
+        organization.setLogin(login);
+        organization.setPassword(getHashSHA2forPassword(password));
+        organization.setInn(0);
+        organization.setKpp(0);
+        organization.setAddress("");
+        organization.setPhone(0);
+        organization.setActive(false);
+        organization.setHashActive(getHashForActive());
+        organization.setOffices(null);
+
+        em.persist(organization);
+        return true;
     }
 
     @Transactional
     @Override
-    public boolean login(String login, String password) throws MyException {
+    public boolean login(String login, String password) throws MyException, NoSuchAlgorithmException {
         if (login.isEmpty() || password.isEmpty()) {
             StringBuilder sb = new StringBuilder("Invalid login or password : ").
                     append("login = ").append(login).
-                    append(", password = ").append(password);
+                    append(", password = ").append(getHashSHA2forPassword(password));
             throw new MyException(sb.toString());
         }
-//        System.out.println(password);
-//        System.out.println(getHashSHA2forPassword(password));
-//        try {
-//            CriteriaBuilder builder = em.getCriteriaBuilder();
-//            CriteriaQuery<Register> criteria = builder.createQuery(Register.class);
-//            Root<Register> register = criteria.from(Register.class);
-//            criteria.where(builder.equal(register.get("login"), login),
-//                    builder.equal(register.get("password"), getHashSHA2forPassword(password)));
-//            TypedQuery<Register> query = em.createQuery(criteria);
-//            return query.getSingleResult() != null;
-//        } catch (Exception e) {
-//            throw new MyException(e.getMessage());
-//        }
-        return false;
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteria = builder.createQuery(Organization.class);
+        Root<Organization> register = criteria.from(Organization.class);
+        criteria.where(builder.equal(register.get("login"), login),
+                builder.equal(register.get("password"), getHashSHA2forPassword(password)));
+        TypedQuery<Organization> query = em.createQuery(criteria);
+        return query.getSingleResult() != null;
     }
 
     @Transactional
@@ -194,61 +192,36 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                     append("hashCode = ").append(hashCode);
             throw new MyException(sb.toString());
         }
-//        try {
-//            CriteriaBuilder builder = em.getCriteriaBuilder();
-//            CriteriaQuery<Register> criteria = builder.createQuery(Register.class);
-//            Root<Register> register = criteria.from(Register.class);
-//            criteria.where(builder.equal(register.get("hashActive"), hashCode));
-//            TypedQuery<Register> query = em.createQuery(criteria);
-//            Register reg = query.getSingleResult();
-//            System.out.println(reg.getName());
-//
-//            if (reg.getHashActive().equals(hashCode)) {
-//                CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-//                CriteriaQuery<Register> criteriaQuery = criteriaBuilder.createQuery(Register.class);
-//                Root<Register> registerRoot = criteriaQuery.from(Register.class);
-//                System.out.println("1");
-//                Join<Register, Organization> company = registerRoot.join("name");
-//                System.out.println("2");
-//                criteriaQuery.select(registerRoot);
-//                criteriaQuery.where(criteriaBuilder.equal(company.get("name"), reg.getName()));
-//                em.createQuery(criteriaQuery).getResultList().forEach(System.out::println);
-////
-////                Join<Register, Organization> join = registerRoot.join("name", JoinType.LEFT);
-////
-////                criteriaQuery.multiselect(registerRoot, join.get("name"));
-//
-//
-////                List<Organization> org = queryOrg.getResultList();
-////                for (Organization o : org){
-////                    System.out.println(o.getName());
-////                }
-////                org.setActive(true);
-//            }
-//            return true;
-//        } catch (Exception e) {
-//            throw new MyException(e.getMessage());
-//        }
-        return false;
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteria = builder.createQuery(Organization.class);
+        Root<Organization> organizationRoot = criteria.from(Organization.class);
+        criteria.where(builder.equal(organizationRoot.get("hashActive"), hashCode));
+        TypedQuery<Organization> query = em.createQuery(criteria);
+        Organization reg = query.getSingleResult();
+
+        if (reg.isActive()) {
+            throw new MyException("Organization is already activated");
+        }
+
+        if (reg.getHashActive().equals(hashCode)) {
+            reg.setActive(true);
+        }
+        return true;
     }
 
-    private String getHashSHA2forPassword(String password) throws MyException {
+    private String getHashSHA2forPassword(String password) throws MyException, NoSuchAlgorithmException {
         if (password.isEmpty()) {
             StringBuilder sb = new StringBuilder("Invalid password : ").
                     append("password = ").append(password);
             throw new MyException(sb.toString());
         }
-        try {
-            MessageDigest sha = MessageDigest.getInstance("SHA-256");
-            byte[] digest = sha.digest(password.getBytes());
-            StringBuilder builder = new StringBuilder();
-            for (byte b : digest) {
-                builder.append(String.format("%02x", b));
-            }
-            return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new MyException(e.getMessage());
+        MessageDigest sha = MessageDigest.getInstance("SHA-256");
+        byte[] digest = sha.digest(password.getBytes());
+        StringBuilder builder = new StringBuilder();
+        for (byte b : digest) {
+            builder.append(String.format("%02x", b));
         }
+        return builder.toString();
     }
 
     private String getHashForActive() throws NoSuchAlgorithmException {

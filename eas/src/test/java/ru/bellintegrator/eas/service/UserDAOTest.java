@@ -11,9 +11,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
 import ru.bellintegrator.eas.MyException;
+import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.dao.UserDAO;
+import ru.bellintegrator.eas.model.Country;
+import ru.bellintegrator.eas.model.Doc;
 import ru.bellintegrator.eas.model.Office;
-import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.model.User;
 
 import java.util.List;
@@ -28,6 +30,9 @@ public class UserDAOTest {
     @Autowired
     private UserDAO userDAO;
 
+    @Autowired
+    private OfficeDAO officeDAO;
+
     @Test
     public void allTest() throws MyException {
         List<User> users = userDAO.all(1L);
@@ -38,36 +43,36 @@ public class UserDAOTest {
 
     @Test
     public void saveTest() throws MyException {
-        String name = "Перекресток офис";
-        String address = "Малая Семеновская";
-        int phone1 = 819231277;
-        boolean isActive = true;
-        Organization orgId = null;
-        List<User> users = null;
+//        Office office = new Office();
+//        office.setId(1L);
+//        office.setName("Перекресток офис");
+//        office.setAddress("Малая Семеновская");
+//        office.setPhone(819231277);
+//        office.setActive(true);
+//        office.setOrgId(null);
+//        office.setUsers(null);
 
-        Office office = new Office();
-        office.setId(1L);
-        office.setName(name);
-        office.setAddress(address);
-        office.setPhone(phone1);
-        office.setActive(isActive);
-        office.setOrgId(orgId);
-        office.setUsers(users);
+        Office office = officeDAO.load(1L);
 
-        Office officeId = office;
-        String firstName = "Юзер";
-        String secondName = "user";
-        String middleName = "us";
-        String position = "junior";
-        int phone = 1283129;
+        Doc doc = new Doc();
+        doc.setCode(2);
+        doc.setDocName("Военный билет");
+
+        Country country = new Country();
+        country.setCode(1);
+        country.setCitizenshipName("Австрия");
 
         User user = new User();
-        user.setFirstName(firstName);
-        user.setSecondName(secondName);
-        user.setMiddleName(middleName);
-        user.setPosition(position);
-        user.setPhone(phone);
-        user.setOfficeId(officeId);
+        user.setFirstName("Юзер");
+        user.setSecondName("user");
+        user.setMiddleName("us");
+        user.setPosition("junior");
+        user.setPhone(1283129);
+        user.setIdentified(true);
+        user.setDoc(doc);
+        user.setCountry(country);
+
+        office.addUser(user);
 
         Assert.assertTrue(userDAO.save(user));
         List<User> users1 = userDAO.all(1L);
@@ -115,7 +120,6 @@ public class UserDAOTest {
         user.setMiddleName(middleName);
         user.setPosition(position);
         user.setPhone(phone);
-        user.setOfficeId(null);
 
         Assert.assertTrue(userDAO.load(id).getFirstName().equals("Сергей"));
         Assert.assertTrue(userDAO.load(id).getMiddleName().equals("Викторович"));

@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.util.Objects;
@@ -28,6 +29,9 @@ public class Doc {
     @Basic(optional = false)
     @Column(name = "doc_name")
     private String docName;
+
+    @OneToOne(optional = false, mappedBy = "doc")
+    private User user;
 
     public Doc() {
     }
@@ -56,6 +60,14 @@ public class Doc {
         this.docName = docName;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,12 +76,13 @@ public class Doc {
         return getCode() == doc.getCode() &&
                 version == doc.version &&
                 Objects.equals(getId(), doc.getId()) &&
-                Objects.equals(getDocName(), doc.getDocName());
+                Objects.equals(getDocName(), doc.getDocName()) &&
+                Objects.equals(getUser(), doc.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCode(), version, getDocName());
+        return Objects.hash(getId(), getCode(), version, getDocName(), getUser());
     }
 
     @Override
@@ -79,6 +92,7 @@ public class Doc {
                 ", code=" + code +
                 ", version=" + version +
                 ", docName='" + docName + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

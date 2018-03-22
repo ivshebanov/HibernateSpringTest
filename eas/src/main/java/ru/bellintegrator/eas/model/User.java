@@ -1,6 +1,7 @@
 package ru.bellintegrator.eas.model;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.util.Date;
@@ -46,14 +48,6 @@ public class User {
     private int phone;
 
     @Basic(optional = false)
-    @Column(name = "doc_code")
-    private int docCode;
-
-    @Basic(optional = false)
-    @Column(name = "doc_name")
-    private String docName;
-
-    @Basic(optional = false)
     @Column(name = "doc_number")
     private int docNumber;
 
@@ -62,18 +56,18 @@ public class User {
     private Date docDate;
 
     @Basic(optional = false)
-    @Column(name = "citizenship_code")
-    private int citizenshipCode;
-
-    @Basic(optional = false)
-    @Column(name = "citizenship_name")
-    private String citizenshipName;
-
-    @Basic(optional = false)
     @Column(name = "is_identified")
     private boolean isIdentified;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doc_type_id")
+    private Doc doc;
+
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id")
     private Office officeId;
 
@@ -128,22 +122,6 @@ public class User {
         this.phone = phone;
     }
 
-    public int getDocCode() {
-        return docCode;
-    }
-
-    public void setDocCode(int docCode) {
-        this.docCode = docCode;
-    }
-
-    public String getDocName() {
-        return docName;
-    }
-
-    public void setDocName(String docName) {
-        this.docName = docName;
-    }
-
     public int getDocNumber() {
         return docNumber;
     }
@@ -160,28 +138,28 @@ public class User {
         this.docDate = docDate;
     }
 
-    public int getCitizenshipCode() {
-        return citizenshipCode;
-    }
-
-    public void setCitizenshipCode(int citizenshipCode) {
-        this.citizenshipCode = citizenshipCode;
-    }
-
-    public String getCitizenshipName() {
-        return citizenshipName;
-    }
-
-    public void setCitizenshipName(String citizenshipName) {
-        this.citizenshipName = citizenshipName;
-    }
-
     public boolean isIdentified() {
         return isIdentified;
     }
 
     public void setIdentified(boolean identified) {
         isIdentified = identified;
+    }
+
+    public Doc getDoc() {
+        return doc;
+    }
+
+    public void setDoc(Doc doc) {
+        this.doc = doc;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public Office getOfficeId() {
@@ -199,24 +177,22 @@ public class User {
         User user = (User) o;
         return version == user.version &&
                 getPhone() == user.getPhone() &&
-                getDocCode() == user.getDocCode() &&
                 getDocNumber() == user.getDocNumber() &&
-                getCitizenshipCode() == user.getCitizenshipCode() &&
                 isIdentified() == user.isIdentified() &&
                 Objects.equals(getId(), user.getId()) &&
                 Objects.equals(getFirstName(), user.getFirstName()) &&
                 Objects.equals(getSecondName(), user.getSecondName()) &&
                 Objects.equals(getMiddleName(), user.getMiddleName()) &&
                 Objects.equals(getPosition(), user.getPosition()) &&
-                Objects.equals(getDocName(), user.getDocName()) &&
                 Objects.equals(getDocDate(), user.getDocDate()) &&
-                Objects.equals(getCitizenshipName(), user.getCitizenshipName()) &&
+                Objects.equals(getDoc(), user.getDoc()) &&
+                Objects.equals(getCountry(), user.getCountry()) &&
                 Objects.equals(getOfficeId(), user.getOfficeId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), version, getFirstName(), getSecondName(), getMiddleName(), getPosition(), getPhone(), getDocCode(), getDocName(), getDocNumber(), getDocDate(), getCitizenshipCode(), getCitizenshipName(), isIdentified(), getOfficeId());
+        return Objects.hash(getId(), version, getFirstName(), getSecondName(), getMiddleName(), getPosition(), getPhone(), getDocNumber(), getDocDate(), isIdentified(), getDoc(), getCountry(), getOfficeId());
     }
 
     @Override
@@ -229,13 +205,11 @@ public class User {
                 ", middleName='" + middleName + '\'' +
                 ", position='" + position + '\'' +
                 ", phone=" + phone +
-                ", docCode=" + docCode +
-                ", docName='" + docName + '\'' +
                 ", docNumber=" + docNumber +
                 ", docDate=" + docDate +
-                ", citizenshipCode=" + citizenshipCode +
-                ", citizenshipName='" + citizenshipName + '\'' +
                 ", isIdentified=" + isIdentified +
+                ", doc=" + doc +
+                ", country=" + country +
                 ", officeId=" + officeId +
                 '}';
     }
