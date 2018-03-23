@@ -52,7 +52,7 @@ public class UserDAOTest {
 //        office.setOrgId(null);
 //        office.setUsers(null);
 
-        Office office = officeDAO.load(1L);
+        Office office = officeDAO.loadById(1L);
 
         Doc doc = new Doc();
         doc.setCode(2);

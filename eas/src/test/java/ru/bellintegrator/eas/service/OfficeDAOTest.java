@@ -13,8 +13,6 @@ import ru.bellintegrator.eas.Application;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
-import ru.bellintegrator.eas.model.Organization;
-import ru.bellintegrator.eas.model.User;
 
 import java.util.List;
 
@@ -41,34 +39,43 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void saveTest() throws MyException {
-        String name = "Перекресток офис";
-        String address = "Малая Семеновская";
-        int phone = 819231277;
-        boolean isActive = true;
-        Organization orgId = null;
-        List<User> users = null;
-        Office office = new Office();
-
-        office.setName(name);
-        office.setAddress(address);
-        office.setPhone(phone);
-        office.setActive(isActive);
-        office.setOrgId(orgId);
-        office.setUsers(users);
-        Assert.assertTrue(officeDAO.save(office));
-
+    public void loadOffice() throws MyException {
+        List<Office> offices = officeDAO.loadOffice(1L, "belloffice", 567898, true);
+        Assert.assertTrue(offices.size() == 1);
     }
 
     @Test
-    public void loadTest() throws MyException {
-        Office office = officeDAO.load(1L);
+    public void loadByIdTest() throws MyException {
+        Office office = officeDAO.loadById(1L);
         Assert.assertTrue(office != null);
         Assert.assertTrue(office.getName().equals("belloffice"));
 
-        Office office2 = officeDAO.load(2L);
+        Office office2 = officeDAO.loadById(2L);
         Assert.assertTrue(office2 != null);
         Assert.assertTrue(office2.getName().equals("Сбертехофис"));
+    }
+
+    @Test
+    public void updateTest() throws MyException {
+        long id = 1L;
+        String name = "offbe";
+        int phone = 111112222;
+
+        Assert.assertTrue(officeDAO.loadById(id).getName().equals("belloffice"));
+        Assert.assertTrue(officeDAO.loadById(id).getPhone() == 567898);
+
+        Office office = new Office();
+        office.setId(id);
+        office.setName(name);
+        office.setAddress("Большая Семеновская, 47");
+        office.setPhone(phone);
+        office.setActive(true);
+        office.setOrgId(null);
+        office.setUsers(null);
+
+        Assert.assertTrue(officeDAO.update(id, office));
+        Assert.assertTrue(officeDAO.loadById(id).getName().equals(name));
+        Assert.assertTrue(officeDAO.loadById(id).getPhone() == phone);
     }
 
     @Test
@@ -77,36 +84,17 @@ public class OfficeDAOTest {
         Assert.assertTrue(offices.size() == 1);
         Assert.assertTrue(officeDAO.delete(1L));
         List<Office> postOffices = officeDAO.all(1L);
-        Assert.assertTrue(postOffices.isEmpty());
-
+        Assert.assertTrue(postOffices == null);
     }
 
     @Test
-    public void updateTest() throws MyException {
-        long id = 1L;
-        String oldName = "belloffice";
-        String name = "offbe";
-        String address = "Большая Семеновская, 47";
-        int oldPhone = 567898;
-        int phone = 111112222;
-        boolean isActive = true;
-        Organization orgId = null;
-        List<User> users = null;
-
-        Assert.assertTrue(officeDAO.load(id).getName().equals(oldName));
-        Assert.assertTrue(officeDAO.load(id).getPhone() == oldPhone);
-
+    public void saveTest() throws MyException {
         Office office = new Office();
-        office.setId(id);
-        office.setName(name);
-        office.setAddress(address);
-        office.setPhone(phone);
-        office.setActive(isActive);
-        office.setOrgId(orgId);
-        office.setUsers(users);
-
-        Assert.assertTrue(officeDAO.update(id, office));
-        Assert.assertTrue(officeDAO.load(id).getName().equals(name));
-        Assert.assertTrue(officeDAO.load(id).getPhone() == phone);
+        office.setName("Перекресток офис");
+        office.setAddress("Малая Семеновская");
+        office.setPhone(819231277);
+        office.setActive(true);
+        office.setOrgId(null);
+        Assert.assertTrue(officeDAO.save(office));
     }
 }

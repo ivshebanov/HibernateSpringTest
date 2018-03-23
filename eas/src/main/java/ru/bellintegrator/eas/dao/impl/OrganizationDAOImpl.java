@@ -43,9 +43,10 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException {
-        if (name == null) {
-            StringBuilder sb = new StringBuilder("Invalid name : ").
-                    append("name = ").append(name);
+        if (name == null || inn < 0) {
+            StringBuilder sb = new StringBuilder("Invalid name or inn: ").
+                    append("name = ").append(name).
+                    append("inn = ").append(inn);
             throw new MyException(sb.toString());
         }
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -66,7 +67,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         for (Organization organization : organizationsResult) {
             System.out.println(organization);
         }
-
+        // переделать
         return organizationsResult;
     }
 

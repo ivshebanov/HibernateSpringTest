@@ -50,7 +50,21 @@ public class OfficeDAOImpl implements OfficeDAO {
 
     @Transactional
     @Override
-    public Office load(Long id) throws MyException {
+    public List<Office> loadOffice(Long orgId, String name, int phone, boolean isActive) throws MyException {
+        if (orgId == null || orgId <= 0L || name == null || phone < 0) {
+            StringBuilder sb = new StringBuilder("Invalid orgId, name or phone: ").
+                    append("orgId = ").append(orgId).
+                    append("name = ").append(name).
+                    append("phone = ").append(phone);
+            throw new MyException(sb.toString());
+        }
+        //реализовать
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public Office loadById(Long id) throws MyException {
         if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);
@@ -68,13 +82,9 @@ public class OfficeDAOImpl implements OfficeDAO {
                     append(", office = ").append(office);
             throw new MyException(sb.toString());
         }
-        try {
-            office.setId(id);
-            em.merge(office);
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
-        }
+        office.setId(id);
+        em.merge(office);
+        return true;
     }
 
     @Transactional
@@ -85,15 +95,11 @@ public class OfficeDAOImpl implements OfficeDAO {
                     append("id = ").append(id);
             throw new MyException(sb.toString());
         }
-        try {
-            Office office = em.find(Office.class, id);
-            if (office != null) {
-                em.remove(office);
-            }
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+        Office office = em.find(Office.class, id);
+        if (office != null) {
+            em.remove(office);
         }
+        return true;
     }
 
     @Transactional
@@ -104,15 +110,11 @@ public class OfficeDAOImpl implements OfficeDAO {
                     append("office = ").append(office);
             throw new MyException(sb.toString());
         }
-        try {
-            if (office.getId() == 0) {
-                em.persist(office);
-            } else {
-                update(office.getId(), office);
-            }
-            return true;
-        } catch (Exception e) {
-            throw new MyException(e.getMessage());
+        if (office.getId() == null) {
+            em.persist(office);
+        } else {
+            update(office.getId(), office);
         }
+        return true;
     }
 }

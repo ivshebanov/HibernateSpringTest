@@ -16,12 +16,23 @@ public interface OfficeDAO {
     List<Office> all(Long orgId) throws MyException;
 
     /**
+     * Получить все объекты Office по заданным параметрам
+     *
+     * @param orgId идентификатор нужной организации
+     * @param name
+     * @param phone
+     * @param isActive
+     * @return List<Office> список офисов
+     */
+    List<Office> loadOffice(Long orgId, String name, int phone, boolean isActive) throws MyException;
+
+    /**
      * Получить Office по идентификатору
      *
      * @param id
      * @return Office
      */
-    Office load(Long id) throws MyException;
+    Office loadById(Long id) throws MyException;
 
     /**
      * Обновиить Office
