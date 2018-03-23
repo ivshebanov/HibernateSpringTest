@@ -16,12 +16,27 @@ public interface UserDAO {
     List<User> all(Long officeId) throws MyException;
 
     /**
+     * Получить все объекты User из офиса Office
+     *
+     * @param officeId        идентификатор нужного офиса (обязательняй параметр)
+     * @param firstName
+     * @param secondName
+     * @param middleName
+     * @param position
+     * @param docCode
+     * @param citizenshipCode
+     * @return List<User> список users
+     */
+    List<User> loadUser(Long officeId, String firstName, String secondName, String middleName,
+                        String position, int docCode, int citizenshipCode) throws MyException;
+
+    /**
      * Получить User по идентификатору
      *
      * @param id
      * @return User
      */
-    User load(Long id) throws MyException;
+    User loadById(Long id) throws MyException;
 
     /**
      * Обновиить User

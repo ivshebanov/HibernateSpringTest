@@ -49,9 +49,14 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    public List<User> loadUser(Long officeId, String firstName, String secondName, String middleName,
+                               String position, int docCode, int citizenshipCode) throws MyException {
+        return null;
+    }
+
     @Transactional
     @Override
-    public User load(Long id) throws MyException {
+    public User loadById(Long id) throws MyException {
         if (id == null || id <= 0L) {
             StringBuilder sb = new StringBuilder("Invalid id : ").
                     append("id = ").append(id);

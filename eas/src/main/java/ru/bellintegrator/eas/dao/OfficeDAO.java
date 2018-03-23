@@ -18,7 +18,7 @@ public interface OfficeDAO {
     /**
      * Получить все объекты Office по заданным параметрам
      *
-     * @param orgId идентификатор нужной организации
+     * @param orgId идентификатор нужной организации (обязательняй параметр)
      * @param name
      * @param phone
      * @param isActive

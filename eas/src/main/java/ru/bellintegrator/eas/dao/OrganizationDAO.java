@@ -45,7 +45,7 @@ public interface OrganizationDAO {
     /**
      * Получить Organization по параметрам
      *
-     * @param name     имя организации
+     * @param name     имя организации (обязательняй параметр)
      * @param inn      ИНН огранизации
      * @param isActive активирована или нет
      * @return List<Organization>
