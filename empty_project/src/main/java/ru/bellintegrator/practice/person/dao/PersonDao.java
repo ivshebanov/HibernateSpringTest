@@ -1,13 +1,13 @@
-package ru.bellintegrator.practice.dao;
+package ru.bellintegrator.practice.person.dao;
 
-import ru.bellintegrator.practice.model.Person;
+import ru.bellintegrator.practice.person.model.Person;
 
 import java.util.List;
 
 /**
  * DAO для работы с Person
  */
-public interface PersonDAO {
+public interface PersonDao {
     /**
      * Получить все объекты Person
      *

@@ -3,15 +3,11 @@ package ru.bellintegrator.practice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import ru.bellintegrator.practice.controller.impl.DummyControllerImpl;
-import ru.bellintegrator.practice.dao.impl.PersonDAOImpl;
-import ru.bellintegrator.practice.service.impl.DummyServiceImpl;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -25,7 +21,6 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 @ImportResource("spring_mvc_config.xml")
 @SpringBootApplication
-@ComponentScan(basePackageClasses = {DummyControllerImpl.class, DummyServiceImpl.class, PersonDAOImpl.class})
 public class Application {
 
     public static void main(String[] args) {
@@ -50,8 +45,12 @@ public class Application {
 
     @Bean
     public Docket postApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("persons").apiInfo(apiInfo()).
-                select().paths(regex("/person.*")).build();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("persons")
+                .apiInfo(apiInfo())
+                .select()
+                .paths(regex("/person.*"))
+                .build();
     }
 
     private ApiInfo apiInfo() {

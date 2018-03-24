@@ -1,14 +1,14 @@
-package ru.bellintegrator.practice.model;
+package ru.bellintegrator.practice.house.model;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
+import ru.bellintegrator.practice.person.model.Person;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Version;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,11 +31,10 @@ public class House {
     /**
      * Адрес
      */
-    @Basic(optional = false)
-    @Column(name = "address")
+    @Column(name = "address", length = 50, nullable = false)
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "house", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "houses")
     private Set<Person> persons;
 
     public Long getId() {
@@ -51,6 +50,9 @@ public class House {
     }
 
     public Set<Person> getPersons() {
+        if (persons == null) {
+            persons = new HashSet<>();
+        }
         return persons;
     }
 

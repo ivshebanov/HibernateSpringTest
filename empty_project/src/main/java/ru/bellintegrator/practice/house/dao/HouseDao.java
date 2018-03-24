@@ -1,13 +1,13 @@
-package ru.bellintegrator.practice.dao;
+package ru.bellintegrator.practice.house.dao;
 
-import ru.bellintegrator.practice.model.House;
+import ru.bellintegrator.practice.house.model.House;
 
 import java.util.List;
 
 /**
  * DAO для работы с House
  */
-public interface HouseDAO {
+public interface HouseDao {
     /**
      * Получить все объекты House
      *

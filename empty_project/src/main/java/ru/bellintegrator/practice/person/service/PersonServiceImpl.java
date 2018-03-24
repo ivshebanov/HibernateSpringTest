@@ -1,33 +1,35 @@
-package ru.bellintegrator.practice.service.impl;
+package ru.bellintegrator.practice.person.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.practice.dao.PersonDAO;
-import ru.bellintegrator.practice.model.Person;
-import ru.bellintegrator.practice.service.DummyService;
-import ru.bellintegrator.practice.view.PersonView;
+import ru.bellintegrator.practice.person.dao.PersonDao;
+import ru.bellintegrator.practice.person.model.Person;
+import ru.bellintegrator.practice.person.view.PersonView;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * {@inheritDoc}
+ */
 @Service
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class DummyServiceImpl implements DummyService {
-    private final Logger log = LoggerFactory.getLogger(DummyServiceImpl.class);
+public class PersonServiceImpl implements PersonService {
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final PersonDAO dao;
+    private final PersonDao dao;
 
     @Autowired
-    public DummyServiceImpl(PersonDAO dao) {
+    public PersonServiceImpl(PersonDao dao) {
         this.dao = dao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void add(PersonView view) {
@@ -35,24 +37,29 @@ public class DummyServiceImpl implements DummyService {
         dao.save(person);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<PersonView> persons() {
         List<Person> all = dao.all();
 
-        Function<Person, PersonView> mapPerson = p -> {
+        return all.stream()
+                .map(mapPerson())
+                .collect(Collectors.toList());
+    }
+
+    private Function<Person, PersonView> mapPerson() {
+        return p -> {
             PersonView view = new PersonView();
             view.id = String.valueOf(p.getId());
             view.name = p.getName();
             view.age = p.getAge();
 
-            log.info(view.toString());
+            log.debug(view.toString());
 
             return view;
         };
-
-        return all.stream()
-                .map(mapPerson)
-                .collect(Collectors.toList());
     }
 }
