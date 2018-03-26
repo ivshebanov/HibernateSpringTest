@@ -45,7 +45,8 @@ public interface UserDAO {
      * @param user новый объект пользователя
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(Long id, User user) throws MyException;
+    boolean update(Long id, User user, int docCode, String docName,
+                   int citizenshipCode, String citizenshipName) throws MyException;
 
     /**
      * Удалить User по идентификатору
@@ -61,5 +62,6 @@ public interface UserDAO {
      * @param user
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(User user) throws MyException;
+    boolean save(User user, int docCode, String docName,
+                 int citizenshipCode, String citizenshipName) throws MyException;
 }

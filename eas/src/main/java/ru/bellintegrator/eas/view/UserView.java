@@ -21,7 +21,7 @@ public class UserView {
 
     private int docCode;
 
-    private int docName;
+    private String docName;
 
     private int docNumber;
 
@@ -29,7 +29,7 @@ public class UserView {
 
     private int citizenshipCode;
 
-    private int citizenshipName;
+    private String citizenshipName;
 
     private boolean isIdentified;
 
@@ -89,11 +89,11 @@ public class UserView {
         this.docCode = docCode;
     }
 
-    public int getDocName() {
+    public String getDocName() {
         return docName;
     }
 
-    public void setDocName(int docName) {
+    public void setDocName(String docName) {
         this.docName = docName;
     }
 
@@ -121,11 +121,11 @@ public class UserView {
         this.citizenshipCode = citizenshipCode;
     }
 
-    public int getCitizenshipName() {
+    public String getCitizenshipName() {
         return citizenshipName;
     }
 
-    public void setCitizenshipName(int citizenshipName) {
+    public void setCitizenshipName(String citizenshipName) {
         this.citizenshipName = citizenshipName;
     }
 

@@ -44,7 +44,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Override
     public List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException {
         if (name == null || inn < 0) {
-            StringBuilder sb = new StringBuilder("Invalid name or inn: ").
+            StringBuilder sb = new StringBuilder("Invalid parameters : ").
                     append("name = ").append(name).
                     append("inn = ").append(inn);
             throw new MyException(sb.toString());
@@ -54,7 +54,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
 
         criteriaQuery.where(cb.like(organizationRoot.get("name"), cb.parameter(String.class, "name1")),
-                cb.like(organizationRoot.get("inn"), cb.parameter(String.class, "inn1")),//запрос падает, не верный тип
+                cb.like(organizationRoot.get("inn"), cb.parameter(String.class, "inn1")),
                 cb.equal(organizationRoot.<Boolean>get("isActive"), "isActive1"));
 
         TypedQuery<Organization> tq = em.createQuery(criteriaQuery);
@@ -90,13 +90,21 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Override
     public boolean update(Long id, Organization organization) throws MyException {
         if (id == null || id <= 0L || organization == null) {
-            StringBuilder sb = new StringBuilder("Invalid id or organization: ").
+            StringBuilder sb = new StringBuilder("Invalid parameters : ").
                     append("id = ").append(id).
                     append(", organization = ").append(organization);
             throw new MyException(sb.toString());
         }
-        organization.setId(id);
-        em.merge(organization);
+        Organization organizationResult = em.find(Organization.class, id);
+        organizationResult.setId(organization.getId());
+        organizationResult.setName(organization.getName());
+        organizationResult.setFullName(organization.getFullName());
+        organizationResult.setInn(organization.getInn());
+        organizationResult.setKpp(organization.getKpp());
+        organizationResult.setAddress(organization.getAddress());
+        organizationResult.setPhone(organization.getPhone());
+        organizationResult.setActive(organization.isActive());
+        em.merge(organizationResult);
         return true;
     }
 
@@ -137,7 +145,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Override
     public boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException {
         if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid login, password or name : ").
+            StringBuilder sb = new StringBuilder("Invalid parameters : ").
                     append("login = ").append(login).
                     append(", password = ").append(getHashSHA2forPassword(password)).
                     append(", name = ").append(name);
@@ -171,7 +179,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Override
     public boolean login(String login, String password) throws MyException, NoSuchAlgorithmException {
         if (login.isEmpty() || password.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid login or password : ").
+            StringBuilder sb = new StringBuilder("Invalid parameters : ").
                     append("login = ").append(login).
                     append(", password = ").append(getHashSHA2forPassword(password));
             throw new MyException(sb.toString());

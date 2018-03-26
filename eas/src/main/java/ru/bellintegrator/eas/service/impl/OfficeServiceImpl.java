@@ -86,7 +86,7 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     @Transactional
     public boolean save(OfficeView officeView) {
-        log.debug("update: officeView = " + officeView.toString());
+        log.debug("save: officeView = " + officeView.toString());
         try {
             Office office = new Office();
             office.setName(officeView.getName());

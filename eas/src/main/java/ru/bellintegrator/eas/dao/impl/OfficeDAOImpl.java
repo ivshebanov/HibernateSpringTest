@@ -51,10 +51,9 @@ public class OfficeDAOImpl implements OfficeDAO {
     @Transactional
     @Override
     public List<Office> loadOffice(Long orgId, String name, int phone, boolean isActive) throws MyException {
-        if (orgId == null || orgId <= 0L || name == null || phone < 0) {
+        if (orgId == null || orgId <= 0L || phone < 0) {
             StringBuilder sb = new StringBuilder("Invalid orgId, name or phone: ").
                     append("orgId = ").append(orgId).
-                    append("name = ").append(name).
                     append("phone = ").append(phone);
             throw new MyException(sb.toString());
         }

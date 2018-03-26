@@ -68,14 +68,11 @@ public class UserServiceImpl implements UserService {
             user.setMiddleName(userView.getMiddleName());
             user.setPosition(userView.getPosition());
             user.setPhone(userView.getPhone());
-//            user.setCode(userView.getDocCode());
-//            user.setDocName(userView.getDocName());
             user.setDocNumber(userView.getDocNumber());
             user.setDocDate(userView.getDocDate());
-//            user.setCitizenshipName(userView.getCitizenshipName());
-//            user.setCitizenshipCode(userView.getCitizenshipCode());
             user.setIdentified(userView.isIdentified());
-            return userDAO.update(id, user);
+            return userDAO.update(id, user, userView.getDocCode(), userView.getDocName(),
+                    userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
             log.error("MyException error", e);
         }
@@ -97,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean save(UserView userView) {
-        log.debug("update: userView = " + userView.toString());
+        log.debug("save: userView = " + userView.toString());
         try {
             User user = new User();
             user.setFirstName(userView.getFirstName());
@@ -105,14 +102,11 @@ public class UserServiceImpl implements UserService {
             user.setMiddleName(userView.getMiddleName());
             user.setPosition(userView.getPosition());
             user.setPhone(userView.getPhone());
-//            user.setCode(userView.getDocCode());
-//            user.setDocName(userView.getDocName());
             user.setDocNumber(userView.getDocNumber());
             user.setDocDate(userView.getDocDate());
-//            user.setCitizenshipName(userView.getCitizenshipName());
-//            user.setCitizenshipCode(userView.getCitizenshipCode());
             user.setIdentified(userView.isIdentified());
-            return userDAO.save(user);
+            return userDAO.save(user, userView.getDocCode(), userView.getDocName(),
+                    userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
             log.error("MyException error", e);
         }
