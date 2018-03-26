@@ -29,13 +29,14 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     @Transactional
     public boolean register(String login, String password, String name) {
+        log.debug("register: login = " + login + ", name = " + name);
         try {
             organizationDAO.register(login, password, name);
             return true;
         } catch (MyException e) {
-            e.printStackTrace();
+            log.error("MyException error", e);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("NoSuchAlgorithmException error", e);
         }
         return false;
     }
@@ -43,12 +44,28 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     @Transactional
     public boolean login(String login, String password) {
+        log.debug("login: login = " + login);
+        try {
+            organizationDAO.login(login, password);
+            return true;
+        } catch (MyException e) {
+            log.error("MyException error", e);
+        } catch (NoSuchAlgorithmException e) {
+            log.error("NoSuchAlgorithmException error", e);
+        }
         return false;
     }
 
     @Override
     @Transactional
     public boolean activation(String hashCode) {
+        log.debug("activation: hashCode = " + hashCode);
+        try {
+            organizationDAO.activation(hashCode);
+            return true;
+        } catch (MyException e) {
+            log.error("MyException error", e);
+        }
         return false;
     }
 }

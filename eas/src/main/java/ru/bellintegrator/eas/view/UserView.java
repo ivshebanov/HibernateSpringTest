@@ -21,6 +21,8 @@ public class UserView {
 
     private int docCode;
 
+    private int docName;
+
     private int docNumber;
 
     private Date docDate;
@@ -30,6 +32,110 @@ public class UserView {
     private int citizenshipName;
 
     private boolean isIdentified;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public int getDocCode() {
+        return docCode;
+    }
+
+    public void setDocCode(int docCode) {
+        this.docCode = docCode;
+    }
+
+    public int getDocName() {
+        return docName;
+    }
+
+    public void setDocName(int docName) {
+        this.docName = docName;
+    }
+
+    public int getDocNumber() {
+        return docNumber;
+    }
+
+    public void setDocNumber(int docNumber) {
+        this.docNumber = docNumber;
+    }
+
+    public Date getDocDate() {
+        return docDate;
+    }
+
+    public void setDocDate(Date docDate) {
+        this.docDate = docDate;
+    }
+
+    public int getCitizenshipCode() {
+        return citizenshipCode;
+    }
+
+    public void setCitizenshipCode(int citizenshipCode) {
+        this.citizenshipCode = citizenshipCode;
+    }
+
+    public int getCitizenshipName() {
+        return citizenshipName;
+    }
+
+    public void setCitizenshipName(int citizenshipName) {
+        this.citizenshipName = citizenshipName;
+    }
+
+    public boolean isIdentified() {
+        return isIdentified;
+    }
+
+    public void setIdentified(boolean identified) {
+        isIdentified = identified;
+    }
 
     @Override
     public String toString() {
