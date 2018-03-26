@@ -1,9 +1,8 @@
 package ru.bellintegrator.eas.service;
 
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.User;
+import ru.bellintegrator.eas.view.UserView;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -11,17 +10,11 @@ public interface UserService {
     /**
      * Получить все объекты User из офиса Office
      *
-     * @param officeId        идентификатор нужного офиса (обязательняй параметр)
-     * @param firstName
-     * @param secondName
-     * @param middleName
-     * @param position
-     * @param docCode
-     * @param citizenshipCode
+     * @param officeId идентификатор нужного офиса (обязательняй параметр)
+     * @param userView
      * @return List<User> список users
      */
-    List<User> loadUser(Long officeId, String firstName, String secondName, String middleName,
-                        String position, int docCode, int citizenshipCode) throws MyException;
+    List<User> loadUser(Long officeId, UserView userView);
 
     /**
      * Получить User по идентификатору
@@ -29,28 +22,15 @@ public interface UserService {
      * @param id
      * @return User
      */
-    User loadById(Long id) throws MyException;
+    User loadById(Long id);
 
     /**
      * Обновиить User
      *
-     * @param id              идентификатор пользователя, которого надо обновить
-     * @param firstName
-     * @param secondName
-     * @param middleName
-     * @param position
-     * @param phone
-     * @param docCode
-     * @param docNumber
-     * @param docDate
-     * @param citizenshipCode
-     * @param citizenshipName
-     * @param isIdentified
+     * @param userView
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(Long id, String firstName, String secondName, String middleName, String position,
-                   int phone, int docCode, int docNumber, Date docDate, int citizenshipCode,
-                   String citizenshipName, boolean isIdentified) throws MyException;
+    boolean update(UserView userView);
 
 
     /**
@@ -59,25 +39,13 @@ public interface UserService {
      * @param id идентификатор пользователя, которого надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(Long id) throws MyException;
+    boolean delete(Long id);
 
     /**
      * Добавить User
      *
-     * @param firstName
-     * @param secondName
-     * @param middleName
-     * @param position
-     * @param phone
-     * @param docCode
-     * @param docNumber
-     * @param docDate
-     * @param citizenshipCode
-     * @param citizenshipName
-     * @param isIdentified
+     * @param userView
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(String firstName, String secondName, String middleName, String position,
-                 int phone, int docCode, int docNumber, Date docDate, int citizenshipCode,
-                 String citizenshipName, boolean isIdentified) throws MyException;
+    boolean save(UserView userView);
 }

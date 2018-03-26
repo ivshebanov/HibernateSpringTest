@@ -28,19 +28,27 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     @Transactional
-    public boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException {
+    public boolean register(String login, String password, String name) {
+        try {
+            organizationDAO.register(login, password, name);
+            return true;
+        } catch (MyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     @Transactional
-    public boolean login(String login, String password) throws MyException, NoSuchAlgorithmException {
+    public boolean login(String login, String password) {
         return false;
     }
 
     @Override
     @Transactional
-    public boolean activation(String hashCode) throws MyException {
+    public boolean activation(String hashCode) {
         return false;
     }
 }

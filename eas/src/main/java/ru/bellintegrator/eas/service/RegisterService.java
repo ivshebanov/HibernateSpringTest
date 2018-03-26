@@ -1,9 +1,5 @@
 package ru.bellintegrator.eas.service;
 
-import ru.bellintegrator.eas.MyException;
-
-import java.security.NoSuchAlgorithmException;
-
 public interface RegisterService {
 
     /**
@@ -14,7 +10,7 @@ public interface RegisterService {
      * @param name     краткое имя организации
      * @return boolean если регистрация проходит удачно возвращает true
      */
-    boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException;
+    boolean register(String login, String password, String name);
 
     /**
      * Вход
@@ -23,7 +19,7 @@ public interface RegisterService {
      * @param password пароль организации
      * @return boolean если организация есть в базе вернет true
      */
-    boolean login(String login, String password) throws MyException, NoSuchAlgorithmException;
+    boolean login(String login, String password);
 
     /**
      * Проверика подлинности организации
@@ -31,5 +27,5 @@ public interface RegisterService {
      * @param hashCode код который был получен от пользователя
      * @return boolean если коды совпадают вернет true
      */
-    boolean activation(String hashCode) throws MyException;
+    boolean activation(String hashCode);
 }

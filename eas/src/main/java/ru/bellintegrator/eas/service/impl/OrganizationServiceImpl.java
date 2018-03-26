@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
+import ru.bellintegrator.eas.view.OrganizationView;
 
 import java.util.List;
 
@@ -29,33 +29,31 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException {
+    public List<Organization> loadOrganization(String name, OrganizationView organizationView) {
         return null;
     }
 
     @Override
     @Transactional
-    public Organization loadById(Long id) throws MyException {
+    public Organization loadById(Long id) {
         return null;
     }
 
     @Override
     @Transactional
-    public boolean update(Long id, String name, String fullName, int inn, int kpp,
-                          String address, int phone, boolean isActive) throws MyException {
+    public boolean update(OrganizationView organizationView) {
         return false;
     }
 
     @Override
     @Transactional
-    public boolean delete(Long id) throws MyException {
+    public boolean delete(Long id) {
         return false;
     }
 
     @Override
     @Transactional
-    public boolean save(String name, String fullName, int inn, int kpp,
-                        String address, int phone, boolean isActive) throws MyException {
+    public boolean save(OrganizationView organizationView) {
         return false;
     }
 }

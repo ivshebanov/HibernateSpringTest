@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import ru.bellintegrator.eas.MyException;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
+import ru.bellintegrator.eas.view.UserView;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,32 +28,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> loadUser(Long officeId, String firstName, String secondName, String middleName,
-                               String position, int docCode, int citizenshipCode) throws MyException {
+    @Transactional
+    public List<User> loadUser(Long officeId, UserView userView) {
         return null;
     }
 
     @Override
-    public User loadById(Long id) throws MyException {
+    @Transactional
+    public User loadById(Long id) {
         return null;
     }
 
     @Override
-    public boolean update(Long id, String firstName, String secondName, String middleName, String position,
-                          int phone, int docCode, int docNumber, Date docDate, int citizenshipCode,
-                          String citizenshipName, boolean isIdentified) throws MyException {
+    @Transactional
+    public boolean update(UserView userView) {
         return false;
     }
 
     @Override
-    public boolean delete(Long id) throws MyException {
+    @Transactional
+    public boolean delete(Long id) {
         return false;
     }
 
     @Override
-    public boolean save(String firstName, String secondName, String middleName, String position,
-                        int phone, int docCode, int docNumber, Date docDate, int citizenshipCode,
-                        String citizenshipName, boolean isIdentified) throws MyException {
+    @Transactional
+    public boolean save(UserView userView) {
         return false;
     }
 }

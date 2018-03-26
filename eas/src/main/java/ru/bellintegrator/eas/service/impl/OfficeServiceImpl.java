@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
+import ru.bellintegrator.eas.view.OfficeView;
 
 import java.util.List;
 
@@ -29,31 +29,31 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public List<Office> loadOffice(Long orgId, String name, int phone, boolean isActive) throws MyException {
+    public List<Office> loadOffice(Long orgId, OfficeView officeView) {
         return null;
     }
 
     @Override
     @Transactional
-    public Office loadById(Long id) throws MyException {
+    public Office loadById(Long id) {
         return null;
     }
 
     @Override
     @Transactional
-    public boolean update(Long id, String name, String address, int phone, boolean isActive) throws MyException {
+    public boolean update(OfficeView officeView) {
         return false;
     }
 
     @Override
     @Transactional
-    public boolean delete(Long id) throws MyException {
+    public boolean delete(Long id) {
         return false;
     }
 
     @Override
     @Transactional
-    public boolean save(String name, String address, int phone, boolean isActive) throws MyException {
+    public boolean save(OfficeView officeView) {
         return false;
     }
 }
