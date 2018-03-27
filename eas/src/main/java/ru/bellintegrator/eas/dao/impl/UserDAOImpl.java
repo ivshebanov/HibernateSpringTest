@@ -125,15 +125,14 @@ public class UserDAOImpl implements UserDAO {
                     append(", citizenshipName = ").append(citizenshipName);
             throw new MyException(sb.toString());
         }
-        if (user.getId() == 0) {
+        if (user.getId() == null) {
             user.setDoc(checkDoc(docCode, docName));
             user.setCountry(checkCountry(citizenshipCode, citizenshipName));
             em.persist(user);
-            return true;
         } else {
             update(user.getId(), user, docCode, docName, citizenshipCode, citizenshipName);
-            return true;
         }
+        return true;
     }
 
     private Doc checkDoc(int docCode, String docName) throws MyException {

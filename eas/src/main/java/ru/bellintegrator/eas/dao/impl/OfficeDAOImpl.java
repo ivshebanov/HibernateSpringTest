@@ -81,8 +81,13 @@ public class OfficeDAOImpl implements OfficeDAO {
                     append(", office = ").append(office);
             throw new MyException(sb.toString());
         }
-        office.setId(id);
-        em.merge(office);
+        Office officeResult = em.find(Office.class, id);
+        officeResult.setId(office.getId());
+        officeResult.setName(office.getName());
+        officeResult.setAddress(office.getAddress());
+        officeResult.setPhone(office.getPhone());
+        officeResult.setActive(office.isActive());
+        em.merge(officeResult);
         return true;
     }
 

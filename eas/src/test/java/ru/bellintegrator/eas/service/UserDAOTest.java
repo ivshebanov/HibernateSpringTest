@@ -1,5 +1,6 @@
 package ru.bellintegrator.eas.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ import ru.bellintegrator.eas.Application;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.dao.UserDAO;
+import ru.bellintegrator.eas.model.User;
+
+import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
@@ -28,10 +33,10 @@ public class UserDAOTest {
 
     @Test
     public void allTest() throws MyException {
-//        List<User> users = userDAO.all(1L);
-//        Assert.assertTrue(users.size() == 1);
-//        List<User> users2 = userDAO.all(2L);
-//        Assert.assertTrue(users2.size() == 1);
+        List<User> users = userDAO.all(1L);
+        Assert.assertTrue(users.size() == 1);
+        List<User> users2 = userDAO.all(2L);
+        Assert.assertTrue(users2.size() == 1);
     }
 
     @Test
@@ -41,91 +46,63 @@ public class UserDAOTest {
 
     @Test
     public void loadByIdTest() throws MyException {
-//        User user = userDAO.load(1L);
-//        Assert.assertTrue(user != null);
-//        Assert.assertTrue(user.getFirstName().equals("Сергей"));
-//        Assert.assertTrue(user.getMiddleName().equals("Викторович"));
-//
-//        User user2 = userDAO.load(2L);
-//        Assert.assertTrue(user2 != null);
-//        Assert.assertTrue(user2.getFirstName().equals("Иван"));
-//        Assert.assertTrue(user2.getMiddleName().equals("Иванович"));
+        User user = userDAO.loadById(1L);
+        Assert.assertTrue(user != null);
+        Assert.assertTrue(user.getFirstName().equals("Сергей"));
+        Assert.assertTrue(user.getMiddleName().equals("Викторович"));
+
+        User user2 = userDAO.loadById(2L);
+        Assert.assertTrue(user2 != null);
+        Assert.assertTrue(user2.getFirstName().equals("Иван"));
+        Assert.assertTrue(user2.getMiddleName().equals("Иванович"));
     }
 
     @Test
     public void updateTest() throws MyException {
-//        String firstName = "Юзер";
-//        String secondName = "user";
-//        String middleName = "us";
-//        String position = "junior";
-//        int phone = 1283129;
-//        long id = 1L;
-//
-//        User user = new User();
-//        user.setId(id);
-//        user.setFirstName(firstName);
-//        user.setSecondName(secondName);
-//        user.setMiddleName(middleName);
-//        user.setPosition(position);
-//        user.setPhone(phone);
-//
-//        Assert.assertTrue(userDAO.load(id).getFirstName().equals("Сергей"));
-//        Assert.assertTrue(userDAO.load(id).getMiddleName().equals("Викторович"));
-//
-//        Assert.assertTrue(userDAO.update(id, user));
-//
-//        Assert.assertTrue(userDAO.load(id).getFirstName().equals(firstName));
-//        Assert.assertTrue(userDAO.load(id).getMiddleName().equals(middleName));
+        long id = 1L;
 
+        User user = new User();
+        user.setId(id);
+        user.setFirstName("Юзер");
+        user.setSecondName("user");
+        user.setMiddleName("us");
+        user.setPosition("junior");
+        user.setPhone(1283129);
+
+        Assert.assertTrue(userDAO.loadById(id).getFirstName().equals("Сергей"));
+        Assert.assertTrue(userDAO.loadById(id).getMiddleName().equals("Викторович"));
+
+        Assert.assertTrue(userDAO.update(id, user, 4, "Паспорт иностранного гражданина",
+                6, "Болгария"));
+
+        Assert.assertTrue(userDAO.loadById(id).getFirstName().equals("Юзер"));
+        Assert.assertTrue(userDAO.loadById(id).getMiddleName().equals("us"));
     }
 
     @Test
     public void deleteTest() throws MyException {
-//        List<User> users = userDAO.all(1L);
-//        Assert.assertTrue(users.size() == 1);
-//
-//        Assert.assertTrue(userDAO.delete(1L));
-//
-//        List<User> users1 = userDAO.all(1L);
-//        Assert.assertTrue(users1 == null);
+        List<User> users = userDAO.all(1L);
+        Assert.assertTrue(users.size() == 1);
+
+        Assert.assertTrue(userDAO.delete(1L));
+
+        List<User> users1 = userDAO.all(1L);
+        Assert.assertTrue(users1 == null);
     }
 
     @Test
     public void saveTest() throws MyException {
-//        Office office = new Office();
-//        office.setId(1L);
-//        office.setName("Перекресток офис");
-//        office.setAddress("Малая Семеновская");
-//        office.setPhone(819231277);
-//        office.setActive(true);
-//        office.setOrgId(null);
-//        office.setUsers(null);
+        User user = new User();
+        user.setFirstName("Юзер");
+        user.setSecondName("user");
+        user.setMiddleName("us");
+        user.setPosition("junior");
+        user.setPhone(1283129);
+        user.setIdentified(true);
+        user.setDocNumber(232);
+        user.setDocDate(new Date());
 
-//        Office office = officeDAO.loadById(1L);
-//
-//        Doc doc = new Doc();
-//        doc.setCode(2);
-//        doc.setDocName("Военный билет");
-//
-//        Country country = new Country();
-//        country.setCode(1);
-//        country.setCitizenshipName("Австрия");
-//
-//        User user = new User();
-//        user.setFirstName("Юзер");
-//        user.setSecondName("user");
-//        user.setMiddleName("us");
-//        user.setPosition("junior");
-//        user.setPhone(1283129);
-//        user.setIdentified(true);
-//        user.setDoc(doc);
-//        user.setCountry(country);
-//
-//        office.addUser(user);
-//
-//        Assert.assertTrue(userDAO.save(user));
-//        List<User> users1 = userDAO.all(1L);
-//        Assert.assertTrue(userDAO.all(1L).size() == 2);
-
+        Assert.assertTrue(userDAO.save(user, 4, "Паспорт иностранного гражданина",
+                6, "Болгария"));
     }
 }
