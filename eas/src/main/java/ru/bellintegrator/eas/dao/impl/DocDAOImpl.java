@@ -9,6 +9,9 @@ import ru.bellintegrator.eas.model.Doc;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -25,10 +28,13 @@ public class DocDAOImpl implements DocDAO {
     @Override
     public List<Doc> all() throws MyException {
         try {
-            String sqlQuery = "SELECT o FROM Doc o";
-            TypedQuery<Doc> query =
-                    em.createQuery(sqlQuery, Doc.class);
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Doc> criteriaQuery = cb.createQuery(Doc.class);
+            Root<Doc> docRoot = criteriaQuery.from(Doc.class);
+            criteriaQuery.select(docRoot);
+            TypedQuery<Doc> query = em.createQuery(criteriaQuery);
             List<Doc> docs = query.getResultList();
+
             if (docs.isEmpty()) {
                 throw new MyException("Documents directory is empty");
             }

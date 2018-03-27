@@ -1,6 +1,9 @@
 package ru.bellintegrator.eas.controller;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bellintegrator.eas.model.User;
@@ -25,27 +28,39 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<User> loadUser(Long officeId, UserView userView) {
+    public List<User> loadUser(@RequestBody Long officeId, @RequestBody UserView userView) {
         return userService.loadUser(officeId, userView);
     }
 
     @RequestMapping(value = "/id", method = {GET})
-    public User loadById(Long id) {
+    public User loadById(@RequestBody Long id) {
         return userService.loadById(id);
     }
 
     @RequestMapping(value = "/update", method = {POST})
-    public boolean update(UserView userView) {
-        return userService.update(userView);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void update(@RequestBody UserView userView) {
+        userService.update(userView);
     }
 
     @RequestMapping(value = "/delete", method = {POST})
-    public boolean delete(Long id) {
-        return userService.delete(id);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void delete(@RequestBody Long id) {
+        userService.delete(id);
     }
 
     @RequestMapping(value = "/save", method = {POST})
-    public boolean save(UserView userView) {
-        return userService.save(userView);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void save(@RequestBody UserView userView) {
+        userService.save(userView);
     }
 }

@@ -92,7 +92,6 @@ public class Doc {
                 ", code=" + code +
                 ", version=" + version +
                 ", docName='" + docName + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

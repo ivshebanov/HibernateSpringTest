@@ -1,6 +1,9 @@
 package ru.bellintegrator.eas.controller;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bellintegrator.eas.service.RegisterService;
@@ -20,17 +23,29 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = {POST})
-    public boolean register(String login, String password, String name) {
-        return registerService.register(login, password, name);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void register(@RequestBody String login, @RequestBody String password, @RequestBody String name) {
+        registerService.register(login, password, name);
     }
 
     @RequestMapping(value = "/login", method = {POST})
-    public boolean login(String login, String password) {
-        return registerService.login(login, password);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void login(@RequestBody String login, @RequestBody String password) {
+        registerService.login(login, password);
     }
 
     @RequestMapping(value = "/activation", method = {POST})
-    public boolean activation(String hashCode) {
-        return registerService.activation(hashCode);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    public void activation(@RequestBody String hashCode) {
+        registerService.activation(hashCode);
     }
 }

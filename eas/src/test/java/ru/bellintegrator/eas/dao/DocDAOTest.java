@@ -27,7 +27,7 @@ public class DocDAOTest {
 
     @Test
     public void allTest() throws MyException {
-        List<Doc> countries = docDAO.all();
-        Assert.assertTrue(countries.size() == 11);
+        List<Doc> docs = docDAO.all();
+        Assert.assertTrue(docs.size() == 11);
     }
 }

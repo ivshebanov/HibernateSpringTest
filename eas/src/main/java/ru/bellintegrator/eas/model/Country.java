@@ -92,7 +92,6 @@ public class Country {
                 ", code=" + code +
                 ", version=" + version +
                 ", citizenshipName='" + citizenshipName + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

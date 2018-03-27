@@ -8,7 +8,6 @@ import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,9 +29,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Transactional
     @Override
     public List<Organization> all() throws MyException {
-        String sqlQuery = "SELECT o FROM Organization o";
-        TypedQuery<Organization> query =
-                em.createQuery(sqlQuery, Organization.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
+        Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
+        criteriaQuery.select(organizationRoot);
+        TypedQuery<Organization> query = em.createQuery(criteriaQuery);
         List<Organization> organizations = query.getResultList();
         if (organizations.isEmpty()) {
             throw new MyException("List of organizations is empty");
@@ -56,6 +57,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         criteriaQuery.where(cb.like(organizationRoot.get("name"), cb.parameter(String.class, "name1")),
                 cb.like(organizationRoot.get("inn"), cb.parameter(String.class, "inn1")),
                 cb.equal(organizationRoot.<Boolean>get("isActive"), "isActive1"));
+        criteriaQuery.select(organizationRoot);
 
         TypedQuery<Organization> tq = em.createQuery(criteriaQuery);
         tq.setParameter("name1", "%" + name + "%");
@@ -129,9 +131,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
     @Override
     public boolean save(Organization organization) throws MyException {
         if (organization == null) {
-            StringBuilder sb = new StringBuilder("Invalid organization : ").
-                    append("organization = ").append(organization);
-            throw new MyException(sb.toString());
+            throw new MyException("organization is null");
         }
         if (organization.getId() == null) {
             em.persist(organization);
@@ -151,9 +151,14 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                     append(", name = ").append(name);
             throw new MyException(sb.toString());
         }
-        TypedQuery<Organization> query = em.createQuery("SELECT o FROM Organization o", Organization.class);
-        List<Organization> list = query.getResultList();
-        for (Organization org : list) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
+        Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
+        criteriaQuery.select(organizationRoot);
+        TypedQuery<Organization> query = em.createQuery(criteriaQuery);
+        List<Organization> organizations = query.getResultList();
+
+        for (Organization org : organizations) {
             if (org.getName().equals(name)) {
                 throw new MyException("This organization is already registered");
             }

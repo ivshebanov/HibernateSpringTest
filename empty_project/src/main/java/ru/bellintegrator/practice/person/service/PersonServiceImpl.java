@@ -33,7 +33,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public void add(PersonView view) {
-        log.debug("PersonView = " + view.toString());
         Person person = new Person(view.name, view.age);
         dao.save(person);
     }
