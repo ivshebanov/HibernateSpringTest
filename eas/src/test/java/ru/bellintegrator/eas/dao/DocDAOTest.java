@@ -1,4 +1,4 @@
-package ru.bellintegrator.eas.service;
+package ru.bellintegrator.eas.dao;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,8 +11,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
 import ru.bellintegrator.eas.MyException;
-import ru.bellintegrator.eas.dao.DocDAO;
-import ru.bellintegrator.eas.model.Country;
 import ru.bellintegrator.eas.model.Doc;
 
 import java.util.List;
