@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.service;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.view.OfficeView;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface OfficeService {
@@ -10,11 +11,13 @@ public interface OfficeService {
     /**
      * Получить все объекты Office по заданным параметрам
      *
-     * @param orgId      идентификатор нужной организации (обязательняй параметр)
-     * @param officeView
+     * @param orgId    идентификатор нужной организации (обязательняй параметр)
+     * @param name
+     * @param phone
+     * @param isActive
      * @return List<Office> список офисов
      */
-    List<Office> loadOffice(Long orgId, OfficeView officeView);
+    List<Office> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive);
 
     /**
      * Получить Office по идентификатору

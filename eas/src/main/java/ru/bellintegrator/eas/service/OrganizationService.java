@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.service;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.view.OrganizationView;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface OrganizationService {
@@ -10,11 +11,12 @@ public interface OrganizationService {
     /**
      * Получить Organization по параметрам
      *
-     * @param name             имя организации (обязательняй параметр)
-     * @param organizationView
+     * @param name     имя организации (обязательняй параметр)
+     * @param inn
+     * @param isActive
      * @return List<Organization>
      */
-    List<Organization> loadOrganization(String name, OrganizationView organizationView);
+    List<Organization> loadOrganization(@NotNull String name, int inn, boolean isActive);
 
     /**
      * Получить Organization по идентификатору

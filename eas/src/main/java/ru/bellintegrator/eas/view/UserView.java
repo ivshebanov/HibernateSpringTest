@@ -2,35 +2,66 @@ package ru.bellintegrator.eas.view;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class UserView {
 
     @ApiModelProperty(hidden = true)
+    @Min(0)
     private String id;
 
+    @NotNull
+    @Size(max = 50)
     private String firstName;
 
+    @NotNull
+    @Size(max = 50)
     private String secondName;
 
+    @NotNull
+    @Size(max = 50)
     private String middleName;
 
+    @NotNull
+    @Size(max = 50)
     private String position;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int phone;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int docCode;
 
+    @NotNull
+    @Size(max = 60)
     private String docName;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int docNumber;
 
+    @NotNull
     private Date docDate;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int citizenshipCode;
 
+    @NotNull
+    @Size(max = 60)
     private String citizenshipName;
 
+    @NotNull
     private boolean isIdentified;
 
     public String getId() {

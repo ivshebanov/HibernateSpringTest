@@ -13,6 +13,9 @@ import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
 import ru.bellintegrator.eas.view.OfficeView;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,14 +33,30 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public List<Office> loadOffice(Long orgId, OfficeView officeView) {
-        log.debug("loadOffice: orgId = " + orgId + ", officeView = " + officeView.toString());
+    public List<Office> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("loadOffice :").
+                append(" orgId = ").append(orgId).
+                append(", name = ").append(name).
+                append(", phone = ").append(phone).
+                append(", isActive = ").append(isActive);
+        log.debug(stringBuilder.toString());
         try {
-            return officeDAO.loadOffice(orgId, officeView.getName(), officeView.getPhone(), officeView.isActive());
+            if (orgId <= 0L || phone <= 0) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append(" orgId = ").append(orgId).
+                        append(", name = ").append(name).
+                        append(", phone = ").append(phone).
+                        append(", isActive = ").append(isActive);
+                throw new MyException(sb.toString());
+            }
+            return officeDAO.loadOffice(orgId, name, phone, isActive);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -45,18 +64,32 @@ public class OfficeServiceImpl implements OfficeService {
     public Office loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
+            if (id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return officeDAO.loadById(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return null;
     }
 
     @Override
     @Transactional
-    public boolean update(OfficeView officeView) {
+    public boolean update(@Valid OfficeView officeView) {
         log.debug("update: officeView = " + officeView.toString());
         try {
+            if (officeView.getId() == null
+                    || officeView.getId().isEmpty()
+                    || Long.parseLong(officeView.getId()) <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append("officeView = ").append(officeView);
+                throw new MyException(sb.toString());
+            }
             Long id = Long.parseLong(officeView.getId());
             Office office = new Office();
             office.setId(id);
@@ -67,6 +100,8 @@ public class OfficeServiceImpl implements OfficeService {
             return officeDAO.update(id, office);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
@@ -76,16 +111,23 @@ public class OfficeServiceImpl implements OfficeService {
     public boolean delete(Long id) {
         log.debug("delete: id = " + id);
         try {
+            if (id == null || id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return officeDAO.delete(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
 
     @Override
     @Transactional
-    public boolean save(OfficeView officeView) {
+    public boolean save(@Valid OfficeView officeView) {
         log.debug("save: officeView = " + officeView.toString());
         try {
             Office office = new Office();
@@ -94,7 +136,7 @@ public class OfficeServiceImpl implements OfficeService {
             office.setPhone(officeView.getPhone());
             office.setActive(officeView.isActive());
             return officeDAO.save(office);
-        } catch (MyException e) {
+        } catch (Exception e) {
             log.error("MyException error", e);
         }
         return false;

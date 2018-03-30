@@ -2,27 +2,53 @@ package ru.bellintegrator.eas.view;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class OrganizationView {
 
     @ApiModelProperty(hidden = true)
+    @Min(0)
     private String id;
 
+    @NotNull
+    @Size(min = 2, max = 50)
     private String name;
 
+    @NotNull
+    @Size(max = 50)
     private String fullName;
 
+    @NotNull
+    @Size(min = 2, max = 100)
     private String login;
 
+    @NotNull
+    @Size(min = 5, max = 100)
     private String password;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int inn;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int kpp;
 
+    @NotNull
+    @Size(min = 2, max = 50)
     private String address;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int phone;
 
+    @NotNull
     private boolean isActive;
 
     private String hashActive;

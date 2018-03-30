@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.Doc;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class DocDAOTest {
     private DocDAO docDAO;
 
     @Test
-    public void allTest() throws MyException {
+    public void allTest() {
         List<Doc> docs = docDAO.all();
         Assert.assertTrue(docs.size() == 11);
     }

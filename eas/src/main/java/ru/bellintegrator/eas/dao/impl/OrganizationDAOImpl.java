@@ -2,7 +2,6 @@ package ru.bellintegrator.eas.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
@@ -14,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,9 +26,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         this.em = em;
     }
 
-    @Transactional
     @Override
-    public List<Organization> all() throws MyException {
+    public List<Organization> all() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
         Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
@@ -36,20 +35,13 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         TypedQuery<Organization> query = em.createQuery(criteriaQuery);
         List<Organization> organizations = query.getResultList();
         if (organizations.isEmpty()) {
-            throw new MyException("List of organizations is empty");
+            return new ArrayList<>();
         }
         return organizations;
     }
 
-    @Transactional
     @Override
-    public List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException {
-        if (name == null || inn < 0) {
-            StringBuilder sb = new StringBuilder("Invalid parameters : ").
-                    append("name = ").append(name).
-                    append("inn = ").append(inn);
-            throw new MyException(sb.toString());
-        }
+    public List<Organization> loadOrganization(String name, int inn, boolean isActive) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
         Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
@@ -73,14 +65,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return organizationsResult;
     }
 
-    @Transactional
     @Override
     public Organization loadById(Long id) throws MyException {
-        if (id == null || id <= 0L) {
-            StringBuilder sb = new StringBuilder("Invalid id : ").
-                    append("id = ").append(id);
-            throw new MyException(sb.toString());
-        }
         Organization organization = em.find(Organization.class, id);
         if (!organization.isActive()) {
             throw new MyException("Organization is not activated");
@@ -88,15 +74,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return organization;
     }
 
-    @Transactional
     @Override
-    public boolean update(Long id, Organization organization) throws MyException {
-        if (id == null || id <= 0L || organization == null) {
-            StringBuilder sb = new StringBuilder("Invalid parameters : ").
-                    append("id = ").append(id).
-                    append(", organization = ").append(organization);
-            throw new MyException(sb.toString());
-        }
+    public boolean update(Long id, Organization organization) {
         Organization organizationResult = em.find(Organization.class, id);
         organizationResult.setId(organization.getId());
         organizationResult.setName(organization.getName());
@@ -110,29 +89,17 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return true;
     }
 
-    @Transactional
     @Override
-    public boolean delete(Long id) throws MyException {
-        if (id == null || id <= 0L) {
-            StringBuilder sb = new StringBuilder("Invalid id : ").
-                    append("id = ").append(id);
-            throw new MyException(sb.toString());
-        }
-
+    public boolean delete(Long id) {
         Organization organization = em.find(Organization.class, id);
         if (organization != null) {
             em.remove(organization);
         }
         return true;
-
     }
 
-    @Transactional
     @Override
-    public boolean save(Organization organization) throws MyException {
-        if (organization == null) {
-            throw new MyException("organization is null");
-        }
+    public boolean save(Organization organization) {
         if (organization.getId() == null) {
             em.persist(organization);
         } else {
@@ -141,16 +108,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return true;
     }
 
-    @Transactional
     @Override
     public boolean register(String login, String password, String name) throws MyException, NoSuchAlgorithmException {
-        if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid parameters : ").
-                    append("login = ").append(login).
-                    append(", password = ").append(getHashSHA2forPassword(password)).
-                    append(", name = ").append(name);
-            throw new MyException(sb.toString());
-        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
         Root<Organization> organizationRoot = criteriaQuery.from(Organization.class);
@@ -163,6 +122,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
                 throw new MyException("This organization is already registered");
             }
         }
+
         Organization organization = new Organization();
         organization.setName(name);
         organization.setFullName("");
@@ -180,15 +140,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return true;
     }
 
-    @Transactional
     @Override
-    public boolean login(String login, String password) throws MyException, NoSuchAlgorithmException {
-        if (login.isEmpty() || password.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid parameters : ").
-                    append("login = ").append(login).
-                    append(", password = ").append(getHashSHA2forPassword(password));
-            throw new MyException(sb.toString());
-        }
+    public boolean login(String login, String password) throws NoSuchAlgorithmException {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteria = builder.createQuery(Organization.class);
         Root<Organization> register = criteria.from(Organization.class);
@@ -198,14 +151,8 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return query.getSingleResult() != null;
     }
 
-    @Transactional
     @Override
     public boolean activation(String hashCode) throws MyException {
-        if (hashCode.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid hashCode : ").
-                    append("hashCode = ").append(hashCode);
-            throw new MyException(sb.toString());
-        }
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteria = builder.createQuery(Organization.class);
         Root<Organization> organizationRoot = criteria.from(Organization.class);
@@ -223,12 +170,7 @@ public class OrganizationDAOImpl implements OrganizationDAO {
         return true;
     }
 
-    private String getHashSHA2forPassword(String password) throws MyException, NoSuchAlgorithmException {
-        if (password.isEmpty()) {
-            StringBuilder sb = new StringBuilder("Invalid password : ").
-                    append("password = ").append(password);
-            throw new MyException(sb.toString());
-        }
+    private String getHashSHA2forPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest sha = MessageDigest.getInstance("SHA-256");
         byte[] digest = sha.digest(password.getBytes());
         StringBuilder builder = new StringBuilder();

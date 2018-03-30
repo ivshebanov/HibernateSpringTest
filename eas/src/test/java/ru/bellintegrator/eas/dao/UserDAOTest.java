@@ -30,7 +30,7 @@ public class UserDAOTest {
     private OfficeDAO officeDAO;
 
     @Test
-    public void allTest() throws MyException {
+    public void allTest() {
         List<User> users = userDAO.all(1L);
         Assert.assertTrue(users.size() == 1);
         List<User> users2 = userDAO.all(2L);
@@ -38,12 +38,12 @@ public class UserDAOTest {
     }
 
     @Test
-    public void loadUser() throws MyException {
+    public void loadUser() {
 
     }
 
     @Test
-    public void loadByIdTest() throws MyException {
+    public void loadByIdTest() {
         User user = userDAO.loadById(1L);
         Assert.assertTrue(user != null);
         Assert.assertTrue(user.getFirstName().equals("Сергей"));
@@ -78,7 +78,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void deleteTest() throws MyException {
+    public void deleteTest() {
         List<User> users = userDAO.all(1L);
         Assert.assertTrue(users.size() == 1);
 

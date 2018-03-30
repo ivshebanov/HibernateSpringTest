@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.model.Office;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class OfficeDAOTest {
     private OfficeDAO officeDAO;
 
     @Test
-    public void allTest() throws MyException {
+    public void allTest() {
         List<Office> offices1 = officeDAO.all(1L);
         List<Office> offices2 = officeDAO.all(2L);
 
@@ -38,13 +37,13 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void loadOffice() throws MyException {
+    public void loadOffice() {
         List<Office> offices = officeDAO.loadOffice(1L, "belloffice", 567898, true);
         Assert.assertTrue(offices.size() == 1);
     }
 
     @Test
-    public void loadByIdTest() throws MyException {
+    public void loadByIdTest() {
         Office office = officeDAO.loadById(1L);
         Assert.assertTrue(office != null);
         Assert.assertTrue(office.getName().equals("belloffice"));
@@ -55,7 +54,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void updateTest() throws MyException {
+    public void updateTest() {
         long id = 1L;
         String name = "offbe";
         int phone = 111112222;
@@ -78,7 +77,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void deleteTest() throws MyException {
+    public void deleteTest() {
         List<Office> offices = officeDAO.all(1L);
         Assert.assertTrue(offices.size() == 1);
         Assert.assertTrue(officeDAO.delete(1L));
@@ -87,7 +86,7 @@ public class OfficeDAOTest {
     }
 
     @Test
-    public void saveTest() throws MyException {
+    public void saveTest() {
         Office office = new Office();
         office.setName("Перекресток офис");
         office.setAddress("Малая Семеновская");

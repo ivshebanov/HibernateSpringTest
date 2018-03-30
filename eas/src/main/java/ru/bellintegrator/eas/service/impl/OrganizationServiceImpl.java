@@ -13,6 +13,9 @@ import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
 import ru.bellintegrator.eas.view.OrganizationView;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,14 +33,28 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public List<Organization> loadOrganization(String name, OrganizationView organizationView) {
-        log.debug("loadOrganization: name = " + name + ", organizationView = " + organizationView.toString());
+    public List<Organization> loadOrganization(@NotNull String name, int inn, boolean isActive) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("loadOrganization :").
+                append(" name =").append(name).
+                append(", inn =").append(inn).
+                append(", isActive =").append(isActive);
+        log.debug(stringBuilder.toString());
         try {
-            return organizationDAO.loadOrganization(name, organizationView.getInn(), organizationView.isActive());
+            if (inn <= 0) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append(" name =").append(name).
+                        append(", inn =").append(inn).
+                        append(", isActive =").append(isActive);
+                throw new MyException(sb.toString());
+            }
+            return organizationDAO.loadOrganization(name, inn, isActive);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -45,18 +62,32 @@ public class OrganizationServiceImpl implements OrganizationService {
     public Organization loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
+            if (id == null || id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return organizationDAO.loadById(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return null;
     }
 
     @Override
     @Transactional
-    public boolean update(OrganizationView organizationView) {
+    public boolean update(@Valid OrganizationView organizationView) {
         log.debug("update: organizationView = " + organizationView.toString());
         try {
+            if (organizationView.getId() == null
+                    || organizationView.getId().isEmpty()
+                    || Long.parseLong(organizationView.getId()) <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append(", organizationView = ").append(organizationView);
+                throw new MyException(sb.toString());
+            }
             Long id = Long.parseLong(organizationView.getId());
             Organization organization = new Organization();
             organization.setId(id);
@@ -70,6 +101,8 @@ public class OrganizationServiceImpl implements OrganizationService {
             return organizationDAO.update(id, organization);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
@@ -79,16 +112,23 @@ public class OrganizationServiceImpl implements OrganizationService {
     public boolean delete(Long id) {
         log.debug("delete: id = " + id);
         try {
+            if (id == null || id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return organizationDAO.delete(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
 
     @Override
     @Transactional
-    public boolean save(OrganizationView organizationView) {
+    public boolean save(@Valid OrganizationView organizationView) {
         log.debug("save: organizationView = " + organizationView.toString());
         try {
             Organization organization = new Organization();
@@ -100,7 +140,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setPhone(organizationView.getPhone());
             organization.setActive(organizationView.isActive());
             return organizationDAO.save(organization);
-        } catch (MyException e) {
+        } catch (Exception e) {
             log.error("MyException error", e);
         }
         return false;

@@ -27,12 +27,12 @@ public class OrganizationDAOTest {
     private OrganizationDAO organizationDAO;
 
     @Test
-    public void allTest() throws MyException {
+    public void allTest() {
         Assert.assertTrue(organizationDAO.all().size() == 2);
     }
 
     @Test
-    public void loadOrganization() throws MyException {
+    public void loadOrganization() {
         List<Organization> organizations = organizationDAO.loadOrganization("bell", 1234567890, true);
     }
 
@@ -70,7 +70,7 @@ public class OrganizationDAOTest {
     }
 
     @Test
-    public void deleteTest() throws MyException {
+    public void deleteTest() {
         List<Organization> listOrganization = organizationDAO.all();
         Assert.assertTrue(listOrganization.size() == 2);
 
@@ -82,7 +82,7 @@ public class OrganizationDAOTest {
     }
 
     @Test
-    public void saveTest() throws MyException {
+    public void saveTest() {
         Assert.assertTrue(organizationDAO.all().size() == 2);
 
         Organization organization = new Organization();
@@ -109,7 +109,7 @@ public class OrganizationDAOTest {
     }
 
     @Test
-    public void loginTest() throws MyException, NoSuchAlgorithmException {
+    public void loginTest() throws NoSuchAlgorithmException {
         Assert.assertTrue(organizationDAO.login("Shebanov", "12345"));
         Assert.assertTrue(organizationDAO.login("сбер", "112233"));
     }

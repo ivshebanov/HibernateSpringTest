@@ -13,6 +13,9 @@ import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
 import ru.bellintegrator.eas.view.UserView;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,17 +33,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<User> loadUser(Long officeId, UserView userView) {
-        log.debug("loadUser: officeId = " + officeId + ", userView = " + userView.toString());
+    public List<User> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
+                               String position, int docCode, int citizenshipCode) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("loadUser :").
+                append(" officeId = ").append(officeId).
+                append(", firstName = ").append(firstName).
+                append(", secondName = ").append(secondName).
+                append(", middleName = ").append(middleName).
+                append(", position = ").append(position).
+                append(", docCode = ").append(docCode).
+                append(", citizenshipCode = ").append(citizenshipCode);
+        log.debug(stringBuilder.toString());
         try {
-            return userDAO.loadUser(officeId, userView.getFirstName(),
-                    userView.getSecondName(), userView.getMiddleName(),
-                    userView.getPosition(), userView.getDocCode(),
-                    userView.getCitizenshipCode());
+            if (officeId <= 0L || docCode <= 0 || citizenshipCode <= 0) {
+                StringBuilder sb = new StringBuilder("Invalid parameter: ").
+                        append(" officeId = ").append(officeId).
+                        append(", firstName = ").append(firstName).
+                        append(", secondName = ").append(secondName).
+                        append(", middleName = ").append(middleName).
+                        append(", position = ").append(position).
+                        append(", docCode = ").append(docCode).
+                        append(", citizenshipCode = ").append(citizenshipCode);
+                throw new MyException(sb.toString());
+            }
+            return userDAO.loadUser(officeId, firstName, secondName, middleName, position, docCode, citizenshipCode);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -48,18 +71,32 @@ public class UserServiceImpl implements UserService {
     public User loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
+            if (id == null || id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return userDAO.loadById(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return null;
     }
 
     @Override
     @Transactional
-    public boolean update(UserView userView) {
+    public boolean update(@Valid UserView userView) {
         log.debug("update: userView = " + userView.toString());
         try {
+            if (userView.getId() == null
+                    || userView.getId().isEmpty()
+                    || Long.parseLong(userView.getId()) <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid parameter: ").
+                        append(", userView = ").append(userView);
+                throw new MyException(sb.toString());
+            }
             Long id = Long.parseLong(userView.getId());
             User user = new User();
             user.setId(id);
@@ -75,6 +112,8 @@ public class UserServiceImpl implements UserService {
                     userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
@@ -84,16 +123,23 @@ public class UserServiceImpl implements UserService {
     public boolean delete(Long id) {
         log.debug("delete: id = " + id);
         try {
+            if (id == null || id <= 0L) {
+                StringBuilder sb = new StringBuilder("Invalid id : ").
+                        append("id = ").append(id);
+                throw new MyException(sb.toString());
+            }
             return userDAO.delete(id);
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
 
     @Override
     @Transactional
-    public boolean save(UserView userView) {
+    public boolean save(@Valid UserView userView) {
         log.debug("save: userView = " + userView.toString());
         try {
             User user = new User();
@@ -109,6 +155,8 @@ public class UserServiceImpl implements UserService {
                     userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }

@@ -31,12 +31,21 @@ public class RegisterServiceImpl implements RegisterService {
     public boolean register(String login, String password, String name) {
         log.debug("register: login = " + login + ", name = " + name);
         try {
+            if (login.isEmpty() || password.isEmpty() || name.isEmpty()) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append("login = ").append(login).
+                        append(", password = ").append("Invalid").
+                        append(", name = ").append(name);
+                throw new MyException(sb.toString());
+            }
             organizationDAO.register(login, password, name);
             return true;
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (NoSuchAlgorithmException e) {
             log.error("NoSuchAlgorithmException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
@@ -46,12 +55,20 @@ public class RegisterServiceImpl implements RegisterService {
     public boolean login(String login, String password) {
         log.debug("login: login = " + login);
         try {
+            if (login.isEmpty() || password.isEmpty()) {
+                StringBuilder sb = new StringBuilder("Invalid parameters : ").
+                        append("login = ").append(login).
+                        append(", password = ").append("Invalid");
+                throw new MyException(sb.toString());
+            }
             organizationDAO.login(login, password);
             return true;
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (NoSuchAlgorithmException e) {
             log.error("NoSuchAlgorithmException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }
@@ -61,10 +78,17 @@ public class RegisterServiceImpl implements RegisterService {
     public boolean activation(String hashCode) {
         log.debug("activation: hashCode = " + hashCode);
         try {
+            if (hashCode.isEmpty()) {
+                StringBuilder sb = new StringBuilder("Invalid hashCode : ").
+                        append("hashCode = ").append(hashCode);
+                throw new MyException(sb.toString());
+            }
             organizationDAO.activation(hashCode);
             return true;
         } catch (MyException e) {
             log.error("MyException error", e);
+        } catch (Exception e) {
+            log.error("Exception error", e);
         }
         return false;
     }

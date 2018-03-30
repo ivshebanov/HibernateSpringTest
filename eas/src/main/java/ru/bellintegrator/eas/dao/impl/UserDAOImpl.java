@@ -2,7 +2,6 @@ package ru.bellintegrator.eas.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.Country;
@@ -15,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,15 +27,8 @@ public class UserDAOImpl implements UserDAO {
         this.em = em;
     }
 
-
-    @Transactional
     @Override
-    public List<User> all(Long officeId) throws MyException {
-        if (officeId == null || officeId <= 0L) {
-            StringBuilder sb = new StringBuilder("Invalid officeId : ").
-                    append("officeId = ").append(officeId);
-            throw new MyException(sb.toString());
-        }
+    public List<User> all(Long officeId) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> userRoot = criteria.from(User.class);
@@ -43,43 +36,25 @@ public class UserDAOImpl implements UserDAO {
         TypedQuery<User> query = em.createQuery(criteria);
         List<User> users = query.getResultList();
         if (users.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return users;
     }
 
     public List<User> loadUser(Long officeId, String firstName, String secondName, String middleName,
-                               String position, int docCode, int citizenshipCode) throws MyException {
+                               String position, int docCode, int citizenshipCode) {
         //
-        return null;
+        return new ArrayList<>();
     }
 
-    @Transactional
     @Override
-    public User loadById(Long id) throws MyException {
-        if (id == null || id <= 0L) {
-            StringBuilder sb = new StringBuilder("Invalid id : ").
-                    append("id = ").append(id);
-            throw new MyException(sb.toString());
-        }
+    public User loadById(Long id) {
         return em.find(User.class, id);
     }
 
-    @Transactional
     @Override
     public boolean update(Long id, User user, int docCode, String docName,
                           int citizenshipCode, String citizenshipName) throws MyException {
-        if (id == null || id <= 0L || user == null || docCode <= 0 || docName == null ||
-                citizenshipCode <= 0 || citizenshipName == null) {
-            StringBuilder sb = new StringBuilder("Invalid parameter: ").
-                    append("id = ").append(id).
-                    append(", user = ").append(user).
-                    append(", docCode = ").append(docCode).
-                    append(", docName = ").append(docName).
-                    append(", citizenshipCode = ").append(citizenshipCode).
-                    append(", citizenshipName = ").append(citizenshipName);
-            throw new MyException(sb.toString());
-        }
         User userResult = em.find(User.class, id);
         userResult.setId(user.getId());
         userResult.setFirstName(user.getFirstName());
@@ -96,14 +71,8 @@ public class UserDAOImpl implements UserDAO {
         return true;
     }
 
-    @Transactional
     @Override
-    public boolean delete(Long id) throws MyException {
-        if (id == null || id <= 0L) {
-            StringBuilder sb = new StringBuilder("Invalid id : ").
-                    append("id = ").append(id);
-            throw new MyException(sb.toString());
-        }
+    public boolean delete(Long id) {
         User user = em.find(User.class, id);
         if (user != null) {
             em.remove(user);
@@ -111,20 +80,9 @@ public class UserDAOImpl implements UserDAO {
         return true;
     }
 
-    @Transactional
     @Override
     public boolean save(User user, int docCode, String docName,
                         int citizenshipCode, String citizenshipName) throws MyException {
-        if (user == null || docCode <= 0 || docName == null ||
-                citizenshipCode <= 0 || citizenshipName == null) {
-            StringBuilder sb = new StringBuilder("Invalid parameters : ").
-                    append(", user = ").append(user).
-                    append(", docCode = ").append(docCode).
-                    append(", docName = ").append(docName).
-                    append(", citizenshipCode = ").append(citizenshipCode).
-                    append(", citizenshipName = ").append(citizenshipName);
-            throw new MyException(sb.toString());
-        }
         if (user.getId() == null) {
             user.setDoc(checkDoc(docCode, docName));
             user.setCountry(checkCountry(citizenshipCode, citizenshipName));

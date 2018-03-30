@@ -25,7 +25,7 @@ public interface OrganizationDAO {
      * @param password пароль организации
      * @return boolean если организация есть в базе вернет true
      */
-    boolean login(String login, String password) throws MyException, NoSuchAlgorithmException;
+    boolean login(String login, String password) throws NoSuchAlgorithmException;
 
     /**
      * Проверика подлинности организации
@@ -40,7 +40,7 @@ public interface OrganizationDAO {
      *
      * @return List<Organization>
      */
-    List<Organization> all() throws MyException;
+    List<Organization> all();
 
     /**
      * Получить Organization по параметрам
@@ -50,7 +50,7 @@ public interface OrganizationDAO {
      * @param isActive активирована или нет
      * @return List<Organization>
      */
-    List<Organization> loadOrganization(String name, int inn, boolean isActive) throws MyException;
+    List<Organization> loadOrganization(String name, int inn, boolean isActive);
 
     /**
      * Получить Organization по идентификатору
@@ -67,7 +67,7 @@ public interface OrganizationDAO {
      * @param organization новый объект Organization
      * @return boolean вернет true, если объект удачно обновлен
      */
-    boolean update(Long id, Organization organization) throws MyException;
+    boolean update(Long id, Organization organization);
 
     /**
      * Удалить Organization по идентификатору
@@ -75,7 +75,7 @@ public interface OrganizationDAO {
      * @param id идентификатор Organization, которую надо удалить
      * @return boolean вернет true, если объект удачно удален
      */
-    boolean delete(Long id) throws MyException;
+    boolean delete(Long id);
 
     /**
      * Добавить Organization
@@ -83,5 +83,5 @@ public interface OrganizationDAO {
      * @param organization
      * @return boolean вернет true, если объект удачно добавлен
      */
-    boolean save(Organization organization) throws MyException;
+    boolean save(Organization organization);
 }

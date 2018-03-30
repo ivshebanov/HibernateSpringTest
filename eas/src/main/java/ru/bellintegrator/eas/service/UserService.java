@@ -3,6 +3,7 @@ package ru.bellintegrator.eas.service;
 import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.view.UserView;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface UserService {
@@ -10,11 +11,17 @@ public interface UserService {
     /**
      * Получить все объекты User из офиса Office
      *
-     * @param officeId идентификатор нужного офиса (обязательняй параметр)
-     * @param userView
+     * @param officeId        идентификатор нужного офиса (обязательняй параметр)
+     * @param firstName
+     * @param secondName
+     * @param middleName
+     * @param position
+     * @param docCode
+     * @param citizenshipCode
      * @return List<User> список users
      */
-    List<User> loadUser(Long officeId, UserView userView);
+    List<User> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
+                        String position, int docCode, int citizenshipCode);
 
     /**
      * Получить User по идентификатору

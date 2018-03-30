@@ -2,17 +2,31 @@ package ru.bellintegrator.eas.view;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class OfficeView {
 
     @ApiModelProperty(hidden = true)
+    @Min(0)
     private String id;
 
+    @NotNull
+    @Size(max = 50)
     private String name;
 
+    @NotNull
+    @Max(50)
     private String address;
 
+    @NotNull
+    @Min(0)
+    @Max(20)
     private int phone;
 
+    @NotNull
     private boolean isActive;
 
     public String getId() {
