@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
 import ru.bellintegrator.eas.view.UserView;
 
@@ -28,12 +27,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<User> loadUser(@RequestBody Long officeId, @RequestBody UserView userView) {
-        return userService.loadUser(officeId, userView);
+    public List<UserView> loadUser(@RequestBody Long officeId, @RequestBody String firstName,
+                                   @RequestBody String secondName, @RequestBody String middleName,
+                                   @RequestBody String position, @RequestBody int docCode,
+                                   @RequestBody int citizenshipCode) {
+        return userService.loadUser(officeId, firstName, secondName, middleName, position, docCode, citizenshipCode);
     }
 
     @RequestMapping(value = "/id", method = {GET})
-    public User loadById(@RequestBody Long id) {
+    public UserView loadById(@RequestBody Long id) {
         return userService.loadById(id);
     }
 

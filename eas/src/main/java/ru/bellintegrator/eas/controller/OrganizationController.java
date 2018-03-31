@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
 import ru.bellintegrator.eas.view.OrganizationView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,12 +28,13 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<Organization> loadOrganization(@RequestBody String name, @RequestBody OrganizationView organizationView) {
-        return organizationService.loadOrganization(name, organizationView);
+    public List<OrganizationView> loadOrganization(@RequestBody String name, @RequestBody int inn,
+                                                   @RequestBody boolean isActive) {
+        return organizationService.loadOrganization(name, inn, isActive);
     }
 
     @RequestMapping(value = "/id", method = {GET})
-    public Organization loadById(@RequestBody Long id) {
+    public OrganizationView loadById(@RequestBody Long id) {
         return organizationService.loadById(id);
     }
 
@@ -42,7 +43,7 @@ public class OrganizationController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public void update(@RequestBody OrganizationView organizationView) {
+    public void update(@RequestBody @Valid OrganizationView organizationView) {
         organizationService.update(organizationView);
     }
 
@@ -60,7 +61,7 @@ public class OrganizationController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public void save(@RequestBody OrganizationView organizationView) {
+    public void save(@RequestBody @Valid OrganizationView organizationView) {
         organizationService.save(organizationView);
     }
 }

@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service;
 
-import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.view.OrganizationView;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +15,7 @@ public interface OrganizationService {
      * @param isActive
      * @return List<Organization>
      */
-    List<Organization> loadOrganization(@NotNull String name, int inn, boolean isActive);
+    List<OrganizationView> loadOrganization(@NotNull String name, int inn, boolean isActive);
 
     /**
      * Получить Organization по идентификатору
@@ -24,7 +23,7 @@ public interface OrganizationService {
      * @param id
      * @return Organization
      */
-    Organization loadById(Long id);
+    OrganizationView loadById(Long id);
 
     /**
      * Обновиить Organization

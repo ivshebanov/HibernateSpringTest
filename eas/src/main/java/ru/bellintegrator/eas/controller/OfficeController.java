@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
 import ru.bellintegrator.eas.view.OfficeView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,12 +28,13 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<Office> loadOffice(@RequestBody Long orgId, @RequestBody OfficeView officeView) {
-        return officeService.loadOffice(orgId, officeView);
+    public List<OfficeView> loadOffice(@RequestBody Long orgId, @RequestBody String name,
+                                       @RequestBody int phone, @RequestBody boolean isActive) {
+        return officeService.loadOffice(orgId, name, phone, isActive);
     }
 
     @RequestMapping(value = "/id", method = {GET})
-    public Office loadById(@RequestBody Long id) {
+    public OfficeView loadById(@RequestBody Long id) {
         return officeService.loadById(id);
     }
 
@@ -42,7 +43,7 @@ public class OfficeController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public void update(@RequestBody OfficeView officeView) {
+    public void update(@RequestBody @Valid OfficeView officeView) {
         officeService.update(officeView);
     }
 
@@ -60,7 +61,7 @@ public class OfficeController {
             @ApiResponse(code = 200, message = "Success", response = String.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
-    public void save(@RequestBody OfficeView officeView) {
+    public void save(@RequestBody @Valid OfficeView officeView) {
         officeService.save(officeView);
     }
 }

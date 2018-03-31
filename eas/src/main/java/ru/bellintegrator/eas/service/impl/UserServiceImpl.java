@@ -1,5 +1,9 @@
 package ru.bellintegrator.eas.service.impl;
 
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
+import ru.bellintegrator.eas.service.impl.mapper.UserCustomMapper;
 import ru.bellintegrator.eas.view.UserView;
 
 import javax.validation.Valid;
@@ -23,6 +28,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    private final CustomMapper<User, UserView> customMapper = new UserCustomMapper();
 
     private final UserDAO userDAO;
 
@@ -33,8 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<User> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
-                               String position, int docCode, int citizenshipCode) {
+    public List<UserView> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
+                                   String position, int docCode, int citizenshipCode) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadUser :").
                 append(" officeId = ").append(officeId).
@@ -57,7 +64,8 @@ public class UserServiceImpl implements UserService {
                         append(", citizenshipCode = ").append(citizenshipCode);
                 throw new MyException(sb.toString());
             }
-            return userDAO.loadUser(officeId, firstName, secondName, middleName, position, docCode, citizenshipCode);
+            List<User> users = userDAO.loadUser(officeId, firstName, secondName, middleName, position, docCode, citizenshipCode);
+            return mapUserListToUserViewList(users);
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -68,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User loadById(Long id) {
+    public UserView loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
             if (id == null || id <= 0L) {
@@ -76,7 +84,8 @@ public class UserServiceImpl implements UserService {
                         append("id = ").append(id);
                 throw new MyException(sb.toString());
             }
-            return userDAO.loadById(id);
+            User user = userDAO.loadById(id);
+            return mapUserToUserView(user);
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -98,16 +107,7 @@ public class UserServiceImpl implements UserService {
                 throw new MyException(sb.toString());
             }
             Long id = Long.parseLong(userView.getId());
-            User user = new User();
-            user.setId(id);
-            user.setFirstName(userView.getFirstName());
-            user.setSecondName(userView.getSecondName());
-            user.setMiddleName(userView.getMiddleName());
-            user.setPosition(userView.getPosition());
-            user.setPhone(userView.getPhone());
-            user.setDocNumber(userView.getDocNumber());
-            user.setDocDate(userView.getDocDate());
-            user.setIdentified(userView.isIdentified());
+            User user = mapUserViewToUser(userView);
             return userDAO.update(id, user, userView.getDocCode(), userView.getDocName(),
                     userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
@@ -142,15 +142,7 @@ public class UserServiceImpl implements UserService {
     public boolean save(@Valid UserView userView) {
         log.debug("save: userView = " + userView.toString());
         try {
-            User user = new User();
-            user.setFirstName(userView.getFirstName());
-            user.setSecondName(userView.getSecondName());
-            user.setMiddleName(userView.getMiddleName());
-            user.setPosition(userView.getPosition());
-            user.setPhone(userView.getPhone());
-            user.setDocNumber(userView.getDocNumber());
-            user.setDocDate(userView.getDocDate());
-            user.setIdentified(userView.isIdentified());
+            User user = mapUserViewToUser(userView);
             return userDAO.save(user, userView.getDocCode(), userView.getDocName(),
                     userView.getCitizenshipCode(), userView.getCitizenshipName());
         } catch (MyException e) {
@@ -159,5 +151,43 @@ public class UserServiceImpl implements UserService {
             log.error("Exception error", e);
         }
         return false;
+    }
+
+    private List<UserView> mapUserListToUserViewList(List<User> userList) {
+        List<UserView> userViews = new ArrayList<>(userList.size());
+        for (User user : userList) {
+            userViews.add(mapUserToUserView(user));
+        }
+        return userViews;
+    }
+
+    private UserView mapUserToUserView(User user) {
+        mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
+                .exclude("version").exclude("doc").exclude("country").exclude("officeId")
+                .field("firstName", "firstName")
+                .field("secondName", "secondName")
+                .field("middleName", "middleName")
+                .field("position", "position")
+                .field("phone", "phone")
+                .field("docNumber", "docNumber")
+                .field("docDate", "docDate")
+                .field("isIdentified", "isIdentified").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(user, UserView.class);
+    }
+
+    private User mapUserViewToUser(UserView userView) {
+        mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
+                .exclude("docCode").exclude("docName").exclude("citizenshipCode").exclude("citizenshipName")
+                .field("firstName", "firstName")
+                .field("secondName", "secondName")
+                .field("middleName", "middleName")
+                .field("position", "position")
+                .field("phone", "phone")
+                .field("docNumber", "docNumber")
+                .field("docDate", "docDate")
+                .field("isIdentified", "isIdentified").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(userView, User.class);
     }
 }

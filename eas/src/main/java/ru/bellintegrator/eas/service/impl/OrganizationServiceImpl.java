@@ -1,5 +1,9 @@
 package ru.bellintegrator.eas.service.impl;
 
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
+import ru.bellintegrator.eas.service.impl.mapper.OrganizationCustomMapper;
 import ru.bellintegrator.eas.view.OrganizationView;
 
 import javax.validation.Valid;
@@ -23,6 +28,8 @@ import java.util.List;
 public class OrganizationServiceImpl implements OrganizationService {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
+    private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    private final CustomMapper<Organization, OrganizationView> customMapper = new OrganizationCustomMapper();
 
     private final OrganizationDAO organizationDAO;
 
@@ -33,7 +40,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public List<Organization> loadOrganization(@NotNull String name, int inn, boolean isActive) {
+    public List<OrganizationView> loadOrganization(@NotNull String name, int inn, boolean isActive) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadOrganization :").
                 append(" name =").append(name).
@@ -48,7 +55,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                         append(", isActive =").append(isActive);
                 throw new MyException(sb.toString());
             }
-            return organizationDAO.loadOrganization(name, inn, isActive);
+            List<Organization> organizations = organizationDAO.loadOrganization(name, inn, isActive);
+            return mapOrganizationListToOrganizationViewList(organizations);
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -59,7 +67,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public Organization loadById(Long id) {
+    public OrganizationView loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
             if (id == null || id <= 0L) {
@@ -67,7 +75,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                         append("id = ").append(id);
                 throw new MyException(sb.toString());
             }
-            return organizationDAO.loadById(id);
+            Organization organization = organizationDAO.loadById(id);
+            return mapOrganizationToOrganizationView(organization);
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -89,15 +98,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 throw new MyException(sb.toString());
             }
             Long id = Long.parseLong(organizationView.getId());
-            Organization organization = new Organization();
-            organization.setId(id);
-            organization.setName(organizationView.getName());
-            organization.setFullName(organizationView.getFullName());
-            organization.setInn(organizationView.getInn());
-            organization.setKpp(organizationView.getKpp());
-            organization.setAddress(organizationView.getAddress());
-            organization.setPhone(organizationView.getPhone());
-            organization.setActive(organizationView.isActive());
+            Organization organization = mapOrganizationViewToOrganization(organizationView);
             return organizationDAO.update(id, organization);
         } catch (MyException e) {
             log.error("MyException error", e);
@@ -131,18 +132,50 @@ public class OrganizationServiceImpl implements OrganizationService {
     public boolean save(@Valid OrganizationView organizationView) {
         log.debug("save: organizationView = " + organizationView.toString());
         try {
-            Organization organization = new Organization();
-            organization.setName(organizationView.getName());
-            organization.setFullName(organizationView.getFullName());
-            organization.setInn(organizationView.getInn());
-            organization.setKpp(organizationView.getKpp());
-            organization.setAddress(organizationView.getAddress());
-            organization.setPhone(organizationView.getPhone());
-            organization.setActive(organizationView.isActive());
+            Organization organization = mapOrganizationViewToOrganization(organizationView);
             return organizationDAO.save(organization);
         } catch (Exception e) {
             log.error("MyException error", e);
         }
         return false;
+    }
+
+    private List<OrganizationView> mapOrganizationListToOrganizationViewList(List<Organization> organizationList) {
+        List<OrganizationView> organizationViews = new ArrayList<>(organizationList.size());
+        for (Organization organization : organizationList) {
+            organizationViews.add(mapOrganizationToOrganizationView(organization));
+        }
+        return organizationViews;
+    }
+
+    private OrganizationView mapOrganizationToOrganizationView(Organization organization) {
+        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper)
+                .exclude("version").exclude("offices")
+                .field("name", "name")
+                .field("fullName", "fullName")
+                .field("login", "login")
+                .field("password", "password")
+                .field("inn", "inn")
+                .field("kpp", "kpp")
+                .field("address", "address")
+                .field("phone", "phone")
+                .field("isActive", "isActive").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(organization, OrganizationView.class);
+    }
+
+    private Organization mapOrganizationViewToOrganization(OrganizationView organizationView) {
+        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper)
+                .field("name", "name")
+                .field("fullName", "fullName")
+                .field("login", "login")
+                .field("password", "password")
+                .field("inn", "inn")
+                .field("kpp", "kpp")
+                .field("address", "address")
+                .field("phone", "phone")
+                .field("isActive", "isActive").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(organizationView, Organization.class);
     }
 }

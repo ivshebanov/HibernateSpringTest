@@ -64,6 +64,9 @@ public class UserView {
     @NotNull
     private boolean isIdentified;
 
+    public UserView() {
+    }
+
     public String getId() {
         return id;
     }

@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service;
 
-import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.view.OfficeView;
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +16,7 @@ public interface OfficeService {
      * @param isActive
      * @return List<Office> список офисов
      */
-    List<Office> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive);
+    List<OfficeView> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive);
 
     /**
      * Получить Office по идентификатору
@@ -25,7 +24,7 @@ public interface OfficeService {
      * @param id
      * @return Office
      */
-    Office loadById(Long id);
+    OfficeView loadById(Long id);
 
     /**
      * Обновиить Office

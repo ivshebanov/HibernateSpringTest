@@ -29,6 +29,9 @@ public class OfficeView {
     @NotNull
     private boolean isActive;
 
+    public OfficeView() {
+    }
+
     public String getId() {
         return id;
     }

@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service;
 
-import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.view.UserView;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +19,7 @@ public interface UserService {
      * @param citizenshipCode
      * @return List<User> список users
      */
-    List<User> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
+    List<UserView> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
                         String position, int docCode, int citizenshipCode);
 
     /**
@@ -29,7 +28,7 @@ public interface UserService {
      * @param id
      * @return User
      */
-    User loadById(Long id);
+    UserView loadById(Long id);
 
     /**
      * Обновиить User

@@ -53,6 +53,9 @@ public class OrganizationView {
 
     private String hashActive;
 
+    public OrganizationView() {
+    }
+
     public String getId() {
         return id;
     }

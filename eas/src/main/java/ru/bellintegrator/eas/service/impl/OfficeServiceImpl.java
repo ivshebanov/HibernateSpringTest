@@ -1,5 +1,9 @@
 package ru.bellintegrator.eas.service.impl;
 
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
+import ru.bellintegrator.eas.service.impl.mapper.OfficeCustomMapper;
 import ru.bellintegrator.eas.view.OfficeView;
 
 import javax.validation.Valid;
@@ -23,6 +28,9 @@ import java.util.List;
 public class OfficeServiceImpl implements OfficeService {
 
     private final Logger log = LoggerFactory.getLogger(OfficeServiceImpl.class);
+    private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    private final CustomMapper<Office, OfficeView> customMapper = new OfficeCustomMapper();
+
 
     private final OfficeDAO officeDAO;
 
@@ -33,7 +41,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public List<Office> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive) {
+    public List<OfficeView> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadOffice :").
                 append(" orgId = ").append(orgId).
@@ -50,7 +58,10 @@ public class OfficeServiceImpl implements OfficeService {
                         append(", isActive = ").append(isActive);
                 throw new MyException(sb.toString());
             }
-            return officeDAO.loadOffice(orgId, name, phone, isActive);
+
+            List<Office> officeList = officeDAO.loadOffice(orgId, name, phone, isActive);
+            return mapOfficeListToOfficeViewList(officeList);
+
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -61,7 +72,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public Office loadById(Long id) {
+    public OfficeView loadById(Long id) {
         log.debug("loadById: id = " + id);
         try {
             if (id <= 0L) {
@@ -69,7 +80,10 @@ public class OfficeServiceImpl implements OfficeService {
                         append("id = ").append(id);
                 throw new MyException(sb.toString());
             }
-            return officeDAO.loadById(id);
+
+            Office office = officeDAO.loadById(id);
+            return mapOfficeToOfficeView(office);
+
         } catch (MyException e) {
             log.error("MyException error", e);
         } catch (Exception e) {
@@ -91,12 +105,7 @@ public class OfficeServiceImpl implements OfficeService {
                 throw new MyException(sb.toString());
             }
             Long id = Long.parseLong(officeView.getId());
-            Office office = new Office();
-            office.setId(id);
-            office.setName(officeView.getName());
-            office.setAddress(officeView.getAddress());
-            office.setPhone(officeView.getPhone());
-            office.setActive(officeView.isActive());
+            Office office = mapOfficeViewToOffice(officeView);
             return officeDAO.update(id, office);
         } catch (MyException e) {
             log.error("MyException error", e);
@@ -130,15 +139,41 @@ public class OfficeServiceImpl implements OfficeService {
     public boolean save(@Valid OfficeView officeView) {
         log.debug("save: officeView = " + officeView.toString());
         try {
-            Office office = new Office();
-            office.setName(officeView.getName());
-            office.setAddress(officeView.getAddress());
-            office.setPhone(officeView.getPhone());
-            office.setActive(officeView.isActive());
+            Office office = mapOfficeViewToOffice(officeView);
             return officeDAO.save(office);
         } catch (Exception e) {
             log.error("MyException error", e);
         }
         return false;
+    }
+
+
+    private List<OfficeView> mapOfficeListToOfficeViewList(List<Office> listOffice) {
+        List<OfficeView> officeViewList = new ArrayList<>(listOffice.size());
+        for (Office office : listOffice) {
+            officeViewList.add(mapOfficeToOfficeView(office));
+        }
+        return officeViewList;
+    }
+
+    private OfficeView mapOfficeToOfficeView(Office office) {
+        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper)
+                .exclude("version").exclude("orgId").exclude("users")
+                .field("name", "name")
+                .field("address", "address")
+                .field("phone", "phone")
+                .field("isActive", "isActive").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(office, OfficeView.class);
+    }
+
+    private Office mapOfficeViewToOffice(OfficeView officeView) {
+        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper)
+                .field("name", "name")
+                .field("address", "address")
+                .field("phone", "phone")
+                .field("isActive", "isActive").register();
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        return mapper.map(officeView, Office.class);
     }
 }
