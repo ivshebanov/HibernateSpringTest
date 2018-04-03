@@ -11,12 +11,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/organization", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/organization")
 public class OrganizationController {
 
     private final OrganizationService organizationService;

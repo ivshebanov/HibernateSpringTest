@@ -11,12 +11,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/office", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/office")
 public class OfficeController {
 
     private final OfficeService officeService;
@@ -30,11 +29,6 @@ public class OfficeController {
     public List<OfficeView> loadOffice(@RequestBody @NotNull Long orgId, @RequestBody String name,
                                        @RequestBody int phone, @RequestBody boolean isActive) {
         return officeService.loadOffice(orgId, name, phone, isActive);
-    }
-
-    @RequestMapping(value = "/all", method = {POST})
-    public String all() {
-        return "ок";
     }
 
     @RequestMapping(value = "/id", method = {GET})
