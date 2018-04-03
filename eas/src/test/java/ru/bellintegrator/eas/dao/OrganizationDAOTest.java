@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.Application;
-import ru.bellintegrator.eas.MyException;
+import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Organization;
 
 import java.security.NoSuchAlgorithmException;

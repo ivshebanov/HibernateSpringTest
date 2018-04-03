@@ -11,15 +11,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
+import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
 import ru.bellintegrator.eas.service.impl.mapper.OrganizationCustomMapper;
 import ru.bellintegrator.eas.view.OrganizationView;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public List<OrganizationView> loadOrganization(@NotNull String name, int inn, boolean isActive) {
+    public List<OrganizationView> loadOrganization(String name, int inn, boolean isActive) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadOrganization :").
                 append(" name =").append(name).
@@ -87,7 +85,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public boolean update(@Valid OrganizationView organizationView) {
+    public boolean update(OrganizationView organizationView) {
         log.debug("update: organizationView = " + organizationView.toString());
         try {
             if (organizationView.getId() == null
@@ -129,7 +127,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     @Transactional
-    public boolean save(@Valid OrganizationView organizationView) {
+    public boolean save(OrganizationView organizationView) {
         log.debug("save: organizationView = " + organizationView.toString());
         try {
             Organization organization = mapOrganizationViewToOrganization(organizationView);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.bellintegrator.eas.service.UserService;
 import ru.bellintegrator.eas.view.UserView;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<UserView> loadUser(@RequestBody Long officeId, @RequestBody String firstName,
+    public List<UserView> loadUser(@RequestBody @NotNull Long officeId, @RequestBody String firstName,
                                    @RequestBody String secondName, @RequestBody String middleName,
                                    @RequestBody String position, @RequestBody int docCode,
                                    @RequestBody int citizenshipCode) {

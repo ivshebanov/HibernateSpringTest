@@ -11,15 +11,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.UserDAO;
+import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
 import ru.bellintegrator.eas.service.impl.mapper.UserCustomMapper;
 import ru.bellintegrator.eas.view.UserView;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserView> loadUser(@NotNull Long officeId, String firstName, String secondName, String middleName,
+    public List<UserView> loadUser(Long officeId, String firstName, String secondName, String middleName,
                                    String position, int docCode, int citizenshipCode) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadUser :").
@@ -96,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean update(@Valid UserView userView) {
+    public boolean update(UserView userView) {
         log.debug("update: userView = " + userView.toString());
         try {
             if (userView.getId() == null
@@ -139,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean save(@Valid UserView userView) {
+    public boolean save(UserView userView) {
         log.debug("save: userView = " + userView.toString());
         try {
             User user = mapUserViewToUser(userView);

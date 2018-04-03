@@ -10,6 +10,7 @@ import ru.bellintegrator.eas.service.OfficeService;
 import ru.bellintegrator.eas.view.OfficeView;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,9 +29,14 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<OfficeView> loadOffice(@RequestBody Long orgId, @RequestBody String name,
+    public List<OfficeView> loadOffice(@RequestBody @NotNull Long orgId, @RequestBody String name,
                                        @RequestBody int phone, @RequestBody boolean isActive) {
         return officeService.loadOffice(orgId, name, phone, isActive);
+    }
+
+    @RequestMapping(value = "/all", method = {POST})
+    public String all() {
+        return "ок";
     }
 
     @RequestMapping(value = "/id", method = {GET})

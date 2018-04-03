@@ -10,6 +10,7 @@ import ru.bellintegrator.eas.service.OrganizationService;
 import ru.bellintegrator.eas.view.OrganizationView;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,7 +29,7 @@ public class OrganizationController {
     }
 
     @RequestMapping(value = "/list", method = {POST})
-    public List<OrganizationView> loadOrganization(@RequestBody String name, @RequestBody int inn,
+    public List<OrganizationView> loadOrganization(@RequestBody @NotNull String name, @RequestBody int inn,
                                                    @RequestBody boolean isActive) {
         return organizationService.loadOrganization(name, inn, isActive);
     }

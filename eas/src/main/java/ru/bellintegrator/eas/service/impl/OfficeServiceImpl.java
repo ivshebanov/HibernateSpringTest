@@ -11,15 +11,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.eas.MyException;
 import ru.bellintegrator.eas.dao.OfficeDAO;
+import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
 import ru.bellintegrator.eas.service.impl.mapper.OfficeCustomMapper;
 import ru.bellintegrator.eas.view.OfficeView;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public List<OfficeView> loadOffice(@NotNull Long orgId, String name, int phone, boolean isActive) {
+    public List<OfficeView> loadOffice(Long orgId, String name, int phone, boolean isActive) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("loadOffice :").
                 append(" orgId = ").append(orgId).
@@ -94,7 +92,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public boolean update(@Valid OfficeView officeView) {
+    public boolean update(OfficeView officeView) {
         log.debug("update: officeView = " + officeView.toString());
         try {
             if (officeView.getId() == null
@@ -136,7 +134,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     @Transactional
-    public boolean save(@Valid OfficeView officeView) {
+    public boolean save(OfficeView officeView) {
         log.debug("save: officeView = " + officeView.toString());
         try {
             Office office = mapOfficeViewToOffice(officeView);

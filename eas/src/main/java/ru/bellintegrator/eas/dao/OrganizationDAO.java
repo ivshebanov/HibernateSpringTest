@@ -1,6 +1,6 @@
 package ru.bellintegrator.eas.dao;
 
-import ru.bellintegrator.eas.MyException;
+import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Organization;
 
 import java.security.NoSuchAlgorithmException;
