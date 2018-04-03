@@ -163,30 +163,14 @@ public class UserServiceImpl implements UserService {
 
     private UserView mapUserToUserView(User user) {
         mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
-                .exclude("version").exclude("doc").exclude("country").exclude("officeId")
-                .field("firstName", "firstName")
-                .field("secondName", "secondName")
-                .field("middleName", "middleName")
-                .field("position", "position")
-                .field("phone", "phone")
-                .field("docNumber", "docNumber")
-                .field("docDate", "docDate")
-                .field("isIdentified", "isIdentified").register();
+                .exclude("version").exclude("doc").exclude("country").exclude("officeId").register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(user, UserView.class);
     }
 
     private User mapUserViewToUser(UserView userView) {
         mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
-                .exclude("docCode").exclude("docName").exclude("citizenshipCode").exclude("citizenshipName")
-                .field("firstName", "firstName")
-                .field("secondName", "secondName")
-                .field("middleName", "middleName")
-                .field("position", "position")
-                .field("phone", "phone")
-                .field("docNumber", "docNumber")
-                .field("docDate", "docDate")
-                .field("isIdentified", "isIdentified").register();
+                .exclude("docCode").exclude("docName").exclude("citizenshipCode").exclude("citizenshipName").register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(userView, User.class);
     }
