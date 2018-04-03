@@ -1,7 +1,5 @@
 package ru.bellintegrator.eas.controller;
 
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,28 +43,16 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/update", method = {POST})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
     public void update(@RequestBody @Valid OfficeView officeView) {
         officeService.update(officeView);
     }
 
     @RequestMapping(value = "/delete", method = {POST})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
     public void delete(@RequestBody Long id) {
         officeService.delete(id);
     }
 
     @RequestMapping(value = "/save", method = {POST})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
     public void save(@RequestBody @Valid OfficeView officeView) {
         officeService.save(officeView);
     }
