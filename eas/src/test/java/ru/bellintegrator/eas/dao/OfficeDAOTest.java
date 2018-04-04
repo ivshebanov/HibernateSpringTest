@@ -45,11 +45,9 @@ public class OfficeDAOTest {
     @Test
     public void loadByIdTest() {
         Office office = officeDAO.loadById(1L);
-        Assert.assertTrue(office != null);
         Assert.assertTrue(office.getName().equals("belloffice"));
 
         Office office2 = officeDAO.loadById(2L);
-        Assert.assertTrue(office2 != null);
         Assert.assertTrue(office2.getName().equals("Сбертехофис"));
     }
 

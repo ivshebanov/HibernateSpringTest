@@ -7,8 +7,6 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.OrganizationDAO;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class OrganizationServiceImpl implements OrganizationService {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
@@ -147,14 +144,15 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     private OrganizationView mapOrganizationToOrganizationView(Organization organization) {
-        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper)
+        mapperFactory.classMap(Organization.class, OrganizationView.class).byDefault().customize(customMapper)
                 .exclude("version").exclude("offices").register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(organization, OrganizationView.class);
     }
 
     private Organization mapOrganizationViewToOrganization(OrganizationView organizationView) {
-        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper).register();
+        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper)
+                .byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(organizationView, Organization.class);
     }

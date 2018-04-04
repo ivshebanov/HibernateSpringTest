@@ -7,8 +7,6 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.OfficeDAO;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class OfficeServiceImpl implements OfficeService {
 
     private final Logger log = LoggerFactory.getLogger(OfficeServiceImpl.class);
@@ -156,13 +153,13 @@ public class OfficeServiceImpl implements OfficeService {
 
     private OfficeView mapOfficeToOfficeView(Office office) {
         mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper)
-                .exclude("version").exclude("orgId").exclude("users").register();
+                .exclude("version").exclude("orgId").exclude("users").byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(office, OfficeView.class);
     }
 
     private Office mapOfficeViewToOffice(OfficeView officeView) {
-        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper).register();
+        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper).byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(officeView, Office.class);
     }

@@ -7,8 +7,6 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.eas.dao.UserDAO;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -161,14 +158,15 @@ public class UserServiceImpl implements UserService {
 
     private UserView mapUserToUserView(User user) {
         mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
-                .exclude("version").exclude("doc").exclude("country").exclude("officeId").register();
+                .exclude("version").exclude("doc").exclude("country").exclude("officeId").byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(user, UserView.class);
     }
 
     private User mapUserViewToUser(UserView userView) {
-        mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
-                .exclude("docCode").exclude("docName").exclude("citizenshipCode").exclude("citizenshipName").register();
+        mapperFactory.classMap(User.class, UserView.class)
+                .exclude("docCode").exclude("docName").exclude("citizenshipCode").exclude("citizenshipName")
+                .byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(userView, User.class);
     }
