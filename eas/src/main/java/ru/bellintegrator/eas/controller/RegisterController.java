@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bellintegrator.eas.service.RegisterService;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 public class RegisterController {
 
     private final RegisterService registerService;
@@ -21,9 +22,15 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/all", method = {GET})
-    public String all() throws IllegalAccessException {
+    public String all() {
+        return "Все ок.";
+    }
+
+    @RequestMapping(value = "/alll", method = {GET})
+    public String alll() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
+
 
     @RequestMapping(value = "/register", method = {POST})
     public void register(@RequestBody String login, @RequestBody String password, @RequestBody String name) {

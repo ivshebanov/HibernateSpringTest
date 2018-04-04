@@ -4,23 +4,33 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import ru.bellintegrator.eas.service.OfficeService;
+import ru.bellintegrator.eas.Application;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {Application.class})
 @WebAppConfiguration(value = "src/main/resources")
+@AutoConfigureTestEntityManager
+@Transactional
 public class OfficeControllerTest {
 
-    private OfficeService officeServiceMock;
+    private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
@@ -34,8 +44,11 @@ public class OfficeControllerTest {
     }
 
     @Test
-    public void loadByIdTest() {
-
+    public void loadByIdTest() throws Exception {
+        mockMvc.perform(get("/api/office/1")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("success")))
+                .andExpect(jsonPath("$.data.id", is(1)))
+                .andExpect(jsonPath("$.data.name", is("belloffice"))).andDo(print()).andReturn();
     }
 
     @Test
