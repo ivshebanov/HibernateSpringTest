@@ -44,43 +44,26 @@ public class OfficeDAOTest {
 
     @Test
     public void loadByIdTest() {
-        Office office = officeDAO.loadById(1L);
-        Assert.assertTrue(office.getName().equals("belloffice"));
-
-        Office office2 = officeDAO.loadById(2L);
-        Assert.assertTrue(office2.getName().equals("Сбертехофис"));
+        Office office = officeDAO.loadById(2L);
+        Assert.assertTrue(office.getName().equals("Сбертехофис"));
     }
 
     @Test
     public void updateTest() {
-        long id = 1L;
-        String name = "offbe";
-        int phone = 111112222;
-
-        Assert.assertTrue(officeDAO.loadById(id).getName().equals("belloffice"));
-        Assert.assertTrue(officeDAO.loadById(id).getPhone() == 567898);
-
         Office office = new Office();
-        office.setId(id);
-        office.setName(name);
+        office.setId(1L);
+        office.setName("offbe");
         office.setAddress("Большая Семеновская, 47");
-        office.setPhone(phone);
+        office.setPhone(111112222);
         office.setActive(true);
         office.setOrgId(null);
         office.setUsers(null);
-
-        Assert.assertTrue(officeDAO.update(id, office));
-        Assert.assertTrue(officeDAO.loadById(id).getName().equals(name));
-        Assert.assertTrue(officeDAO.loadById(id).getPhone() == phone);
+        Assert.assertTrue(officeDAO.update(office.getId(), office));
     }
 
     @Test
     public void deleteTest() {
-        List<Office> offices = officeDAO.all(1L);
-        Assert.assertTrue(offices.size() == 1);
         Assert.assertTrue(officeDAO.delete(1L));
-        List<Office> postOffices = officeDAO.all(1L);
-        Assert.assertTrue(postOffices == null);
     }
 
     @Test

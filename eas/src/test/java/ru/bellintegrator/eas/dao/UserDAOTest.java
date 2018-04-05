@@ -33,9 +33,6 @@ public class UserDAOTest {
     public void allTest() {
         List<User> users = userDAO.all(1L);
         Assert.assertTrue(users.size() == 1);
-
-        List<User> users2 = userDAO.all(2L);
-        Assert.assertTrue(users2.size() == 1);
     }
 
     @Test
@@ -47,24 +44,18 @@ public class UserDAOTest {
     public void loadByIdTest() {
         User user = userDAO.loadById(1L);
         Assert.assertTrue(user.getFirstName().equals("Сергей"));
-        Assert.assertTrue(user.getMiddleName().equals("Викторович"));
-
-        User user2 = userDAO.loadById(2L);
-        Assert.assertTrue(user2.getFirstName().equals("Иван"));
-        Assert.assertTrue(user2.getMiddleName().equals("Иванович"));
     }
 
     @Test
     public void updateTest() throws MyException {
-        long id = 1L;
         User user = new User();
-        user.setId(id);
+        user.setId(1L);
         user.setFirstName("Юзер");
         user.setSecondName("user");
         user.setMiddleName("us");
         user.setPosition("junior");
         user.setPhone(1283129);
-        Assert.assertTrue(userDAO.update(id, user, 4, "Паспорт иностранного гражданина",
+        Assert.assertTrue(userDAO.update(user.getId(), user, 4, "Паспорт иностранного гражданина",
                 6, "Болгария"));
     }
 

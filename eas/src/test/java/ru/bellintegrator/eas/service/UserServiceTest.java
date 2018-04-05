@@ -57,8 +57,9 @@ public class UserServiceTest {
         userView.setMiddleName("us");
         userView.setPosition("junior");
         userView.setPhone(1283129);
+        userView.setDocCode(6);
         userView.setDocName("Удостоверение беженца");
-        userView.setDocNumber(6);
+        userView.setDocNumber(62);
         userView.setDocDate(new Date());
         userView.setCitizenshipName("Ватикан");
         userView.setCitizenshipCode(8);
@@ -79,8 +80,9 @@ public class UserServiceTest {
         userView.setMiddleName("us");
         userView.setPosition("junior");
         userView.setPhone(1283129);
+        userView.setDocCode(6);
         userView.setDocName("Удостоверение беженца");
-        userView.setDocNumber(6);
+        userView.setDocNumber(62);
         userView.setDocDate(new Date());
         userView.setCitizenshipName("Ватикан");
         userView.setCitizenshipCode(8);

@@ -144,15 +144,14 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     private OrganizationView mapOrganizationToOrganizationView(Organization organization) {
-        mapperFactory.classMap(Organization.class, OrganizationView.class).byDefault().customize(customMapper)
-                .exclude("version").exclude("offices").register();
+        mapperFactory.classMap(Organization.class, OrganizationView.class).byDefault()
+                .exclude("version").exclude("offices").byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(organization, OrganizationView.class);
     }
 
     private Organization mapOrganizationViewToOrganization(OrganizationView organizationView) {
-        mapperFactory.classMap(Organization.class, OrganizationView.class).customize(customMapper)
-                .byDefault().register();
+        mapperFactory.classMap(Organization.class, OrganizationView.class).byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(organizationView, Organization.class);
     }

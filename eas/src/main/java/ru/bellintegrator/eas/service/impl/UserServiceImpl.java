@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserView mapUserToUserView(User user) {
-        mapperFactory.classMap(User.class, UserView.class).customize(customMapper)
+        mapperFactory.classMap(User.class, UserView.class)
                 .exclude("version").exclude("doc").exclude("country").exclude("officeId").byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(user, UserView.class);

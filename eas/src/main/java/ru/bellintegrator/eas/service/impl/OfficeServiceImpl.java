@@ -152,14 +152,14 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     private OfficeView mapOfficeToOfficeView(Office office) {
-        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper)
+        mapperFactory.classMap(Office.class, OfficeView.class)
                 .exclude("version").exclude("orgId").exclude("users").byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(office, OfficeView.class);
     }
 
     private Office mapOfficeViewToOffice(OfficeView officeView) {
-        mapperFactory.classMap(Office.class, OfficeView.class).customize(customMapper).byDefault().register();
+        mapperFactory.classMap(Office.class, OfficeView.class).byDefault().register();
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(officeView, Office.class);
     }

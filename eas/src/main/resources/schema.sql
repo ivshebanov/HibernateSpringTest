@@ -3,14 +3,14 @@ CREATE TABLE IF NOT EXISTS Organization (
   version     INTEGER      NOT NULL,
   name        VARCHAR(50)  NOT NULL,
   full_name   VARCHAR(50)  NOT NULL,
-  login       VARCHAR(100) NOT NULL,
-  password    VARCHAR(100) NOT NULL,
+  login       VARCHAR(100),
+  password    VARCHAR(100),
   inn         INTEGER      NOT NULL,
   kpp         INTEGER      NOT NULL,
   address     VARCHAR(50)  NOT NULL,
   phone       INTEGER      NOT NULL,
   is_active   BIT          NOT NULL,
-  hash_active VARCHAR(100) NOT NULL
+  hash_active VARCHAR(100)
 );
 
 CREATE TABLE IF NOT EXISTS Office (
