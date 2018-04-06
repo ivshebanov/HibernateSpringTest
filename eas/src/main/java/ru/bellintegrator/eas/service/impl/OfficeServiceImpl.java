@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service.impl;
 
-import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -13,7 +12,6 @@ import ru.bellintegrator.eas.dao.OfficeDAO;
 import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Office;
 import ru.bellintegrator.eas.service.OfficeService;
-import ru.bellintegrator.eas.service.impl.mapper.OfficeCustomMapper;
 import ru.bellintegrator.eas.view.OfficeView;
 
 import java.util.ArrayList;
@@ -24,8 +22,6 @@ public class OfficeServiceImpl implements OfficeService {
 
     private final Logger log = LoggerFactory.getLogger(OfficeServiceImpl.class);
     private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-    private final CustomMapper<Office, OfficeView> customMapper = new OfficeCustomMapper();
-
 
     private final OfficeDAO officeDAO;
 

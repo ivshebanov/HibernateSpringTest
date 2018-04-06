@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service.impl;
 
-import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -13,7 +12,6 @@ import ru.bellintegrator.eas.dao.OrganizationDAO;
 import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.Organization;
 import ru.bellintegrator.eas.service.OrganizationService;
-import ru.bellintegrator.eas.service.impl.mapper.OrganizationCustomMapper;
 import ru.bellintegrator.eas.view.OrganizationView;
 
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
     private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-    private final CustomMapper<Organization, OrganizationView> customMapper = new OrganizationCustomMapper();
 
     private final OrganizationDAO organizationDAO;
 

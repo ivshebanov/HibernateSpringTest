@@ -1,6 +1,5 @@
 package ru.bellintegrator.eas.service.impl;
 
-import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -13,7 +12,6 @@ import ru.bellintegrator.eas.dao.UserDAO;
 import ru.bellintegrator.eas.exception.MyException;
 import ru.bellintegrator.eas.model.User;
 import ru.bellintegrator.eas.service.UserService;
-import ru.bellintegrator.eas.service.impl.mapper.UserCustomMapper;
 import ru.bellintegrator.eas.view.UserView;
 
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-    private final CustomMapper<User, UserView> customMapper = new UserCustomMapper();
 
     private final UserDAO userDAO;
 
