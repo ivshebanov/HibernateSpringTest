@@ -1,8 +1,5 @@
-Bell Integrator пример для учебного задания java
-======================
-Репозиторий
--
-git - https://github.com/azEsm/empty_project
+Bell Integrator учебное задание java
+====================================
 
 Использовать Swagger UI
 -
